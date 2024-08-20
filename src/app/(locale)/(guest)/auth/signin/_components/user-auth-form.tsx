@@ -11,13 +11,30 @@ import EnergySavingsLeafIcon from '@mui/icons-material/EnergySavingsLeaf';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { GlobalStyles } from '@mui/material';
+import { signIn } from 'next-auth/react';
 
 const UserAuthForm = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const result = await signIn('credentials', {
+            email,
+            password,
+            redirect: false
+        });
+
+        if (result?.error) {
+            console.error('Failed to sign in:', result.error);
+        } else {
+            console.log('Sign in successful!');
+        }
     };
 
     return (
@@ -76,6 +93,7 @@ const UserAuthForm = () => {
 
                             <Box
                                 component="form"
+                                onSubmit={handleSubmit}
                                 sx={{
                                     mt: 4,
                                     width: '100%',
@@ -91,6 +109,7 @@ const UserAuthForm = () => {
                                     variant="outlined"
                                     fullWidth
                                     size="small"
+                                    onChange={(e) => setEmail(e.target.value)}
                                     sx={{
                                         mb: 2,
                                         borderRadius: '8px',
@@ -120,6 +139,7 @@ const UserAuthForm = () => {
                                     type={showPassword ? 'text' : 'password'}
                                     variant="outlined"
                                     fullWidth
+                                    onChange={(e) => setPassword(e.target.value)}
                                     size="small"
                                     sx={{
                                         mb: 2,
@@ -161,6 +181,7 @@ const UserAuthForm = () => {
                                 <Button
                                     variant="contained"
                                     color="primary"
+                                    type="submit"
                                     sx={{
                                         mt: 2,
                                         width: '100%',

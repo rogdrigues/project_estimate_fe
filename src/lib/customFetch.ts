@@ -7,56 +7,48 @@ import queryString from 'query-string';
 export const customFetch = async <T>(request: IRequest): Promise<BaseResponse> => {
     const parsedRequest = IRequestSchema.parse(request);
 
-    const { url, method, body, headers, queryParams, useCredentials, nextOptions } = parsedRequest;
+    let { url, method, body, headers, queryParams, useCredentials, nextOptions } = parsedRequest;
     try {
         const session = await getSession();
         const accessToken = session?.access_token;
 
-        const queryStringified = queryParams ? `?${queryString.stringify(queryParams)}` : '';
-
-        const response = await fetch(`${url}${queryStringified}`, {
-            method,
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`,
-                ...headers,
-            },
-            body: body ? JSON.stringify(body) : undefined,
-            credentials: useCredentials ? 'include' : 'same-origin',
-            cache: 'no-store',
+        const options: any = {
+            method: method,
+            headers: new Headers({ 'content-type': 'application/json', ...headers }),
+            body: body ? JSON.stringify(body) : null,
             ...nextOptions,
-        });
+        };
 
-        let errorMessage = '';
-
-        if (!response.ok) {
-            switch (response.status) {
-                case 400:
-                    errorMessage = 'Bad Request';
-                    break;
-                case 401:
-                    errorMessage = 'Unauthorized';
-                    break;
-                case 403:
-                    errorMessage = 'Forbidden';
-                    break;
-                case 404:
-                    errorMessage = 'Not Found';
-                    break;
-                case 500:
-                    errorMessage = 'Internal Server Error';
-                    break;
-                default:
-                    errorMessage = 'An unknown error occurred';
-            }
-            throw new Error(errorMessage);
+        if (useCredentials) {
+            options.credentials = 'include';
         }
 
-        const data = await response.json();
+        if (accessToken) {
+            options.headers.Authorization = `Bearer ${accessToken}`;
+        }
 
-        const parsedData = BaseResponseSchema.parse(data);
+        if (queryParams) {
+            url = `${url}?${queryString.stringify(queryParams)}`;
+        }
 
-        return parsedData;
+        console.log(options);
+
+        const response = await fetch(url, options);
+
+        if (response.ok) {
+            const data = await response.json() as T;
+            const baseResponse = BaseResponseSchema.parse(data);
+            return baseResponse;
+        } else {
+            const data = await response.json();
+
+            return BaseResponseSchema.parse({
+                EC: response.status,
+                message: data?.message || 'Error',
+                data: null,
+                metadata: null,
+            });
+        }
     } catch (error: unknown) {
         const message = (error as Error).message || 'Can’t connect to the API';
 
