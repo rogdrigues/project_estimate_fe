@@ -1,7 +1,5 @@
-// src/app/(guest)/auth/signin/page.tsx
-
 import React from 'react';
-import UserAuthForm from './_components/user-auth-form';
+import UserAuthForm from '@/app/(locale)/(guest)/auth/signin/_components/user-auth-form';
 
 const SignInPage = () => {
     return <UserAuthForm />;

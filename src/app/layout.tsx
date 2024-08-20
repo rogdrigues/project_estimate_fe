@@ -1,3 +1,5 @@
+import { NextAuthWrapper } from '@/lib/index'
+import { Providers } from '@/lib/index'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
@@ -15,7 +17,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <NextAuthWrapper>
+          <Providers>
+            {children}
+          </Providers>
+        </NextAuthWrapper>
+      </body>
     </html>
   )
 }

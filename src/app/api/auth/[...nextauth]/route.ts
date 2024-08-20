@@ -1,7 +1,7 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { customFetch } from '@/lib/customFetch';
-import { UserMaster } from '@/types/UserMaster';
+import { customFetch } from '@/lib/index';
+import { UserMaster } from '@/types/index';
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -21,10 +21,8 @@ export const authOptions: NextAuthOptions = {
                             password: credentials?.password,
                         },
                     });
-
                     if (response.EC === 0 && response.data) {
                         const { result, metadata } = response.data;
-
                         return {
                             access_token: result.access_token,
                             refresh_token: result.refresh_token,
@@ -58,25 +56,33 @@ export const authOptions: NextAuthOptions = {
                     profile: user.profile,
                     lastLogin: user.lastLogin,
                 };
-                token.access_expire = Date.now() + 15 * 60 * 1000; // Example expiration time
+                token.access_expire = Date.now() + 15 * 60 * 1000;
                 token.error = '';
+                console.log("Token Ready");
             }
+
             return token;
         },
         async session({ session, token }) {
-            session.access_token = token.access_token as string;
-            session.refresh_token = token.refresh_token as string;
-            session.user = token.user as UserMaster;
-            session.access_expire = token.access_expire as number;
-            session.error = token.error as string;
+            if (token) {
+                session.access_token = token.access_token as string;
+                session.refresh_token = token.refresh_token as string;
+                session.user = token.user as UserMaster;
+                session.access_expire = token.access_expire as number;
+                session.error = token.error as string;
+                console.log("Session Ready");
+            }
             return session;
         },
     },
     pages: {
-        signIn: '/auth/signin',
-        error: '/auth/error', // Optional error page
+        signIn: '/auth/signin'
     },
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET!,
 };
 
-export default NextAuth(authOptions);
+const handler = NextAuth({
+    ...authOptions
+});
+
+export { handler as GET, handler as POST };

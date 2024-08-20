@@ -1,5 +1,6 @@
 import React from 'react';
 import { GlobalStyles } from '@mui/material';
+import { Providers } from '@/lib/index';
 const SignInLayout = ({ children }: { children: React.ReactNode }) => {
     return (
         <div>
@@ -10,7 +11,10 @@ const SignInLayout = ({ children }: { children: React.ReactNode }) => {
                     body: { height: '100%', margin: 0, padding: 0 }
                 }}
             />
-            {children}
+            <Providers>
+                {children}
+            </Providers>
+
         </div>
     );
 };
