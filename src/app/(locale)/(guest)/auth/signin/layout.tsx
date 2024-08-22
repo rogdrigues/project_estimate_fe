@@ -1,9 +1,10 @@
 import React from 'react';
 import { GlobalStyles } from '@mui/material';
 import { Providers } from '@/lib/index';
+import ToastManager from '@/components/ToastManager';
 const SignInLayout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div>
+        <>
             <GlobalStyles
                 styles={{
                     '*': { margin: 0, padding: 0, boxSizing: 'border-box' },
@@ -11,11 +12,13 @@ const SignInLayout = ({ children }: { children: React.ReactNode }) => {
                     body: { height: '100%', margin: 0, padding: 0 }
                 }}
             />
-            <Providers>
-                {children}
-            </Providers>
+            <ToastManager>
+                <Providers>
+                    {children}
+                </Providers>
+            </ToastManager>
 
-        </div>
+        </>
     );
 };
 

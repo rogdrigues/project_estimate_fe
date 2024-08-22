@@ -12,11 +12,13 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { GlobalStyles } from '@mui/material';
 import { signIn } from 'next-auth/react';
+import { useToast } from '@/context/ToastContext';
 
 const UserAuthForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const { triggerToast } = useToast();
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -29,23 +31,17 @@ const UserAuthForm = () => {
             password,
             redirect: false
         });
+        console.log("Result returned from signIn", result);
 
         if (result?.error) {
-            console.error('Failed to sign in:', result.error);
+            triggerToast("There was an error signing in. Please try again.", false);
         } else {
-            console.log('Sign in successful!');
+            triggerToast("Sign in successful", true);
         }
     };
 
     return (
         <>
-            <GlobalStyles
-                styles={{
-                    '*': { margin: 0, padding: 0, boxSizing: 'border-box' },
-                    html: { height: '100%' },
-                    body: { height: '100%', margin: 0, padding: 0 }
-                }}
-            />
             <Box sx={{ height: '100vh' }}>
                 <Grid container
                     spacing={0}
