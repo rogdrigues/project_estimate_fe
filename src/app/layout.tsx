@@ -1,7 +1,12 @@
+import Header from '@/components/Header'
 import ToastManager from '@/components/ToastManager'
 import { NextAuthWrapper } from '@/lib/index'
 import { Providers } from '@/lib/index'
 import type { Metadata } from 'next'
+import { GlobalStyles } from '@mui/material'
+import { Box } from '@mui/system'
+import Sidebar from '@/components/Sidebar'
+import { SidebarProvider } from '@/context/SidebarContext'
 
 export const metadata: Metadata = {
   title: 'Project Estimate',
@@ -9,13 +14,29 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children, }: { children: React.ReactNode }) {
+
   return (
     <html lang="en">
       <body>
+        <GlobalStyles
+          styles={{
+            '*': { margin: 0, padding: 0, boxSizing: 'border-box' },
+            html: { height: '100%' },
+            body: { height: '100%', margin: 0, padding: 0 }
+          }}
+        />
         <NextAuthWrapper>
           <Providers>
             <ToastManager>
-              {children}
+              <SidebarProvider>
+                <Header />
+                <Box sx={{ display: 'flex' }}>
+                  <Sidebar />
+                  <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                    {children}
+                  </Box>
+                </Box>
+              </SidebarProvider>
             </ToastManager>
           </Providers>
         </NextAuthWrapper>
