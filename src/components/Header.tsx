@@ -14,7 +14,6 @@ import Box from '@mui/material/Box';
 import { styled, alpha } from '@mui/material/styles';
 import Divider from '@mui/material/Divider';
 import Avatar from '@mui/material/Avatar';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import LanguageIcon from '@mui/icons-material/Language';
@@ -22,6 +21,13 @@ import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import Image from 'next/image';
 import { useSidebar } from '@/context/SidebarContext';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import { Paper, MenuList } from '@mui/material';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import FilterFramesIcon from '@mui/icons-material/FilterFrames';
+import LogoutIcon from '@mui/icons-material/Logout';
+
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -82,20 +88,45 @@ export default function Header() {
         <Menu
             anchorEl={anchorEl}
             anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: 'bottom',
+                horizontal: 'left',
             }}
-            id={menuId}
-            keepMounted
             transformOrigin={{
                 vertical: 'top',
-                horizontal: 'right',
+                horizontal: 'left',
             }}
             open={isMenuOpen}
             onClose={handleMenuClose}
+            sx={{
+                mt: '10px',
+                '& .MuiPaper-root': {
+                    minWidth: '200px',
+                },
+            }}
         >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            <Paper>
+                <MenuList>
+                    <MenuItem onClick={handleMenuClose}>
+                        <ListItemIcon>
+                            <AccountBoxIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText>Profile</ListItemText>
+                    </MenuItem>
+                    <MenuItem onClick={handleMenuClose}>
+                        <ListItemIcon>
+                            <FilterFramesIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText>Branch</ListItemText>
+                    </MenuItem>
+                    <Divider />
+                    <MenuItem onClick={handleMenuClose}>
+                        <ListItemIcon>
+                            <LogoutIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText>Logout</ListItemText>
+                    </MenuItem>
+                </MenuList>
+            </Paper>
         </Menu>
     );
 
@@ -144,23 +175,38 @@ export default function Header() {
                             </IconButton>
                         </Box>
                         <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Box sx={{ display: 'flex', justifyContent: "center" }}>
-                                <Avatar alt="User Avatar" src="/images/user-avatar.jpg" sx={{ width: 40, height: 40 }} />
-                                <IconButton size="small" color="inherit" onClick={handleProfileMenuOpen}>
-                                    <ArrowDropDownIcon sx={{ color: "#000000" }} />
-                                </IconButton>
-                            </Box>
-                            <Box sx={{ textAlign: 'left' }}>
-                                <Typography variant="body1" sx={{ color: '#000', fontWeight: 'bold' }}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                cursor: 'pointer',
+                                padding: '4px 8px',
+                                borderRadius: '8px',
+                                '&:hover': {
+                                    backgroundColor: 'rgba(0, 0, 0, 0.05)', // Màu nền nhạt khi hover
+                                    '.MuiAvatar-root, .MuiTypography-root': {
+                                        color: 'rgba(0, 0, 0, 0.7)',
+                                        transition: 'color 0.3s ease',
+                                    }
+                                },
+                                transition: 'background-color 0.3s ease',
+                            }}
+                            onClick={handleProfileMenuOpen} // Mở menu khi click vào bất kỳ đâu trong Box
+                        >
+                            <Avatar alt="User Avatar" src="/images/user-avatar.jpg" sx={{ width: 40, height: 40, transition: 'color 0.3s ease' }} />
+                            <Box sx={{ textAlign: 'left', ml: 1 }}>
+                                <Typography variant="body1" sx={{ color: '#000', fontWeight: 'bold', transition: 'color 0.3s ease' }}>
                                     Alina Mcloud
                                 </Typography>
-                                <Typography variant="body2" sx={{ color: '#6E6B7B' }}>
+                                <Typography variant="body2" sx={{ color: '#6E6B7B', transition: 'color 0.3s ease' }}>
                                     VP People Manager
                                 </Typography>
                             </Box>
-
                         </Box>
+
+
+
+
                     </Box>
                 </Toolbar>
             </AppBar>
