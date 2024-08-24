@@ -15,24 +15,26 @@ import CategoryIcon from '@mui/icons-material/Category';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useSidebar } from '@/context/SidebarContext';
+import Link from 'next/link';
 
 const drawerWidth = 260;
 const miniDrawerWidth = 60;
 
 const menuItems = [
-    { name: 'Dashboard', icon: <DashboardIcon /> },
-    { name: 'Division', icon: <BusinessIcon /> },
-    { name: 'Department', icon: <ApartmentIcon /> },
-    { name: 'User', icon: <PeopleIcon /> },
-    { name: 'Project', icon: <WorkIcon /> },
-    { name: 'Assumption', icon: <AssignmentIcon /> },
-    { name: 'Checklist', icon: <CheckBoxIcon /> },
-    { name: 'Technology', icon: <DevicesIcon /> },
-    { name: 'Resource', icon: <StorageIcon /> },
-    { name: 'Template', icon: <FileCopyIcon /> },
-    { name: 'Category', icon: <CategoryIcon /> },
-    { name: 'Productivity', icon: <ShowChartIcon /> },
+    { name: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
+    { name: 'Division', icon: <BusinessIcon />, path: '/division' },
+    { name: 'Department', icon: <ApartmentIcon />, path: '/department' },
+    { name: 'User', icon: <PeopleIcon />, path: '/user' },
+    { name: 'Project', icon: <WorkIcon />, path: '/projects' },
+    { name: 'Assumption', icon: <AssignmentIcon />, path: '/assumption' },
+    { name: 'Checklist', icon: <CheckBoxIcon />, path: '/checklist' },
+    { name: 'Technology', icon: <DevicesIcon />, path: '/technology' },
+    { name: 'Resource', icon: <StorageIcon />, path: '/resource' },
+    { name: 'Template', icon: <FileCopyIcon />, path: '/template' },
+    { name: 'Category', icon: <CategoryIcon />, path: '/category' },
+    { name: 'Productivity', icon: <ShowChartIcon />, path: '/productivity' },
 ];
+
 
 const Sidebar = () => {
     const { isSidebarOpen } = useSidebar();
@@ -40,7 +42,7 @@ const Sidebar = () => {
     return (
         <Drawer
             sx={{
-                width: isSidebarOpen ? 260 : 60,
+                width: isSidebarOpen ? drawerWidth : miniDrawerWidth,
                 flexShrink: 0,
                 transition: 'width 0.3s ease',
                 '& .MuiDrawer-paper': {
@@ -56,11 +58,13 @@ const Sidebar = () => {
             anchor="left"
         >
             <List>
-                {menuItems.map((item, index) => (
-                    <ListItem button key={index}>
-                        <ListItemIcon>{item.icon}</ListItemIcon>
-                        <ListItemText primary={item.name} />
-                    </ListItem>
+                {menuItems.map((item) => (
+                    <Link href={item.path} key={item.name} passHref legacyBehavior>
+                        <ListItem button component="a">
+                            <ListItemIcon>{item.icon}</ListItemIcon>
+                            <ListItemText primary={item.name} />
+                        </ListItem>
+                    </Link>
                 ))}
                 <Divider />
                 <ListItem button>
