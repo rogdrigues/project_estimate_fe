@@ -1,11 +1,16 @@
 import { z } from 'zod';
 
+export const RoleSchema = z.object({
+    roleName: z.string(),
+    permissions: z.array(z.string()).optional(),
+});
+
 export const UserMasterSchema = z.object({
     id: z.string(),
     username: z.string(),
     displayName: z.string(),
     email: z.string().email(),
-    role: z.string(),
+    role: RoleSchema,
     division: z.string().nullable().optional(),
     department: z.string().nullable().optional(),
     profile: z.object({

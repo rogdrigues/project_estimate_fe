@@ -1,5 +1,5 @@
 import Header from '@/components/Header'
-import ToastManager from '@/components/ToastManager'
+import { ToastManager } from '@/components/index'
 import { NextAuthWrapper } from '@/lib'
 import { Providers } from '@/lib'
 import type { Metadata } from 'next'
