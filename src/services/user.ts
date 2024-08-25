@@ -1,6 +1,5 @@
 import { customFetch } from '@/lib';
 import { UserMaster } from '@/types';
-import { getSession } from 'next-auth/react';
 import { getAccessToken } from '@/utils';
 const baseURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users`;
 

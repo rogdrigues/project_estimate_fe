@@ -10,15 +10,16 @@ import InputAdornment from '@mui/material/InputAdornment';
 import EnergySavingsLeafIcon from '@mui/icons-material/EnergySavingsLeaf';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { GlobalStyles } from '@mui/material';
 import { signIn } from 'next-auth/react';
 import { useToast } from '@/context/ToastContext';
+import { useRouter } from 'next/navigation';
 
 const UserAuthForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const { triggerToast } = useToast();
+    const router = useRouter();
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -31,12 +32,14 @@ const UserAuthForm = () => {
             password,
             redirect: false
         });
-        console.log("Result returned from signIn", result);
 
         if (result?.error) {
             triggerToast("There was an error signing in. Please try again.", false);
         } else {
             triggerToast("Sign in successful", true);
+            setTimeout(() => {
+                router.push('/dashboard');
+            }, 2000);
         }
     };
 

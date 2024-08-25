@@ -58,7 +58,6 @@ export const authOptions: NextAuthOptions = {
                 };
                 token.access_expire = Date.now() + 15 * 60 * 1000;
                 token.error = '';
-                console.log("Token Ready");
             }
 
             return token;
@@ -70,7 +69,6 @@ export const authOptions: NextAuthOptions = {
                 session.user = token.user as UserMaster;
                 session.access_expire = token.access_expire as number;
                 session.error = token.error as string;
-                console.log("Session Ready");
             }
             return session;
         },

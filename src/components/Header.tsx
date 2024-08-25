@@ -27,7 +27,8 @@ import { Paper, MenuList } from '@mui/material';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import FilterFramesIcon from '@mui/icons-material/FilterFrames';
 import LogoutIcon from '@mui/icons-material/Logout';
-
+import { useState, MouseEvent, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -72,10 +73,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function Header() {
     const { isSidebarOpen, toggleSidebar } = useSidebar();
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const { data: session } = useSession();
     const isMenuOpen = Boolean(anchorEl);
 
-    const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+
+    const handleProfileMenuOpen = (event: MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
 
@@ -157,7 +160,6 @@ export default function Header() {
                                 alignItems: 'center',
                                 gap: '16px',
                             }}
-
                         >
                             <IconButton color="inherit" sx={{ backgroundColor: '#ffebee', borderRadius: '50%' }}>
                                 <Badge color="secondary">
@@ -183,7 +185,7 @@ export default function Header() {
                                 padding: '4px 8px',
                                 borderRadius: '8px',
                                 '&:hover': {
-                                    backgroundColor: 'rgba(0, 0, 0, 0.05)', // Màu nền nhạt khi hover
+                                    backgroundColor: 'rgba(0, 0, 0, 0.05)',
                                     '.MuiAvatar-root, .MuiTypography-root': {
                                         color: 'rgba(0, 0, 0, 0.7)',
                                         transition: 'color 0.3s ease',
@@ -191,22 +193,18 @@ export default function Header() {
                                 },
                                 transition: 'background-color 0.3s ease',
                             }}
-                            onClick={handleProfileMenuOpen} // Mở menu khi click vào bất kỳ đâu trong Box
+                            onClick={handleProfileMenuOpen}
                         >
                             <Avatar alt="User Avatar" src="/images/user-avatar.jpg" sx={{ width: 40, height: 40, transition: 'color 0.3s ease' }} />
                             <Box sx={{ textAlign: 'left', ml: 1 }}>
                                 <Typography variant="body1" sx={{ color: '#000', fontWeight: 'bold', transition: 'color 0.3s ease' }}>
-                                    Alina Mcloud
+                                    {session?.user?.profile?.fullName}
                                 </Typography>
                                 <Typography variant="body2" sx={{ color: '#6E6B7B', transition: 'color 0.3s ease' }}>
-                                    VP People Manager
+                                    {session?.user?.role?.roleName}
                                 </Typography>
                             </Box>
                         </Box>
-
-
-
-
                     </Box>
                 </Toolbar>
             </AppBar>
