@@ -133,6 +133,13 @@ export default function Header() {
         </Menu>
     );
 
+    const getInitials = (fullName: string | undefined) => {
+        if (!fullName) return '';
+        const names = fullName.split(' ');
+        const initials = names.map(name => name[0]).join('').toUpperCase();
+        return initials;
+    };
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" sx={{ backgroundColor: '#fff', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)' }}>
@@ -195,13 +202,22 @@ export default function Header() {
                             }}
                             onClick={handleProfileMenuOpen}
                         >
-                            <Avatar alt="User Avatar" src="/images/user-avatar.jpg" sx={{ width: 40, height: 40, transition: 'color 0.3s ease' }} />
+                            {session && session.user && (
+                                <>
+                                    <Avatar
+                                        alt={session.user.username}
+                                        src={session.user.profile?.avatar || undefined}
+                                    >
+                                        {!session.user.profile?.avatar && getInitials(session.user.username)}
+                                    </Avatar>
+                                </>
+                            )}
                             <Box sx={{ textAlign: 'left', ml: 1 }}>
                                 <Typography variant="body1" sx={{ color: '#000', fontWeight: 'bold', transition: 'color 0.3s ease' }}>
-                                    {session?.user?.profile?.fullName}
+                                    {session?.user?.username}
                                 </Typography>
                                 <Typography variant="body2" sx={{ color: '#6E6B7B', transition: 'color 0.3s ease' }}>
-                                    {session?.user?.role?.roleName}
+                                    {session?.user?.role.roleName}
                                 </Typography>
                             </Box>
                         </Box>

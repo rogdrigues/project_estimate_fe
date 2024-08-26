@@ -2,6 +2,7 @@ import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { customFetch } from '@/lib/index';
 import { UserMaster } from '@/types/index';
+import { custom } from 'zod';
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -20,12 +21,13 @@ export const authOptions: NextAuthOptions = {
                             email: credentials?.email,
                             password: credentials?.password,
                         },
+                        useCredentials: true,
                     });
                     if (response.EC === 0 && response.data) {
                         const { result, metadata } = response.data;
                         return {
                             access_token: result.access_token,
-                            refresh_token: result.refresh_token,
+                            access_token_expires_at: result.access_token_expires_at,
                             ...metadata,
                         };
                     } else {
@@ -42,10 +44,10 @@ export const authOptions: NextAuthOptions = {
         strategy: 'jwt',
     },
     callbacks: {
-        async jwt({ token, user }) {
+        async jwt({ token, user }: { token: any, user: any }) {
             if (user) {
                 token.access_token = user.access_token;
-                token.refresh_token = user.refresh_token;
+                token.accessTokenExpiresAt = user.access_token_expires_at;
                 token.user = {
                     id: user.id,
                     username: user.username,
@@ -53,21 +55,49 @@ export const authOptions: NextAuthOptions = {
                     role: user.role,
                     division: user.division,
                     department: user.department,
-                    profile: user.profile,
                     lastLogin: user.lastLogin,
                 };
-                token.access_expire = Date.now() + 15 * 60 * 1000;
                 token.error = '';
             }
+            const now = Date.now();
+            if (token.accessTokenExpiresAt && now > token.accessTokenExpiresAt - 5 * 60 * 1000) {
+                console.log("Refreshing access token");
+                try {
+                    const refreshedTokens = await customFetch<UserMaster>({
+                        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/refresh-token`,
+                        method: 'POST',
+                        useCredentials: true
+                    });
 
+                    if (refreshedTokens.EC === 0) {
+                        const { result, metadata } = refreshedTokens.data;
+
+                        token.access_token = result.access_token;
+                        token.accessTokenExpiresAt = result.access_token_expires_at;
+                        token.user = {
+                            id: metadata.id,
+                            username: metadata.username,
+                            email: metadata.email,
+                            role: metadata.role,
+                            division: metadata.division,
+                            department: metadata.department,
+                            lastLogin: metadata.lastLogin,
+                        };
+                        token.error = '';
+
+                    } else {
+                        throw new Error("Failed to refresh access token");
+                    }
+                } catch (error) {
+                    console.error("Error refreshing access token:", error);
+                }
+            }
             return token;
         },
         async session({ session, token }) {
             if (token) {
                 session.access_token = token.access_token as string;
-                session.refresh_token = token.refresh_token as string;
                 session.user = token.user as UserMaster;
-                session.access_expire = token.access_expire as number;
                 session.error = token.error as string;
             }
             return session;

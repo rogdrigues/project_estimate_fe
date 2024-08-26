@@ -1,12 +1,11 @@
 import { customFetch } from '@/lib';
 import { UserMaster } from '@/types';
 import { getAccessToken } from '@/utils';
+import { useSession } from 'next-auth/react';
 const baseURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users`;
 
-export const getAllUsers = async () => {
+export const getAllUsers = async (accessToken: string | undefined) => {
     try {
-        const accessToken = await getAccessToken();
-
         const response = await customFetch<UserMaster[]>(
             {
                 url: `${baseURL}/get-all-users`,
@@ -14,9 +13,10 @@ export const getAllUsers = async () => {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + accessToken,
                 },
-                method: 'GET',
+                method: 'GET'
             }
         );
+        console.log("Response", response);
         return response.data;
     } catch (error) {
         throw new Error('Error fetching users');
