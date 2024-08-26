@@ -13,21 +13,47 @@ export const columns: GridColDef[] = [
         sortable: false,
         width: 200,
         renderCell: (params: GridRenderCellParams) => {
-            return params.row.profile?.fullName || 'N/A';
+            console.log(params)
+            return params.row?.profile?.fullName || 'N/A';
         }
     },
     { field: 'email', headerName: 'Email', width: 275 },
-    { field: 'role', headerName: 'Role', width: 150 },
-    { field: 'division', headerName: 'Division', width: 100 },
-    { field: 'department', headerName: 'Department', width: 130 },
+    {
+        field: 'role',
+        headerName: 'Role',
+        description: 'This column displays the role of the user.',
+        width: 150,
+        sortable: true,
+        renderCell: (params: GridRenderCellParams) => {
+            return params.row?.role?.roleName || 'N/A';
+        }
+    },
+    {
+        field: 'division',
+        headerName: 'Division',
+        width: 100,
+        sortable: true,
+        renderCell: (params: GridRenderCellParams) => {
+            return params.row?.division?.name || 'N/A';
+        }
+    },
+    {
+        field: 'department',
+        headerName: 'Department',
+        width: 130,
+        sortable: true,
+        renderCell: (params: GridRenderCellParams) => {
+            return params.row?.department?.name || 'N/A';
+        }
+    },
     {
         field: 'phoneNumber',
         headerName: 'Phone Number',
         description: 'This column displays the phone number of the user.',
-        sortable: false,
+        sortable: true,
         width: 200,
         renderCell: (params: GridRenderCellParams) => {
-            return params.row.profile?.phoneNumber || 'N/A';
+            return params.row?.profile?.phoneNumber || 'N/A';
         }
     },
     {

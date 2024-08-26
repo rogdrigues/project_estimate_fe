@@ -9,8 +9,6 @@ export const customFetch = async <T>(request: IRequest): Promise<BaseResponse> =
 
     let { url, method, body, headers, queryParams, useCredentials, nextOptions } = parsedRequest;
     try {
-        const session = await getSession();
-        const accessToken = session?.access_token;
 
         const options: any = {
             method: method,
@@ -23,17 +21,13 @@ export const customFetch = async <T>(request: IRequest): Promise<BaseResponse> =
             options.credentials = 'include';
         }
 
-        if (accessToken) {
-            options.headers.Authorization = `Bearer ${accessToken}`;
-        }
-
         if (queryParams) {
             url = `${url}?${queryString.stringify(queryParams)}`;
         }
 
-        console.log(options);
-
         const response = await fetch(url, options);
+
+        console.log(response);
 
         if (response.ok) {
             const data = await response.json() as T;
