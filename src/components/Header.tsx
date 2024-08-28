@@ -28,7 +28,7 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import FilterFramesIcon from '@mui/icons-material/FilterFrames';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useState, MouseEvent, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -122,7 +122,10 @@ export default function Header() {
                         <ListItemText>Branch</ListItemText>
                     </MenuItem>
                     <Divider />
-                    <MenuItem onClick={handleMenuClose}>
+                    <MenuItem onClick={() => {
+                        handleMenuClose();
+                        signOut({ callbackUrl: '/auth/signin' });
+                    }}>
                         <ListItemIcon>
                             <LogoutIcon fontSize="small" />
                         </ListItemIcon>
