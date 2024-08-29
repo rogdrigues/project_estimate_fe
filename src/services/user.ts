@@ -16,7 +16,6 @@ export const getAllUsers = async (accessToken: string | undefined) => {
                 method: 'GET'
             }
         );
-        console.log("Response", response);
         return response.data;
     } catch (error) {
         throw new Error('Error fetching users');

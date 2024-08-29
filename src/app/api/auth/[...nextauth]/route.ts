@@ -2,7 +2,7 @@ import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { customFetch } from '@/lib/index';
 import { UserMaster } from '@/types/index';
-import { custom } from 'zod';
+import { cookies } from 'next/headers';
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -25,16 +25,27 @@ export const authOptions: NextAuthOptions = {
                     });
                     if (response.EC === 0 && response.data) {
                         const { result, metadata } = response.data;
+
+                        cookies().set({
+                            name: 'refreshToken',
+                            value: result.refresh_token,
+                            httpOnly: true,
+                            secure: process.env.NODE_ENV === 'production' ? true : false,
+                            sameSite: 'strict',
+                            path: '/',
+                            maxAge: 7 * 24 * 60 * 60, // 7 days
+                        });
+
                         return {
                             access_token: result.access_token,
-                            access_token_expires_at: result.access_token_expires_at,
+                            accessTokenExpiresAt: result.access_token_expires_at,
                             ...metadata,
                         };
                     } else {
                         throw new Error(response.message || 'Login failed');
                     }
-                } catch (error) {
-                    console.error('Authorize error:', error);
+                } catch (error: any) {
+                    console.error('Authorize error:', error.message);
                     return null;
                 }
             },
@@ -47,7 +58,7 @@ export const authOptions: NextAuthOptions = {
         async jwt({ token, user }: { token: any, user: any }) {
             if (user) {
                 token.access_token = user.access_token;
-                token.accessTokenExpiresAt = user.access_token_expires_at;
+                token.accessTokenExpiresAt = user.accessTokenExpiresAt;
                 token.user = {
                     id: user.id,
                     username: user.username,
@@ -59,18 +70,33 @@ export const authOptions: NextAuthOptions = {
                 };
                 token.error = '';
             }
-            const now = Date.now();
-            if (token.accessTokenExpiresAt && now > token.accessTokenExpiresAt - 5 * 60 * 1000) {
-                console.log("Refreshing access token");
+
+            if (token.accessTokenExpiresAt && Date.now() > token.accessTokenExpiresAt - 5 * 60 * 1000) {
                 try {
+                    const refreshToken = cookies().get('refreshToken')?.value as string;
+
                     const refreshedTokens = await customFetch<UserMaster>({
                         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/refresh-token`,
+                        headers: {
+                            'Cookie': `${refreshToken}`,
+                        },
                         method: 'POST',
                         useCredentials: true
                     });
 
                     if (refreshedTokens.EC === 0) {
                         const { result, metadata } = refreshedTokens.data;
+                        if (result.refresh_token) {
+                            cookies().set({
+                                name: 'refreshToken',
+                                value: result.refresh_token,
+                                httpOnly: true,
+                                secure: process.env.NODE_ENV === 'production' ? true : false,
+                                path: '/',
+                                sameSite: 'strict',
+                                maxAge: 7 * 24 * 60 * 60,
+                            });
+                        }
 
                         token.access_token = result.access_token;
                         token.accessTokenExpiresAt = result.access_token_expires_at;
@@ -104,7 +130,15 @@ export const authOptions: NextAuthOptions = {
         },
     },
     pages: {
-        signIn: '/auth/signin'
+        signIn: '/auth/signin',
+    },
+    events: {
+        async signOut() {
+            //Remove refresh token cookie
+            cookies().set('refreshToken', '', { maxAge: 0, path: '/' });
+            //Remove session data
+            return Promise.resolve();
+        },
     },
     secret: process.env.NEXTAUTH_SECRET!,
 };
