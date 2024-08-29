@@ -26,9 +26,6 @@ export const customFetch = async <T>(request: IRequest): Promise<BaseResponse> =
         }
 
         const response = await fetch(url, options);
-
-        console.log(response);
-
         if (response.ok) {
             const data = await response.json() as T;
             const baseResponse = BaseResponseSchema.parse(data);

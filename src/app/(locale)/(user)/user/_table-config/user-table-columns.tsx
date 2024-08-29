@@ -10,14 +10,15 @@ export const columns: GridColDef[] = [
         field: 'fullName',
         headerName: 'Full Name',
         description: 'This column displays the full name of the user.',
-        sortable: false,
+        sortable: true,
         width: 200,
         renderCell: (params: GridRenderCellParams) => {
-            console.log(params)
             return params.row?.profile?.fullName || 'N/A';
         }
     },
-    { field: 'email', headerName: 'Email', width: 275 },
+    {
+        field: 'email', headerName: 'Email', width: 275, sortable: true,
+    },
     {
         field: 'role',
         headerName: 'Role',
@@ -50,8 +51,8 @@ export const columns: GridColDef[] = [
         field: 'phoneNumber',
         headerName: 'Phone Number',
         description: 'This column displays the phone number of the user.',
-        sortable: true,
         width: 200,
+        sortable: true,
         renderCell: (params: GridRenderCellParams) => {
             return params.row?.profile?.phoneNumber || 'N/A';
         }
@@ -60,6 +61,7 @@ export const columns: GridColDef[] = [
         field: 'status',
         headerName: 'Status',
         width: 150,
+        sortable: true,
         renderCell: (params: GridRenderCellParams) => (
             params.value ? (
                 <span style={{ color: '#6550cf', display: 'flex', alignItems: 'center' }}>
