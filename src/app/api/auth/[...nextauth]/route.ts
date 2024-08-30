@@ -71,8 +71,8 @@ export const authOptions: NextAuthOptions = {
                 token.error = '';
             }
 
-
-            if (token.accessTokenExpiresAt && Date.now() > token.accessTokenExpiresAt - 10 * 60 * 1000) {
+            if (token.accessTokenExpiresAt && Date.now() > token.accessTokenExpiresAt - 14.5 * 60 * 1000) {
+                console.log('Refreshing access token...');
                 try {
                     const refreshToken = cookies().get('refreshToken')?.value as string;
 
