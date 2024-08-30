@@ -71,7 +71,8 @@ export const authOptions: NextAuthOptions = {
                 token.error = '';
             }
 
-            if (token.accessTokenExpiresAt && Date.now() > token.accessTokenExpiresAt - 5 * 60 * 1000) {
+
+            if (token.accessTokenExpiresAt && Date.now() > token.accessTokenExpiresAt - 10 * 60 * 1000) {
                 try {
                     const refreshToken = cookies().get('refreshToken')?.value as string;
 
@@ -83,6 +84,7 @@ export const authOptions: NextAuthOptions = {
                         method: 'POST',
                         useCredentials: true
                     });
+
 
                     if (refreshedTokens.EC === 0) {
                         const { result, metadata } = refreshedTokens.data;
@@ -110,12 +112,9 @@ export const authOptions: NextAuthOptions = {
                             lastLogin: metadata.lastLogin,
                         };
                         token.error = '';
-
-                    } else {
-                        throw new Error("Failed to refresh access token");
                     }
-                } catch (error) {
-                    console.error("Error refreshing access token:", error);
+                } catch (error: any) {
+                    console.error("Error refreshing access token:", error.message);
                 }
             }
             return token;
