@@ -65,6 +65,7 @@ export default function UserTable(props: IProps) {
             role: !isMobile,
         }));
     }, [isMobile]);
+
     const handleClick = (event: MouseEvent<HTMLElement>, params: GridRenderCellParams) => {
         setAnchorEl(anchorEl ? null : event.currentTarget);
     };
@@ -83,6 +84,7 @@ export default function UserTable(props: IProps) {
                 <DataGrid
                     autoHeight
                     rows={rowsWithIds}
+                    loading={rows.length === 0 ? true : false}
                     columns={columns.map(col =>
                         col.field === 'actions'
                             ? {

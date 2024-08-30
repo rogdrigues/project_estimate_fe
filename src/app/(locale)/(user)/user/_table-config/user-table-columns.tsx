@@ -38,7 +38,7 @@ export const columns: GridColDef[] = [
         sortable: true,
         flex: 1,
         renderCell: (params: GridRenderCellParams) => {
-            return params.row?.division?.name || 'N/A';
+            return params.row?.division?.code || 'N/A';
         }
     },
     {
@@ -48,7 +48,7 @@ export const columns: GridColDef[] = [
         flex: 1,
         sortable: true,
         renderCell: (params: GridRenderCellParams) => {
-            return params.row?.department?.name || 'N/A';
+            return params.row?.department?.code || 'N/A';
         }
     },
     {
