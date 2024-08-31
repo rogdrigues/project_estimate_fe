@@ -9,27 +9,6 @@ import { columns } from '@/app/(locale)/(user)/user/_table-config/user-table-col
 import UserMenu from '@/app/(locale)/(user)/user/_table-config/user-menu';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
-// const rows: UserMaster[] = [
-//     {
-//         id: '1',
-//         displayName: 'user123',
-//         username: 'John Doe',
-//         email: 'john.doe@example.com',
-//         role: 'Admin',
-//         division: 'FSU1',
-//         department: 'D1',
-//         profile: {
-//             fullName: 'John DoeJab',
-//             dateOfBirth: new Date('1990-01-01'),
-//             gender: 'Male',
-//             phoneNumber: '123-456-7890',
-//             location: 'Hanoi, Vietnam',
-//             avatar: 'https://via.placeholder.com/150',
-//         },
-//         status: true,
-//         lastLogin: new Date('2021-12-31T23:59:59'),
-//     }
-// ];
 
 interface IProps {
     users: UserMaster[];
@@ -38,10 +17,8 @@ interface IProps {
 
 export default function UserTable(props: IProps) {
     const { users: rows } = props;
-    const [loading, setLoading] = useState<boolean>(true);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const isMobile = useMediaQuery('(max-width:1300px)');
-    console.log('isMobile ', isMobile);
     const open = Boolean(anchorEl);
 
     const [columnVisibilityModel, setColumnVisibilityModel] = useState({
@@ -55,7 +32,6 @@ export default function UserTable(props: IProps) {
     });
 
     useEffect(() => {
-        console.log("Running")
         setColumnVisibilityModel((prevModel) => ({
             ...prevModel,
             division: !isMobile,
@@ -106,7 +82,7 @@ export default function UserTable(props: IProps) {
                     )}
                     initialState={{
                         pagination: {
-                            paginationModel: { page: 0, pageSize: 5 },
+                            paginationModel: { page: 0, pageSize: 10 },
                         },
                     }}
                     pageSizeOptions={[5, 10]}
@@ -128,8 +104,5 @@ export default function UserTable(props: IProps) {
                 />
             </Box>
         </Box>
-        // <div style={{ height: 400, maxWidth: '100%' }}>
-
-        // </div>
     );
 }
