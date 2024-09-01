@@ -4,6 +4,24 @@ import { getAccessToken } from '@/utils';
 
 const baseURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users`;
 
+export const getAllRoles = async (accessToken: string | undefined) => {
+    try {
+        const response = await customFetch<UserMaster[]>(
+            {
+                url: `${baseURL}/roles`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + accessToken,
+                },
+                method: 'GET'
+            }
+        );
+        return response.data;
+    } catch (error) {
+        throw new Error('Error fetching roles');
+    }
+}
+
 export const getAllUsers = async (accessToken: string | undefined) => {
     try {
         const response = await customFetch<UserMaster[]>(
