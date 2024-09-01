@@ -5,12 +5,14 @@ import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';
 import CloseIcon from '@mui/icons-material/Close';
 import { useForm, Controller } from 'react-hook-form';
-import { Division } from '@/types';
+import { Department, Division, Role } from '@/types';
 
 interface IProps {
     open: boolean;
     setOpen: (open: boolean) => void;
     divisions: Division[];
+    departments: Department[];
+    roles: Role[];
 }
 
 interface FormValues {
@@ -37,7 +39,7 @@ const style = {
 };
 
 export const UserCreateModal = (props: IProps) => {
-    const { open, setOpen, divisions } = props;
+    const { open, setOpen, divisions, departments, roles } = props;
     const { control, handleSubmit, watch, reset } = useForm<FormValues>();
     const watchRole = watch("role");
 
@@ -113,8 +115,11 @@ export const UserCreateModal = (props: IProps) => {
                                         inputProps={{ style: { fontSize: '14px' } }}
                                         size="small"
                                     >
-                                        <MenuItem value="Admin">Admin</MenuItem>
-                                        <MenuItem value="User">User</MenuItem>
+                                        {roles.map((role) => (
+                                            <MenuItem key={role._id} value={role._id}>
+                                                {role.roleName}
+                                            </MenuItem>
+                                        ))}
                                     </Select>
                                 )}
                             />
@@ -162,9 +167,11 @@ export const UserCreateModal = (props: IProps) => {
                                             inputProps={{ style: { fontSize: '14px' } }}
                                             size="small"
                                         >
-                                            <MenuItem value="Department1">Department 1</MenuItem>
-                                            <MenuItem value="Department2">Department 2</MenuItem>
-                                            {/* Các department khác */}
+                                            {departments.map((department) => (
+                                                <MenuItem key={department._id} value={department._id}>
+                                                    {department.name}
+                                                </MenuItem>
+                                            ))}
                                         </Select>
                                     )}
                                 />

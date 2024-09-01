@@ -6,14 +6,16 @@ import GetAppIcon from '@mui/icons-material/GetApp';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useState } from 'react';
 import { UserCreateModal } from './user-create-modal';
-import { Division } from '@/types';
+import { Department, Division, Role } from '@/types';
 
 interface IProps {
     divisions: Division[];
+    departments: Department[];
+    roles: Role[];
 }
 
 const UserHeader = (props: IProps) => {
-    const { divisions } = props;
+    const { divisions, departments, roles } = props;
     const [open, setOpen] = useState(false);
 
     return (
@@ -80,7 +82,7 @@ const UserHeader = (props: IProps) => {
                     </Button>
                 </Box>
             </Box>
-            <UserCreateModal open={open} setOpen={setOpen} divisions={divisions} />
+            <UserCreateModal open={open} setOpen={setOpen} divisions={divisions} departments={departments} roles={roles} />
         </>
     );
 }
