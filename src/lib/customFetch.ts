@@ -1,7 +1,6 @@
 
 import { IRequest, IRequestSchema } from '@/types/IRequest';
 import { BaseResponse, BaseResponseSchema } from '@/types/BaseResponse';
-import { getSession } from 'next-auth/react';
 import queryString from 'query-string';
 
 export const customFetch = async <T>(request: IRequest): Promise<BaseResponse> => {
@@ -9,7 +8,7 @@ export const customFetch = async <T>(request: IRequest): Promise<BaseResponse> =
 
     let { url, method, body, headers, queryParams, useCredentials, nextOptions } = parsedRequest;
     try {
-
+        console.log('url:', url);
         const options: any = {
             method: method,
             headers: new Headers({ 'content-type': 'application/json', ...headers }),
@@ -24,8 +23,8 @@ export const customFetch = async <T>(request: IRequest): Promise<BaseResponse> =
         if (queryParams) {
             url = `${url}?${queryString.stringify(queryParams)}`;
         }
-
         const response = await fetch(url, options);
+
         if (response.ok) {
             const data = await response.json() as T;
             const baseResponse = BaseResponseSchema.parse(data);

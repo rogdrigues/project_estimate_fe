@@ -6,6 +6,10 @@ import Fade from '@mui/material/Fade';
 import CloseIcon from '@mui/icons-material/Close';
 import { useForm, Controller } from 'react-hook-form';
 import { Department, Division, Role } from '@/types';
+import { createUser, getAllUsers } from '@/services';
+import { useSession } from 'next-auth/react';
+import { useToast } from '@/context/ToastContext';
+import { useRouter } from 'next/navigation';
 
 interface IProps {
     open: boolean;
@@ -39,12 +43,41 @@ const style = {
 };
 
 export const UserCreateModal = (props: IProps) => {
+    const router = useRouter();
+    const { data: session } = useSession();
     const { open, setOpen, divisions, departments, roles } = props;
+    const { triggerToast } = useToast();
     const { control, handleSubmit, watch, reset } = useForm<FormValues>();
     const watchRole = watch("role");
 
-    const onSubmit = (data: FormValues) => {
-        console.log("Form Data:", data);
+    const onSubmit = async (data: FormValues) => {
+        try {
+            const userForm = {
+                email: data.email,
+                role: { _id: data.role },
+                division: data.division,
+                department: data.department,
+                profile: {
+                    fullName: data.fullName,
+                    phoneNumber: data.phoneNumber,
+                }
+            }
+            const response = await createUser(userForm, session?.access_token);
+
+            if (response.EC === 0) {
+                //Refresh user list
+                router.refresh();
+                triggerToast("User created successfully!", true);
+                setOpen(false);
+                reset();
+            }
+            else {
+                triggerToast("Error creating user", false);
+            }
+        } catch (error) {
+            alert('Error creating user');
+            console.error(error);
+        }
     };
 
     const handleClose = () => {

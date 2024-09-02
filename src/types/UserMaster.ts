@@ -2,9 +2,9 @@ import { z } from 'zod';
 import { RoleSchema } from './Role';
 
 export const UserMasterSchema = z.object({
-    id: z.string(),
-    username: z.string(),
-    displayName: z.string(),
+    id: z.string().optional().nullable(),
+    username: z.string().optional().nullable(),
+    displayName: z.string().nullable().optional(),
     email: z.string().email(),
     role: RoleSchema,
     division: z.string().nullable().optional(),
