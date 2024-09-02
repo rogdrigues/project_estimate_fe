@@ -31,7 +31,11 @@ export const getAllUsers = async (accessToken: string | undefined) => {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + accessToken,
                 },
-                method: 'GET'
+                method: 'GET',
+                nextOptions: {
+                    cache: 'no-store',
+                    tags: ['users']
+                }
             }
         );
         return response.data;
@@ -40,22 +44,19 @@ export const getAllUsers = async (accessToken: string | undefined) => {
     }
 };
 
-export const createUser = async (userData: UserMaster) => {
+export const createUser = async (userData: UserMaster, accessToken: string | undefined) => {
     try {
-        const accessToken = await getAccessToken();
-
         const response = await customFetch<UserMaster>(
             {
                 url: `${baseURL}/add-user`,
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + accessToken,
                 },
                 body: userData,
             }
         )
-        return response.data;
+        return response;
     } catch (error) {
         throw new Error('Error creating user');
     }

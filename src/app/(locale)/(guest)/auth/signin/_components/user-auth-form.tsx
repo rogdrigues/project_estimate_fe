@@ -27,8 +27,10 @@ const UserAuthForm = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        //Remove spaceline from email
+
         const result = await signIn('credentials', {
-            email,
+            email: email.trim(),
             password,
             redirect: false
         });
