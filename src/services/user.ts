@@ -62,22 +62,19 @@ export const createUser = async (userData: UserMaster, accessToken: string | und
     }
 };
 
-export const updateUser = async (userId: string, userData: UserMaster) => {
+export const updateUser = async (userId: string, userData: UserMaster, accessToken: string | undefined) => {
     try {
-        const accessToken = await getAccessToken();
-
-        const response = await customFetch(
+        const response = await customFetch<UserMaster>(
             {
                 url: `${baseURL}/${userId}`,
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + accessToken,
                 },
                 body: userData,
             }
         )
-        return response.data;
+        return response;
     } catch (error) {
         throw new Error('Error updating user');
     }

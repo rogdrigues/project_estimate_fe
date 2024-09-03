@@ -8,10 +8,11 @@ interface IProps {
     anchorEl: null | HTMLElement;
     isMenuOpen: boolean;
     handleMenuClose: () => void;
+    SetOpenUpdateModal: (value: boolean) => void;
 }
 
 const UserMenu = (props: IProps) => {
-    const { anchorEl, isMenuOpen, handleMenuClose } = props;
+    const { anchorEl, isMenuOpen, handleMenuClose, SetOpenUpdateModal } = props;
     return (
         <Menu
             anchorEl={anchorEl}
@@ -32,7 +33,7 @@ const UserMenu = (props: IProps) => {
                 },
             }}
         >
-            <MenuItem onClick={() => console.log('Edit clicked')}>
+            <MenuItem onClick={() => SetOpenUpdateModal(true)}>
                 <ListItemIcon>
                     <EditIcon fontSize="small" />
                 </ListItemIcon>

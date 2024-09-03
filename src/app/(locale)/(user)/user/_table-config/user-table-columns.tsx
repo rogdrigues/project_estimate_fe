@@ -7,15 +7,15 @@ export const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 70, flex: 1 },
     { field: 'displayName', headerName: 'Account', width: 175, flex: 2 },
     {
-        field: 'fullName',
+        field: 'profile',
         headerName: 'Full Name',
         description: 'This column displays the full name of the user.',
-        sortable: true,
         flex: 3,
+        sortable: true,
         width: 200,
-        renderCell: (params: GridRenderCellParams) => {
-            return params.row?.profile?.fullName || 'N/A';
-        }
+        valueGetter: (params: any) => {
+            return params?.fullName;
+        },
     },
     {
         field: 'email', headerName: 'Email', width: 275, sortable: true, flex: 2
@@ -27,8 +27,8 @@ export const columns: GridColDef[] = [
         width: 150,
         flex: 2,
         sortable: true,
-        renderCell: (params: GridRenderCellParams) => {
-            return params.row?.role?.roleName || 'N/A';
+        valueGetter: (params: any) => {
+            return params?.roleName;
         }
     },
     {
@@ -37,8 +37,8 @@ export const columns: GridColDef[] = [
         width: 100,
         sortable: true,
         flex: 1,
-        renderCell: (params: GridRenderCellParams) => {
-            return params.row?.division?.code || 'N/A';
+        valueGetter: (params: any) => {
+            return params?.code || 'N/A';
         }
     },
     {
@@ -47,8 +47,8 @@ export const columns: GridColDef[] = [
         width: 130,
         flex: 1,
         sortable: true,
-        renderCell: (params: GridRenderCellParams) => {
-            return params.row?.department?.code || 'N/A';
+        valueGetter: (params: any) => {
+            return params?.code || 'N/A';
         }
     },
     {
@@ -69,7 +69,7 @@ export const columns: GridColDef[] = [
         sortable: true,
         flex: 1,
         renderCell: (params: GridRenderCellParams) => (
-            params.value ? (
+            !params.row.deleted ? (
                 <span style={{ color: '#6550cf', display: 'flex', alignItems: 'center' }}>
                     <CheckCircleOutlineIcon color="success" fontSize="small" style={{ marginRight: '4px', color: "#6550cf" }} />
                     Enabled

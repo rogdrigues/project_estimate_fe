@@ -14,8 +14,18 @@ const UserPage = async () => {
 
     return (
         <div>
-            <UserHeader divisions={divisions?.result} departments={departments?.result} roles={roles?.result} />
-            <UserTable users={users?.result} paginate={users?.pagination} />
+            <UserHeader
+                divisions={divisions?.result}
+                departments={departments?.result}
+                roles={roles?.result}
+            />
+            <UserTable
+                users={users?.result}
+                paginate={users?.pagination}
+                divisions={divisions?.result}
+                departments={departments?.result}
+                roles={roles?.result}
+            />
         </div>
     );
 }

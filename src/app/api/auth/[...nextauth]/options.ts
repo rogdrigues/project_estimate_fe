@@ -27,8 +27,6 @@ export const authOptions: NextAuthOptions = {
                     if (response.EC === 0 && response.data) {
                         const { result, metadata } = response.data;
 
-                        console.log('Authorize success');
-
                         return {
                             access_token: result.access_token,
                             accessTokenExpiresAt: result.access_token_expires_at,
@@ -77,15 +75,16 @@ export const authOptions: NextAuthOptions = {
                         useCredentials: true
                     });
 
-
                     if (refreshedTokens.EC === 0) {
                         const { result, metadata } = refreshedTokens.data;
                         if (result.refresh_token) {
-                            console.log('Refresh token updated');
-                            token.refresh_token = result.refresh_token || token.refresh_token;
+                            //Get 5 characters from the end of the refresh token
+                            token.refresh_token = result.refresh_token;
                         }
-
+                        console.log('Before access token:', token.access_token.slice(-5));
                         token.access_token = result.access_token;
+                        console.log('After access token:', token.access_token.slice(-5));
+
                         token.accessTokenExpiresAt = result.access_token_expires_at;
                         token.user = {
                             id: metadata.id,
