@@ -1,15 +1,17 @@
 'use client'
 import * as React from 'react';
-import { Modal, Box, TextField, Button, FormControl, InputLabel, Select, MenuItem, Divider, IconButton } from '@mui/material';
+import { Modal, Box, TextField, Button, FormControl, InputLabel, MenuItem, Divider, IconButton } from '@mui/material';
 import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';
 import CloseIcon from '@mui/icons-material/Close';
 import { useForm, Controller } from 'react-hook-form';
-import { Department, Division, Role } from '@/types';
-import { createUser, getAllUsers } from '@/services';
+import { Department, Division, FormValues, Role, UserMaster } from '@/types';
+import { createUser, updateUser } from '@/services';
 import { useSession } from 'next-auth/react';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 interface IProps {
     open: boolean;
@@ -17,15 +19,8 @@ interface IProps {
     divisions: Division[];
     departments: Department[];
     roles: Role[];
-}
-
-interface FormValues {
-    email: string;
-    role: string;
-    fullName?: string;
-    phoneNumber?: string;
-    division?: string;
-    department?: string;
+    setUser?: (user: UserMaster) => void;
+    User?: UserMaster | null;
 }
 
 const style = {
@@ -42,37 +37,52 @@ const style = {
     borderRadius: '8px',
 };
 
-export const UserCreateModal = (props: IProps) => {
+export const UserFormModal = (props: IProps) => {
     const router = useRouter();
     const { data: session } = useSession();
-    const { open, setOpen, divisions, departments, roles } = props;
+    const { open, setOpen, divisions, departments, roles, setUser, User } = props;
     const { triggerToast } = useToast();
-    const { control, handleSubmit, watch, reset } = useForm<FormValues>();
+    const { register, handleSubmit, reset, control, watch } = useForm({
+        defaultValues: {
+            email: '',
+            role: '',
+            fullName: '',
+            phoneNumber: '',
+            division: '',
+            department: '',
+        },
+    });
     const watchRole = watch("role");
 
     const onSubmit = async (data: FormValues) => {
         try {
             const userForm = {
                 email: data.email,
-                role: { _id: data.role },
-                division: data.division,
-                department: data.department,
+                role: { _id: data.role._id },
+                division: data.division === '' ? null : data.division,
+                department: data.department === '' ? null : data.department,
                 profile: {
                     fullName: data.fullName,
                     phoneNumber: data.phoneNumber,
                 }
             }
-            const response = await createUser(userForm, session?.access_token);
+            let response;
+
+            if (User) {
+                response = await updateUser(User._id, userForm, session?.access_token);
+
+            } else {
+                response = await createUser(userForm, session?.access_token);
+            }
 
             if (response.EC === 0) {
-                //Refresh user list
                 router.refresh();
-                triggerToast("User created successfully!", true);
+                triggerToast(User ? "User updated successfully" : "User created successfully", true);
                 setOpen(false);
                 reset();
             }
             else {
-                triggerToast("Error creating user", false);
+                triggerToast(User ? "Error updating user" : "Error creating user", false);
             }
         } catch (error) {
             alert('Error creating user');
@@ -84,6 +94,22 @@ export const UserCreateModal = (props: IProps) => {
         setOpen(false);
         reset();
     };
+
+    useEffect(() => {
+        if (User) {
+            reset(User);
+            console.log(control._defaultValues);
+        } else {
+            reset({
+                email: '',
+                role: '',
+                fullName: '',
+                phoneNumber: '',
+                division: '',
+                department: '',
+            });
+        }
+    }, [User, reset]);
 
     return (
         <Modal
@@ -102,7 +128,7 @@ export const UserCreateModal = (props: IProps) => {
             <Fade in={open}>
                 <Box sx={style}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <h2>Create New User</h2>
+                        <h2>{User ? "Update user" : "Create new user"}</h2>
                         <IconButton onClick={handleClose}>
                             <CloseIcon />
                         </IconButton>
@@ -112,8 +138,9 @@ export const UserCreateModal = (props: IProps) => {
                         <Controller
                             name="email"
                             control={control}
-                            defaultValue=""
+                            defaultValue={User?.email || ""}
                             rules={{ required: 'Email is required' }}
+                            disabled={!!User}
                             render={({ field, fieldState: { error } }) => (
                                 <TextField
                                     {...field}
@@ -137,7 +164,6 @@ export const UserCreateModal = (props: IProps) => {
                             <Controller
                                 name="role"
                                 control={control}
-                                defaultValue=""
                                 render={({ field }) => (
                                     <Select
                                         {...field}
@@ -147,6 +173,13 @@ export const UserCreateModal = (props: IProps) => {
                                         variant="outlined"
                                         inputProps={{ style: { fontSize: '14px' } }}
                                         size="small"
+                                        //@ts-ignore
+                                        value={field?.value?._id || ""}
+                                        onChange={(e: SelectChangeEvent) => {
+                                            const selectedRole = roles.find(role => role._id === e.target.value);
+                                            field.onChange(selectedRole);
+                                            console.log(field.value)
+                                        }}
                                     >
                                         {roles.map((role) => (
                                             <MenuItem key={role._id} value={role._id}>
@@ -157,63 +190,74 @@ export const UserCreateModal = (props: IProps) => {
                                 )}
                             />
                         </FormControl>
-                        {watchRole !== 'Department Lead' ? (
-                            <FormControl fullWidth margin="normal" sx={{ marginBottom: '16px' }}>
-                                <InputLabel id="user-division" style={{ fontSize: '14px', top: "-5px" }}>Division</InputLabel>
-                                <Controller
-                                    name="division"
-                                    control={control}
-                                    defaultValue=""
-                                    render={({ field }) => (
-                                        <Select
-                                            {...field}
-                                            labelId="user-division"
-                                            id="user-division-select"
-                                            label="Division"
-                                            variant="outlined"
-                                            inputProps={{ style: { fontSize: '14px' } }}
-                                            size="small"
-                                        >
-                                            {divisions.map((division) => (
-                                                <MenuItem key={division._id} value={division._id}>
-                                                    {division.name}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    )}
-                                />
-                            </FormControl>
-                        ) : (
-                            <FormControl fullWidth margin="normal" sx={{ marginBottom: '16px' }}>
-                                <InputLabel id="user-department" style={{ fontSize: '14px', top: "-5px" }}>Department</InputLabel>
-                                <Controller
-                                    name="department"
-                                    control={control}
-                                    defaultValue=""
-                                    render={({ field }) => (
-                                        <Select
-                                            {...field}
-                                            labelId="user-department"
-                                            id="user-department-select"
-                                            label="Department"
-                                            variant="outlined"
-                                            inputProps={{ style: { fontSize: '14px' } }}
-                                            size="small"
-                                        >
-                                            {departments.map((department) => (
-                                                <MenuItem key={department._id} value={department._id}>
-                                                    {department.name}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    )}
-                                />
-                            </FormControl>
-                        )}
+                        <FormControl fullWidth margin="normal" sx={{ marginBottom: '16px' }}>
+                            <InputLabel id="user-division" style={{ fontSize: '14px', top: "-5px" }}>Division</InputLabel>
+                            <Controller
+                                name="division"
+                                control={control}
+                                render={({ field }) => (
+                                    <Select
+                                        {...field}
+                                        labelId="user-division"
+                                        id="user-division-select"
+                                        label="Division"
+                                        variant="outlined"
+                                        inputProps={{ style: { fontSize: '14px' } }}
+                                        size="small"
+                                        //@ts-ignore
+                                        value={field?.value?._id || ""}
+                                        onChange={(e: SelectChangeEvent) => {
+                                            const selectedDivision = divisions.find(division => division._id === e.target.value);
+                                            field.onChange(selectedDivision);
+                                        }}
+                                        disabled={watchRole === 'Department Lead'}
+                                    >
+                                        {divisions.map((division) => (
+                                            <MenuItem key={division._id} value={division._id}>
+                                                {division.name}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                )}
+                            />
+                        </FormControl>
+
+                        <FormControl fullWidth margin="normal" sx={{ marginBottom: '16px' }}>
+                            <InputLabel id="user-department" style={{ fontSize: '14px', top: "-5px" }}>Department</InputLabel>
+                            <Controller
+                                name="department"
+                                control={control}
+                                render={({ field }) => (
+                                    <Select
+                                        {...field}
+                                        labelId="user-department"
+                                        id="user-department-select"
+                                        label="Department"
+                                        variant="outlined"
+                                        inputProps={{ style: { fontSize: '14px' } }}
+                                        size="small"
+                                        //@ts-ignore
+                                        value={field?.value?._id || ""}
+                                        onChange={(e: SelectChangeEvent) => {
+                                            const selectedDepartment = departments.find(department => department._id === e.target.value);
+                                            field.onChange(selectedDepartment);
+                                        }}
+                                        disabled={watchRole !== 'Department Lead'}
+                                    >
+                                        {departments.map((department) => (
+                                            <MenuItem key={department._id} value={department._id}>
+                                                {department.name}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                )}
+                            />
+                        </FormControl>
+
                         <Controller
                             name="fullName"
                             control={control}
-                            defaultValue=""
+                            defaultValue={User?.profile?.fullName || ""}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -230,7 +274,7 @@ export const UserCreateModal = (props: IProps) => {
                         <Controller
                             name="phoneNumber"
                             control={control}
-                            defaultValue=""
+                            defaultValue={User?.profile?.phoneNumber || ""}
                             render={({ field }) => (
                                 <TextField
                                     {...field}

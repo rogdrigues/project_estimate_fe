@@ -1,7 +1,7 @@
 'use client'
 import { useState, MouseEvent, useEffect } from 'react';
 import { DataGrid, GridColumnVisibilityModel } from '@mui/x-data-grid';
-import { UserMaster } from '@/types';
+import { Department, Division, Role, UserMaster } from '@/types';
 import IconButton from '@mui/material/IconButton';
 import { GridRenderCellParams } from '@mui/x-data-grid';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -9,15 +9,21 @@ import { columns } from '@/app/(locale)/(user)/user/_table-config/user-table-col
 import UserMenu from '@/app/(locale)/(user)/user/_table-config/user-menu';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
+import { UserFormModal } from './user-form-modal';
 
 interface IProps {
     users: UserMaster[];
     paginate: any;
+    divisions: Division[];
+    departments: Department[];
+    roles: Role[];
 }
 
 export default function UserTable(props: IProps) {
-    const { users: rows } = props;
+    const { users: rows, divisions, departments, roles } = props;
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [openModal, setOpenModal] = useState(false);
+    const [dataView, setDataView] = useState<UserMaster | null>(null);
     const isMobile = useMediaQuery('(max-width:1300px)');
     const open = Boolean(anchorEl);
 
@@ -54,55 +60,61 @@ export default function UserTable(props: IProps) {
         id: index + 1,
     }));
 
-    return (
-        <Box sx={{ flex: 1, position: 'relative' }}>
-            <Box sx={{ inset: 0, position: 'absolute' }}>
-                <DataGrid
-                    autoHeight
-                    rows={rowsWithIds}
-                    loading={rows.length === 0 ? true : false}
-                    columns={columns.map(col =>
-                        col.field === 'actions'
-                            ? {
-                                ...col,
-                                renderCell: (params: any) => (
-                                    <>
-                                        <IconButton aria-label="more" onClick={(event) => handleClick(event, params)}>
-                                            <MoreVertIcon />
-                                        </IconButton>
-                                        <UserMenu
-                                            anchorEl={anchorEl}
-                                            isMenuOpen={open}
-                                            handleMenuClose={handleMenuClose}
-                                        />
-                                    </>
-                                )
-                            }
-                            : col
-                    )}
-                    initialState={{
-                        pagination: {
-                            paginationModel: { page: 0, pageSize: 10 },
-                        },
-                    }}
-                    pageSizeOptions={[5, 10]}
-                    columnVisibilityModel={columnVisibilityModel}
 
-                    onColumnVisibilityModelChange={(newModel: Partial<GridColumnVisibilityModel>) =>
-                        setColumnVisibilityModel((prevModel) => ({ ...prevModel, ...newModel }))
-                    }
-                    sx={{
-                        '& .MuiDataGrid-cell:focus': {
-                            outline: 'none',
-                            border: 'none',
-                        },
-                        '& .MuiDataGrid-cell:focus-within': {
-                            outline: 'none',
-                            border: 'none',
-                        },
-                    }}
-                />
+    return (
+        <>
+            <Box sx={{ flex: 1, position: 'relative' }}>
+                <Box sx={{ inset: 0, position: 'absolute' }}>
+                    <DataGrid
+                        autoHeight
+                        rows={rowsWithIds}
+                        loading={rows.length === 0 ? true : false}
+                        onRowClick={(params) => setDataView(params.row)}
+                        columns={columns.map(col =>
+                            col.field === 'actions'
+                                ? {
+                                    ...col,
+                                    renderCell: (params: any) => (
+                                        <>
+                                            <IconButton aria-label="more" onClick={(event) => handleClick(event, params)}>
+                                                <MoreVertIcon />
+                                            </IconButton>
+                                            <UserMenu
+                                                anchorEl={anchorEl}
+                                                isMenuOpen={open}
+                                                handleMenuClose={handleMenuClose}
+                                                SetOpenUpdateModal={setOpenModal}
+                                            />
+                                        </>
+                                    )
+                                }
+                                : col
+                        )}
+                        initialState={{
+                            pagination: {
+                                paginationModel: { page: 0, pageSize: 10 },
+                            },
+                        }}
+                        pageSizeOptions={[5, 10]}
+                        columnVisibilityModel={columnVisibilityModel}
+
+                        onColumnVisibilityModelChange={(newModel: Partial<GridColumnVisibilityModel>) =>
+                            setColumnVisibilityModel((prevModel) => ({ ...prevModel, ...newModel }))
+                        }
+                        sx={{
+                            '& .MuiDataGrid-cell:focus': {
+                                outline: 'none',
+                                border: 'none',
+                            },
+                            '& .MuiDataGrid-cell:focus-within': {
+                                outline: 'none',
+                                border: 'none',
+                            },
+                        }}
+                    />
+                </Box>
             </Box>
-        </Box>
+            <UserFormModal divisions={divisions} departments={departments} roles={roles} open={openModal} setOpen={setOpenModal} setUser={setDataView} User={dataView} />
+        </>
     );
 }

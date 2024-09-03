@@ -5,7 +5,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useState } from 'react';
-import { UserCreateModal } from './user-create-modal';
+import { UserFormModal } from './user-form-modal';
 import { Department, Division, Role } from '@/types';
 
 interface IProps {
@@ -82,7 +82,7 @@ const UserHeader = (props: IProps) => {
                     </Button>
                 </Box>
             </Box>
-            <UserCreateModal open={open} setOpen={setOpen} divisions={divisions} departments={departments} roles={roles} />
+            <UserFormModal open={open} setOpen={setOpen} divisions={divisions} departments={departments} roles={roles} />
         </>
     );
 }

@@ -1,14 +1,16 @@
 import { z } from 'zod';
 import { RoleSchema } from './Role';
+import { DivisionSchema } from './Division';
+import { DepartmentSchema } from './Department';
 
-export const UserMasterSchema = z.object({
+export const UserMasterSchema: any = z.object({
     id: z.string().optional().nullable(),
     username: z.string().optional().nullable(),
     displayName: z.string().nullable().optional(),
     email: z.string().email(),
     role: RoleSchema,
-    division: z.string().nullable().optional(),
-    department: z.string().nullable().optional(),
+    division: DivisionSchema.optional().nullable(),
+    department: DepartmentSchema.optional().nullable(),
     profile: z.object({
         fullName: z.string().nullable().optional(),
         dateOfBirth: z.date().nullable().optional(),
@@ -20,5 +22,14 @@ export const UserMasterSchema = z.object({
     status: z.boolean().nullable().optional(),
     lastLogin: z.date().optional(),
 });
+
+export interface FormValues {
+    email: string;
+    role: any;
+    fullName?: string;
+    phoneNumber?: string;
+    division?: string;
+    department?: string;
+}
 
 export type UserMaster = z.infer<typeof UserMasterSchema>;

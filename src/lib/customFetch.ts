@@ -8,7 +8,6 @@ export const customFetch = async <T>(request: IRequest): Promise<BaseResponse> =
 
     let { url, method, body, headers, queryParams, useCredentials, nextOptions } = parsedRequest;
     try {
-        console.log('url:', url);
         const options: any = {
             method: method,
             headers: new Headers({ 'content-type': 'application/json', ...headers }),
