@@ -10,6 +10,7 @@ import UserMenu from '@/app/(locale)/(user)/user/_table-config/user-menu';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
 import { UserFormModal } from './user-form-modal';
+import UserFormDialog from './user-form-dialoge';
 
 interface IProps {
     users: UserMaster[];
@@ -22,9 +23,12 @@ interface IProps {
 export default function UserTable(props: IProps) {
     const { users: rows, divisions, departments, roles } = props;
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [openModal, setOpenModal] = useState(false);
     const [dataView, setDataView] = useState<UserMaster | null>(null);
     const isMobile = useMediaQuery('(max-width:1300px)');
+    const [openDialog, setOpenDialog] = useState({
+        openUpdate: false,
+        openDialog: false,
+    })
     const open = Boolean(anchorEl);
 
     const [columnVisibilityModel, setColumnVisibilityModel] = useState({
@@ -83,7 +87,9 @@ export default function UserTable(props: IProps) {
                                                 anchorEl={anchorEl}
                                                 isMenuOpen={open}
                                                 handleMenuClose={handleMenuClose}
-                                                SetOpenUpdateModal={setOpenModal}
+                                                SetOpenUpdateModal={(isOpen) => setOpenDialog(prev => ({ ...prev, openUpdate: isOpen }))}
+                                                SetOpenDialog={(isOpen) => setOpenDialog(prev => ({ ...prev, openDialog: isOpen }))}
+                                                userStatus={dataView?.deleted}
                                             />
                                         </>
                                     )
@@ -114,7 +120,19 @@ export default function UserTable(props: IProps) {
                     />
                 </Box>
             </Box>
-            <UserFormModal divisions={divisions} departments={departments} roles={roles} open={openModal} setOpen={setOpenModal} setUser={setDataView} User={dataView} />
+            <UserFormModal
+                divisions={divisions}
+                departments={departments}
+                roles={roles}
+                open={openDialog.openUpdate}
+                setOpen={(isOpen) => setOpenDialog(prev => ({ ...prev, openUpdate: isOpen }))}
+                User={dataView}
+            />
+            <UserFormDialog
+                open={openDialog.openDialog}
+                onClose={() => setOpenDialog(prev => ({ ...prev, openDialog: false }))}
+                user={dataView}
+            />
         </>
     );
 }
