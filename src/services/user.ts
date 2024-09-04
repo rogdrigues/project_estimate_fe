@@ -94,7 +94,28 @@ export const deleteUser = async (userId: string) => {
                 method: 'DELETE',
             }
         )
-        return response.data;
+        return response;
+    } catch (error) {
+        throw new Error('Error deleting user');
+    }
+};
+
+
+export const restoreUser = async (userId: string) => {
+    try {
+        const accessToken = await getAccessToken();
+
+        const response = await customFetch(
+            {
+                url: `${baseURL}/restore/${userId}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + accessToken,
+                },
+                method: 'DELETE',
+            }
+        )
+        return response;
     } catch (error) {
         throw new Error('Error deleting user');
     }

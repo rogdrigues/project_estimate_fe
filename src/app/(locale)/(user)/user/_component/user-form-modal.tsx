@@ -19,7 +19,6 @@ interface IProps {
     divisions: Division[];
     departments: Department[];
     roles: Role[];
-    setUser?: (user: UserMaster) => void;
     User?: UserMaster | null;
 }
 
@@ -40,9 +39,9 @@ const style = {
 export const UserFormModal = (props: IProps) => {
     const router = useRouter();
     const { data: session } = useSession();
-    const { open, setOpen, divisions, departments, roles, setUser, User } = props;
+    const { open, setOpen, divisions, departments, roles, User } = props;
     const { triggerToast } = useToast();
-    const { register, handleSubmit, reset, control, watch } = useForm({
+    const { handleSubmit, reset, control, watch } = useForm({
         defaultValues: {
             email: '',
             role: '',
@@ -66,14 +65,9 @@ export const UserFormModal = (props: IProps) => {
                     phoneNumber: data.phoneNumber,
                 }
             }
-            let response;
-
-            if (User) {
-                response = await updateUser(User._id, userForm, session?.access_token);
-
-            } else {
-                response = await createUser(userForm, session?.access_token);
-            }
+            const response = User ?
+                await updateUser(User._id, userForm, session?.access_token) :
+                await createUser(userForm, session?.access_token)
 
             if (response.EC === 0) {
                 router.refresh();

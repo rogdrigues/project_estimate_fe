@@ -2,17 +2,19 @@ import * as React from 'react';
 import { Menu, MenuItem, MenuList, Paper, Divider, ListItemIcon, ListItemText } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import RestoreIcon from '@mui/icons-material/Restore';
 
 interface IProps {
     anchorEl: null | HTMLElement;
     isMenuOpen: boolean;
     handleMenuClose: () => void;
     SetOpenUpdateModal: (value: boolean) => void;
+    SetOpenDialog: (value: boolean) => void;
+    userStatus: boolean;
 }
 
 const UserMenu = (props: IProps) => {
-    const { anchorEl, isMenuOpen, handleMenuClose, SetOpenUpdateModal } = props;
+    const { anchorEl, isMenuOpen, handleMenuClose, SetOpenUpdateModal, SetOpenDialog, userStatus } = props;
     return (
         <Menu
             anchorEl={anchorEl}
@@ -33,18 +35,38 @@ const UserMenu = (props: IProps) => {
                 },
             }}
         >
-            <MenuItem onClick={() => SetOpenUpdateModal(true)}>
-                <ListItemIcon>
-                    <EditIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Edit</ListItemText>
-            </MenuItem>
-            <MenuItem onClick={() => console.log('Delete clicked')}>
-                <ListItemIcon>
-                    <DeleteIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Delete</ListItemText>
-            </MenuItem>
+            {!userStatus ? (
+                <>
+                    <MenuItem onClick={() => {
+                        SetOpenUpdateModal(true)
+                        handleMenuClose();
+                    }}>
+                        <ListItemIcon>
+                            <EditIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText>Edit</ListItemText>
+                    </MenuItem>
+                    <MenuItem onClick={() => {
+                        SetOpenDialog(true);
+                        handleMenuClose();
+                    }}>
+                        <ListItemIcon>
+                            <DeleteIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText>Delete</ListItemText>
+                    </MenuItem>
+                </>
+            ) : (
+                <MenuItem onClick={() => {
+                    SetOpenDialog(true);
+                    handleMenuClose();
+                }}>
+                    <ListItemIcon>
+                        <RestoreIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText>Restore</ListItemText>
+                </MenuItem>
+            )}
         </Menu>
     );
 };
