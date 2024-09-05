@@ -120,3 +120,32 @@ export const restoreUser = async (userId: string) => {
         throw new Error('Error deleting user');
     }
 };
+
+export const exportFile = async () => {
+    try {
+        const accessToken = await getAccessToken();
+
+        const response = await fetch(`${baseURL}/export-users`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Error exporting file');
+        }
+
+        const blob = await response.blob();
+        const urlBlob = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = urlBlob;
+        link.download = 'users.xlsx';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } catch (error) {
+        console.error('Error exporting file:', error);
+    }
+};

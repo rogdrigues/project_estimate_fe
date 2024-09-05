@@ -7,6 +7,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useState } from 'react';
 import { UserFormModal } from './user-form-modal';
 import { Department, Division, Role } from '@/types';
+import { exportFile } from '@/services';
 
 interface IProps {
     divisions: Division[];
@@ -17,6 +18,10 @@ interface IProps {
 const UserHeader = (props: IProps) => {
     const { divisions, departments, roles } = props;
     const [open, setOpen] = useState(false);
+
+    const handleExport = async () => {
+        await exportFile();
+    };
 
     return (
         <>
@@ -61,6 +66,7 @@ const UserHeader = (props: IProps) => {
                                 color: '#5a32a3',
                             },
                         }}
+                        onClick={handleExport}
                     >
                         EXPORT
                     </Button>

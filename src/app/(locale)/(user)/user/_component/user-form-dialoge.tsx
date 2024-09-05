@@ -58,13 +58,10 @@ const UserFormDialog = (props: IProps) => {
                     {user?.deleted ? (
                         <>
                             This action will restore the user <strong>{user?.displayName}</strong> to the user list. Do you want to proceed?
-                        </>
-                    ) : (
+                        </>) : (
                         <>
                             This action will delete the user <strong>{user?.displayName}</strong> from the user list. Do you want to proceed?
-                        </>
-                    )}
-
+                        </>)}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
