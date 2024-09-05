@@ -7,7 +7,7 @@ export const IRequestSchema = z.object({
     headers: z.record(z.any()).optional(),
     queryParams: z.record(z.any()).optional(),
     useCredentials: z.boolean().optional(),
-    nextOptions: z.any().optional(),
+    nextOptions: z.any().optional()
 });
 
 export type IRequest = z.infer<typeof IRequestSchema>;
