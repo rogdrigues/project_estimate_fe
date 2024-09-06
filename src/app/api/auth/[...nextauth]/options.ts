@@ -57,8 +57,6 @@ export const authOptions: NextAuthOptions = {
                     username: user.username,
                     email: user.email,
                     role: user.role,
-                    division: user.division,
-                    department: user.department,
                     lastLogin: user.lastLogin,
                 };
                 token.error = '';

@@ -44,6 +44,29 @@ export const getAllUsers = async (accessToken: string | undefined) => {
     }
 };
 
+export const getUser = async (userId: string) => {
+    try {
+        const accessToken = await getAccessToken();
+
+        const response = await customFetch<UserMaster[]>(
+            {
+                url: `${baseURL}/get-user/${userId}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + accessToken,
+                },
+                method: 'GET',
+                nextOptions: {
+                    cache: 'no-store',
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        throw new Error('Error fetching users');
+    }
+};
+
 export const createUser = async (userData: UserMaster, accessToken: string | undefined) => {
     try {
         const response = await customFetch<UserMaster>(
