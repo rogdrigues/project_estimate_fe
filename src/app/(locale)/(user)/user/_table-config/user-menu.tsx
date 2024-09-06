@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Menu, MenuItem, MenuList, Paper, Divider, ListItemIcon, ListItemText } from '@mui/material';
+import { Menu, MenuItem, MenuList, Paper, Divider, ListItemIcon, ListItemText, Box } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RestoreIcon from '@mui/icons-material/Restore';
@@ -35,8 +35,9 @@ const UserMenu = (props: IProps) => {
                 },
             }}
         >
-            {!userStatus ? (
-                <>
+            {!userStatus ?
+                <Box>
+
                     <MenuItem onClick={() => {
                         SetOpenUpdateModal(true)
                         handleMenuClose();
@@ -55,18 +56,20 @@ const UserMenu = (props: IProps) => {
                         </ListItemIcon>
                         <ListItemText>Delete</ListItemText>
                     </MenuItem>
-                </>
-            ) : (
-                <MenuItem onClick={() => {
-                    SetOpenDialog(true);
-                    handleMenuClose();
-                }}>
-                    <ListItemIcon>
-                        <RestoreIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText>Restore</ListItemText>
-                </MenuItem>
-            )}
+                </Box>
+                :
+                <Box>
+                    <MenuItem onClick={() => {
+                        SetOpenDialog(true);
+                        handleMenuClose();
+                    }}>
+                        <ListItemIcon>
+                            <RestoreIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText>Restore</ListItemText>
+                    </MenuItem>
+                </Box>
+            }
         </Menu>
     );
 };

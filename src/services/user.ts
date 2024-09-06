@@ -121,6 +121,50 @@ export const restoreUser = async (userId: string) => {
     }
 };
 
+export const importUsersFromExcel = async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        const accessToken = await getAccessToken();
+        const response = await fetch(`${baseURL}/import-users`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+            },
+        });
+
+        if (response.status === 201) {
+            const data = await response.json();
+            return data;
+        } else if (response.status === 200 && response.headers.get('content-type') === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+            const contentDisposition = response.headers.get('content-disposition');
+            let fileName = 'imported_file.xlsx';
+
+            if (contentDisposition) {
+                const match = contentDisposition.match(/filename="?(.+)"?/);
+                if (match && match[1]) {
+                    fileName = match[1];
+                }
+            }
+
+            const blob = await response.blob();
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = fileName;
+            link.click();
+        } else {
+            const errorData = await response.json();
+            throw new Error(errorData.message);
+        }
+    } catch (error) {
+        console.error('Error uploading the file:', error);
+        throw new Error('Error uploading the file');
+    }
+};
+
+
 export const exportFile = async () => {
     try {
         const accessToken = await getAccessToken();
@@ -136,12 +180,20 @@ export const exportFile = async () => {
         if (!response.ok) {
             throw new Error('Error exporting file');
         }
+        const contentDisposition = response.headers.get('content-disposition');
+        let fileName = 'exported_file.xlsx';
 
+        if (contentDisposition) {
+            const match = contentDisposition.match(/filename="?(.+)"?/);
+            if (match && match[1]) {
+                fileName = match[1];
+            }
+        }
         const blob = await response.blob();
         const urlBlob = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = urlBlob;
-        link.download = 'users.xlsx';
+        link.download = fileName;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
