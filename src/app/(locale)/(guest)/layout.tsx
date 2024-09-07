@@ -2,13 +2,13 @@ import { ToastManager } from '@/components/index'
 import { Providers } from '@/lib'
 import type { Metadata } from 'next'
 import { GlobalStyles } from '@mui/material'
-
+import { ReactNode } from 'react'
 export const metadata: Metadata = {
     title: 'Login',
     description: 'Login to your account',
 }
 
-export default function RootLayout({ children, }: { children: React.ReactNode }) {
+export default function RootLayout({ children, }: { children: ReactNode }) {
 
     return (
 

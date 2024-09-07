@@ -1,9 +1,15 @@
 'use client'
-import React from 'react';
-import { Box, Typography, Avatar, IconButton } from '@mui/material';
+
+import React, { useState } from 'react';
+import { Box, Typography, Avatar, IconButton, Divider } from '@mui/material';
 import { UserMaster } from '@/types';
 import EditIcon from '@mui/icons-material/Edit';
-import Divider from '@mui/material/Divider';
+import { AvatarModal } from './user-profile-account-tab-modal';
+import { updateUserProfile } from '@/services/user';
+import { absoluteWhiteBackground, boxSplitter, flexBoxSpaceBetween, scrollBarStyle } from '@/styles';
+import EditableField from './user-profile-editable-field';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/context/ToastContext';
 
 interface IProps {
     user: UserMaster;
@@ -11,79 +17,231 @@ interface IProps {
 
 const AccountProfileInfo = (props: IProps) => {
     const { user } = props;
+    const { triggerToast } = useToast();
+    const [open, setOpen] = useState(false);
+    const router = useRouter();
+
+    const [editMode, setEditMode] = useState<any>({
+        fullName: false,
+        phoneNumber: false,
+        location: false,
+        dateOfBirth: false,
+        gender: false,
+    });
+
+    const [profileData, setProfileData] = useState<{
+        [key: string]: any;
+    }>({
+        fullName: user?.profile?.fullName || '',
+        phoneNumber: user?.profile?.phoneNumber || '',
+        location: user?.profile?.location || '',
+        dateOfBirth: user?.profile?.dateOfBirth || '',
+        gender: user?.profile?.gender || '',
+    });
+
+    const [originalData] = useState(profileData);
+
+    // Handle saving data to backend
+    const handleSave = async (field: string) => {
+        try {
+            const response: any = await updateUserProfile(profileData);
+            if (response.EC === 0) {
+                triggerToast('Profile updated successfully', true);
+            } else {
+                triggerToast('An error occurred while updating profile', false);
+            }
+            router.refresh();
+            setEditMode((prev: any) => ({ ...prev, [field]: false }));
+        } catch (error) {
+            console.error("Error updating profile", error);
+        }
+    };
+
+    const handleEditClick = (field: string) => {
+        setEditMode((prev: any) => ({ ...prev, [field]: !prev[field] }));
+    };
+
+    const handleInputChange = (field: string, value: string) => {
+        setProfileData((prev) => ({ ...prev, [field]: value }));
+        console.log('profileData', profileData);
+    };
+
+    const handleCancelEdit = (field: string) => {
+        setProfileData((prev) => ({ ...prev, [field]: originalData[field as keyof typeof originalData] }));
+        setEditMode((prev: any) => ({ ...prev, [field]: false }));
+    };
 
     return (
-        <Box sx={{ padding: 3, margin: 'auto', border: '1px solid #e0e0e0', borderRadius: '8px' }}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
-                Basic Information
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'gray', mb: 2 }}>
-                Other users of your services may be able to see some of your information.
-            </Typography>
-
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                <Box>
-                    <Typography variant="body2">Profile Picture</Typography>
-                    <Typography variant="caption" sx={{ color: 'gray' }}>
-                        Your profile picture helps create a personal touch for your account.
+        <>
+            <Box sx={scrollBarStyle}>
+                {/* Basic Information */}
+                <Box sx={boxSplitter}>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
+                        Basic Information
                     </Typography>
-                </Box>
-                <Box sx={{ position: 'relative' }}>
-                    <Avatar
-                        src={user?.profile?.avatar || ''}
-                        alt={user?.profile?.fullName}
-                        sx={{ width: 80, height: 80, border: '2px solid #e0e0e0' }}
+                    <Typography variant="body2" sx={{ color: 'gray', mb: 2 }}>
+                        Other users of your services may be able to see some of your information.
+                    </Typography>
+
+                    {/* Avatar */}
+                    <Box sx={flexBoxSpaceBetween}>
+                        <Box>
+                            <Typography variant="body2">Profile Picture</Typography>
+                            <Typography variant="caption" sx={{ color: 'gray' }}>
+                                Your profile picture helps create a personal touch for your account.
+                            </Typography>
+                        </Box>
+                        <Box sx={{ position: 'relative' }}>
+                            <Avatar
+                                src={user?.profile?.avatar || ''}
+                                alt={user?.profile?.fullName}
+                                sx={{ width: 80, height: 80, border: '2px solid #e0e0e0' }}
+                            />
+                            <IconButton sx={absoluteWhiteBackground} onClick={() => setOpen(true)}>
+                                <EditIcon sx={{ fontSize: 18 }} />
+                            </IconButton>
+                        </Box>
+                    </Box>
+
+                    <Divider sx={{ mb: 2 }} />
+
+                    {/* Email */}
+                    <Box sx={flexBoxSpaceBetween}>
+                        <Box>
+                            <Typography variant="body2">Email</Typography>
+                            <Typography variant="body1">{user?.email || 'No email provided'}</Typography>
+                        </Box>
+                    </Box>
+
+                    <Divider sx={{ mb: 2 }} />
+
+                    {/* Full Name */}
+                    <EditableField
+                        label="Full Name"
+                        value={profileData.fullName}
+                        isEditing={editMode.fullName}
+                        onChange={(e) => handleInputChange('fullName', e.target.value)}
+                        onEdit={() => handleEditClick('fullName')}
+                        onSave={() => handleSave('fullName')}
+                        onCancel={() => handleCancelEdit('fullName')}
                     />
-                    <IconButton
-                        sx={{ position: 'absolute', bottom: 0, right: 0, backgroundColor: '#fff' }}
-                    >
-                        <EditIcon sx={{ fontSize: 18 }} />
-                    </IconButton>
+
+                    <Divider sx={{ mb: 2 }} />
+
+                    {/* Date of Birth */}
+                    <EditableField
+                        label="Date of Birth"
+                        value={profileData.dateOfBirth ? new Date(profileData.dateOfBirth).toISOString().slice(0, 10) : ''}
+                        type="date"
+                        isEditing={editMode.dateOfBirth}
+                        onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}
+                        onEdit={() => handleEditClick('dateOfBirth')}
+                        onSave={() => handleSave('dateOfBirth')}
+                        onCancel={() => handleCancelEdit('dateOfBirth')}
+                    />
+
+                    <Divider sx={{ mb: 2 }} />
+
+                    {/* Gender */}
+                    <EditableField
+                        label="Gender"
+                        value={profileData.gender}
+                        isEditing={editMode.gender}
+                        onChange={(e) => handleInputChange('gender', e.target.value)}
+                        onEdit={() => handleEditClick('gender')}
+                        onSave={() => handleSave('gender')}
+                        onCancel={() => handleCancelEdit('gender')}
+                        isSelect
+                        selectOptions={[
+                            { value: 'Male', label: 'Male' },
+                            { value: 'Female', label: 'Female' },
+                            { value: 'Other', label: 'Other' },
+                        ]}
+                    />
+
+                    <Divider sx={{ mb: 2 }} />
                 </Box>
-            </Box>
 
-            <Divider sx={{ mb: 2 }} />
-
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                <Box>
-                    <Typography variant="body2">Full Name</Typography>
-                    <Typography variant="body1">{user?.profile?.fullName || 'No name provided'}</Typography>
-                </Box>
-                <IconButton>
-                    <EditIcon />
-                </IconButton>
-            </Box>
-
-            <Divider sx={{ mb: 2 }} />
-
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                <Box>
-                    <Typography variant="body2">Date of Birth</Typography>
-                    <Typography variant="body1">
-                        {user?.profile?.dateOfBirth
-                            ? new Date(user?.profile?.dateOfBirth).toLocaleDateString()
-                            : 'Not updated'}
+                {/* Detailed Information */}
+                <Box sx={boxSplitter}>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
+                        Detailed Information
                     </Typography>
-                </Box>
-                <IconButton>
-                    <EditIcon />
-                </IconButton>
-            </Box>
-
-            <Divider sx={{ mb: 2 }} />
-
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Box>
-                    <Typography variant="body2">Gender</Typography>
-                    <Typography variant="body1">
-                        {user?.profile?.gender || 'Not updated'}
+                    <Typography variant="body2" sx={{ color: 'gray', mb: 2 }}>
+                        Detailed information about your department and division.
                     </Typography>
+
+                    {/* Division */}
+                    <Box sx={flexBoxSpaceBetween}>
+                        <Box>
+                            <Typography variant="body2">Division</Typography>
+                            <Typography variant="caption" sx={{ color: 'gray' }}>
+                                {user?.division?.name || 'No division assigned'}
+                            </Typography>
+                        </Box>
+                        <Avatar
+                            src={user?.division?.logo || ''}
+                            alt={user?.division?.name}
+                            sx={{ width: 50, height: 50, border: '2px solid #e0e0e0' }}
+                        />
+                    </Box>
+
+                    <Divider sx={{ mb: 2 }} />
+
+                    {/* Department */}
+                    <Box sx={flexBoxSpaceBetween}>
+                        <Box>
+                            <Typography variant="body2">Department</Typography>
+                            <Typography variant="caption" sx={{ color: 'gray' }}>
+                                {user?.department?.name || 'No department assigned'}
+                            </Typography>
+                        </Box>
+                        <Avatar
+                            src={user?.department?.logo || ''}
+                            alt={user?.department?.name}
+                            sx={{ width: 50, height: 50, border: '2px solid #e0e0e0' }}
+                        />
+                    </Box>
                 </Box>
-                <IconButton>
-                    <EditIcon />
-                </IconButton>
+
+                <Divider sx={{ mb: 2 }} />
+
+                {/* Additional Information */}
+                <Box sx={boxSplitter}>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
+                        Additional Information
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'gray', mb: 2 }}>
+                        Other details related to your profile.
+                    </Typography>
+
+                    {/* Phone Number */}
+                    <EditableField
+                        label="Phone Number"
+                        value={profileData.phoneNumber}
+                        isEditing={editMode.phoneNumber}
+                        onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
+                        onEdit={() => handleEditClick('phoneNumber')}
+                        onSave={() => handleSave('phoneNumber')}
+                        onCancel={() => handleCancelEdit('phoneNumber')}
+                    />
+
+                    <Divider sx={{ mb: 2 }} />
+
+                    {/* Location */}
+                    <EditableField
+                        label="Location"
+                        value={profileData.location}
+                        isEditing={editMode.location}
+                        onChange={(e) => handleInputChange('location', e.target.value)}
+                        onEdit={() => handleEditClick('location')}
+                        onSave={() => handleSave('location')}
+                        onCancel={() => handleCancelEdit('location')}
+                    />
+                </Box>
+                <AvatarModal open={open} handleClose={() => setOpen(false)} avatarUrl={user?.profile?.avatar} />
             </Box>
-        </Box>
+        </>
     );
 }
 

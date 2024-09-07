@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -13,6 +13,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { signIn } from 'next-auth/react';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
+import { BoxLogin, fieldInput, formInput, headerForm, loginButton, logoLoginCover, subtitleForm } from '@/styles';
 
 const UserAuthForm = () => {
     const [email, setEmail] = useState('');
@@ -25,9 +26,8 @@ const UserAuthForm = () => {
         setShowPassword(!showPassword);
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        //Remove spaceline from email
 
         const result = await signIn('credentials', {
             email: email.trim(),
@@ -48,46 +48,22 @@ const UserAuthForm = () => {
     return (
         <>
             <Box sx={{ height: '100vh' }}>
-                <Grid container
-                    spacing={0}
-                    sx={{ height: '100%' }}
-                >
+                <Grid container spacing={0} sx={{ height: '100%' }}>
                     <Grid item xs={4}>
-                        <Box
-                            sx={{
-                                height: '100%',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                backgroundColor: '#283046',
-                                flexDirection: 'column'
-                            }}
-                        >
+                        <Box sx={BoxLogin}>
                             <EnergySavingsLeafIcon sx={{ fontSize: 48, color: '#FFFFFF' }} />
 
                             <Typography
                                 variant="h4"
                                 component="h2"
-                                sx={{
-                                    fontFamily: 'Montserrat, Helvetica, Arial, serif',
-                                    fontSize: '2.5rem',
-                                    fontWeight: 700,
-                                    lineHeight: '1.5',
-                                    color: '#FFFFFF',
-                                    mt: 2
-                                }}
+                                sx={headerForm}
                             >
                                 Welcome to Project Estimate!
                             </Typography>
 
-
                             <Typography
                                 variant="body1"
-                                sx={{
-                                    fontSize: '14px',
-                                    color: '#D1D1D1',
-                                    mt: 1
-                                }}
+                                sx={subtitleForm}
                             >
                                 Start your estimation journey with us.
                             </Typography>
@@ -95,14 +71,7 @@ const UserAuthForm = () => {
                             <Box
                                 component="form"
                                 onSubmit={handleSubmit}
-                                sx={{
-                                    mt: 4,
-                                    width: '100%',
-                                    px: 3,
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center'
-                                }}
+                                sx={formInput}
                             >
                                 <TextField
                                     label="Email"
@@ -111,28 +80,7 @@ const UserAuthForm = () => {
                                     fullWidth
                                     size="small"
                                     onChange={(e) => setEmail(e.target.value)}
-                                    sx={{
-                                        mb: 2,
-                                        borderRadius: '8px',
-                                        backgroundColor: 'transparent',
-                                        '& .MuiOutlinedInput-root': {
-                                            '& fieldset': {
-                                                borderColor: '#ffffff',
-                                            },
-                                            '&:hover fieldset': {
-                                                borderColor: '#ffffff',
-                                            },
-                                            '&.Mui-focused fieldset': {
-                                                borderColor: '#ffffff',
-                                            },
-                                        },
-                                        input: {
-                                            color: '#ffffff',
-                                        },
-                                        '& .MuiInputLabel-root': {
-                                            color: '#f0f0f0',
-                                        }
-                                    }}
+                                    sx={fieldInput}
                                 />
                                 <TextField
                                     label="Password"
@@ -142,28 +90,7 @@ const UserAuthForm = () => {
                                     fullWidth
                                     onChange={(e) => setPassword(e.target.value)}
                                     size="small"
-                                    sx={{
-                                        mb: 2,
-                                        borderRadius: '8px',
-                                        backgroundColor: 'transparent',
-                                        '& .MuiOutlinedInput-root': {
-                                            '& fieldset': {
-                                                borderColor: '#ffffff',
-                                            },
-                                            '&:hover fieldset': {
-                                                borderColor: '#ffffff',
-                                            },
-                                            '&.Mui-focused fieldset': {
-                                                borderColor: '#ffffff',
-                                            },
-                                        },
-                                        input: {
-                                            color: '#ffffff',
-                                        },
-                                        '& .MuiInputLabel-root': {
-                                            color: '#f0f0f0',
-                                        }
-                                    }}
+                                    sx={fieldInput}
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
@@ -183,17 +110,7 @@ const UserAuthForm = () => {
                                     variant="contained"
                                     color="primary"
                                     type="submit"
-                                    sx={{
-                                        mt: 2,
-                                        width: '100%',
-                                        borderRadius: '8px',
-                                        height: '40px',
-                                        backgroundColor: '#7367F0',
-                                        '&:hover': {
-                                            backgroundColor: '#7367F0',
-                                            boxShadow: '0 8px 25px -8px #7367F0',
-                                        }
-                                    }}
+                                    sx={loginButton}
                                 >
                                     Login
                                 </Button>
@@ -202,12 +119,7 @@ const UserAuthForm = () => {
                     </Grid>
                     <Grid item xs={8}>
                         <Box
-                            sx={{
-                                height: '100%',
-                                backgroundImage: 'url(/images/login-159201.jpg)',
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center',
-                            }}
+                            sx={logoLoginCover}
                         />
                     </Grid>
                 </Grid>

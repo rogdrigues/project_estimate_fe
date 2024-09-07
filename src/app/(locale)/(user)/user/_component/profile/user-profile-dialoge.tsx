@@ -3,31 +3,17 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Box, List, ListItem, ListItemText, ListItemIcon, Typography, Divider } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LockIcon from '@mui/icons-material/Lock';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountProfileInfo from './user-profile-account-tab';
 import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { UserMaster } from '@/types';
 import { getUser } from '@/services';
+import { profileDialoge } from '@/styles';
 
 interface IProps {
     open: boolean;
     setOpen: (open: boolean) => void;
 }
-
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '80%',
-    height: '80%',
-    bgcolor: 'background.paper',
-    border: '1px solid #000',
-    boxShadow: 24,
-    display: 'flex',
-    borderRadius: '8px',
-};
 
 
 const UserProfileModal = (props: IProps) => {
@@ -60,10 +46,6 @@ const UserProfileModal = (props: IProps) => {
         switch (selectedSection) {
             case 'My Account':
                 return user ? <AccountProfileInfo user={user} /> : <Typography>Loading...</Typography>;
-            case 'Change Password':
-                return <Typography>Change Password section</Typography>;
-            case 'Notifications':
-                return <Typography>Notifications section</Typography>;
             default:
                 return null;
         }
@@ -76,9 +58,9 @@ const UserProfileModal = (props: IProps) => {
             aria-labelledby="modal-profile"
             aria-describedby="modal-description"
         >
-            <Box sx={style}>
+            <Box sx={profileDialoge}>
                 {/* Sidebar */}
-                <Box sx={{ width: '25%', borderRight: '1px solid #ddd' }}>
+                <Box sx={{ width: '20%', borderRight: '1px solid #ddd' }}>
                     <Typography variant="h6" sx={{ padding: 2, fontWeight: 'bold' }}>Profile</Typography>
                     <Divider />
                     <List>
@@ -88,6 +70,7 @@ const UserProfileModal = (props: IProps) => {
                             sx={{
                                 cursor: 'pointer',
                                 backgroundColor: selectedSection === 'My Account' ? '#f0f0f0' : 'transparent',
+                                transition: 'background-color 0.5s',
                                 '&:hover': {
                                     backgroundColor: '#e0e0e0',
                                 },
@@ -97,38 +80,40 @@ const UserProfileModal = (props: IProps) => {
                             <ListItemText primary="My Account" />
                         </ListItem>
                         <ListItem
-                            onClick={() => setSelectedSection('Change Password')}
-                            selected={selectedSection === 'Change Password'}
+                            disabled
+                            selected={selectedSection === 'Profile'}
                             sx={{
                                 cursor: 'pointer',
-                                backgroundColor: selectedSection === 'Change Password' ? '#f0f0f0' : 'transparent',
+                                backgroundColor: selectedSection === 'Profile' ? '#f0f0f0' : 'transparent',
+                                transition: 'background-color 0.5s',
                                 '&:hover': {
                                     backgroundColor: '#e0e0e0',
                                 },
                             }}
                         >
                             <ListItemIcon><LockIcon /></ListItemIcon>
-                            <ListItemText primary="Change Password" />
+                            <ListItemText primary="????????" />
                         </ListItem>
                         <ListItem
-                            onClick={() => setSelectedSection('Notifications')}
+                            disabled
                             selected={selectedSection === 'Notifications'}
                             sx={{
                                 cursor: 'pointer',
                                 backgroundColor: selectedSection === 'Notifications' ? '#f0f0f0' : 'transparent',
+                                transition: 'background-color 0.5s',
                                 '&:hover': {
                                     backgroundColor: '#e0e0e0',
                                 },
                             }}
                         >
-                            <ListItemIcon><NotificationsIcon /></ListItemIcon>
-                            <ListItemText primary="Notifications" />
+                            <ListItemIcon><LockIcon /></ListItemIcon>
+                            <ListItemText primary="????????" />
                         </ListItem>
                     </List>
                 </Box>
 
                 {/* Main content */}
-                <Box sx={{ width: '75%', padding: 3 }}>
+                <Box sx={{ width: '80%', padding: 3 }}>
                     {renderContent()}
                 </Box>
             </Box>

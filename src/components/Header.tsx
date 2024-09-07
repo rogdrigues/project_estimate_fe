@@ -7,6 +7,7 @@ import { AppBar, Toolbar, IconButton, Badge, Avatar, Typography, Menu, MenuItem,
 import { Notifications as NotificationsIcon, AccountCircle, LightMode as LightModeIcon, Language as LanguageIcon, AccountBox as AccountBoxIcon, FilterFrames as FilterFramesIcon, Logout as LogoutIcon } from '@mui/icons-material';
 import { PanoramaFishEye as PanoramaFishEyeIcon, RadioButtonChecked as RadioButtonCheckedIcon } from '@mui/icons-material';
 import UserProfileModal from '@/app/(locale)/(user)/user/_component/profile/user-profile-dialoge';
+import { profileMenuStyle } from '@/styles';
 
 export default function Header() {
     const { isSidebarOpen, toggleSidebar } = useSidebar();
@@ -128,21 +129,7 @@ export default function Header() {
                             </Box>
                             <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
                             <Box
-                                sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    cursor: 'pointer',
-                                    padding: '4px 8px',
-                                    borderRadius: '8px',
-                                    '&:hover': {
-                                        backgroundColor: 'rgba(0, 0, 0, 0.05)',
-                                        '.MuiAvatar-root, .MuiTypography-root': {
-                                            color: 'rgba(0, 0, 0, 0.7)',
-                                            transition: 'color 0.3s ease',
-                                        }
-                                    },
-                                    transition: 'background-color 0.3s ease',
-                                }}
+                                sx={profileMenuStyle}
                                 onClick={handleProfileMenuOpen}
                             >
                                 {session && session.user && (

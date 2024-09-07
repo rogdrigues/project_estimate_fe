@@ -7,13 +7,14 @@ import { GlobalStyles } from '@mui/material'
 import { Box } from '@mui/system'
 import Sidebar from '@/components/Sidebar'
 import { SidebarProvider } from '@/context/SidebarContext'
+import { ReactNode } from 'react'
 
 export const metadata: Metadata = {
   title: 'Project Estimate',
   description: 'Project Estimate Management',
 }
 
-export default function RootLayout({ children, }: { children: React.ReactNode }) {
+export default function RootLayout({ children, }: { children: ReactNode }) {
 
   return (
     <html lang="en">
