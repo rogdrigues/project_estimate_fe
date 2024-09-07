@@ -1,4 +1,3 @@
-import React from 'react';
 import UserHeader from '@/app/(locale)/(user)/user/_component/user-header';
 import UserTable from '@/app/(locale)/(user)/user/_component/user-table';
 import { getAllDepartments, getAllDivisions, getAllRoles, getAllUsers } from '@/services';

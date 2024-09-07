@@ -1,7 +1,8 @@
 'use client'
 import { AppProgressBar as ProgressBar } from "next-nprogress-bar"
+import { ReactNode } from "react"
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({ children }: { children: ReactNode }) {
     return (
         <>
             {children}

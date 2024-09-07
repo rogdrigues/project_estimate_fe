@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, ChangeEvent } from 'react';
 import { Box, Button, Typography, TextField } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import GetAppIcon from '@mui/icons-material/GetApp';
@@ -9,6 +9,7 @@ import { Department, Division, Role } from '@/types';
 import { exportFile, importUsersFromExcel } from '@/services';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
+import { userHeaderButton } from '@/styles';
 
 interface IProps {
     divisions: Division[];
@@ -27,7 +28,7 @@ const UserHeader = (props: IProps) => {
         await exportFile();
     };
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
             setSelectedFile(event.target.files[0]);
         }
@@ -82,17 +83,9 @@ const UserHeader = (props: IProps) => {
                 </Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mb: 2 }}>
                     <Button
-                        variant="contained"
+                        variant="outlined"
                         startIcon={<AddCircleOutlineIcon />}
-                        sx={{
-                            backgroundColor: '#6f42c1',
-                            color: '#fff',
-                            fontWeight: 'bold',
-                            fontFamily: 'Roboto',
-                            '&:hover': {
-                                backgroundColor: '#5a32a3',
-                            },
-                        }}
+                        sx={userHeaderButton}
                         onClick={() => setOpen(true)}
                     >
                         CREATE
@@ -100,16 +93,7 @@ const UserHeader = (props: IProps) => {
                     <Button
                         variant="outlined"
                         startIcon={<GetAppIcon />}
-                        sx={{
-                            color: '#6f42c1',
-                            borderColor: '#6f42c1',
-                            fontWeight: 'bold',
-                            fontFamily: 'Roboto',
-                            '&:hover': {
-                                borderColor: '#5a32a3',
-                                color: '#5a32a3',
-                            },
-                        }}
+                        sx={userHeaderButton}
                         onClick={handleExport}
                     >
                         EXPORT
@@ -117,16 +101,7 @@ const UserHeader = (props: IProps) => {
                     <Button
                         variant="outlined"
                         startIcon={<CloudUploadIcon />}
-                        sx={{
-                            color: '#6f42c1',
-                            borderColor: '#6f42c1',
-                            fontWeight: 'bold',
-                            fontFamily: 'Roboto',
-                            '&:hover': {
-                                borderColor: '#5a32a3',
-                                color: '#5a32a3',
-                            },
-                        }}
+                        sx={userHeaderButton}
                         onClick={handleImportClick}
                     >
                         IMPORT

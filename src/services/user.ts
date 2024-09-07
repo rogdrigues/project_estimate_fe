@@ -224,3 +224,26 @@ export const exportFile = async () => {
         console.error('Error exporting file:', error);
     }
 };
+
+export const updateUserProfile = async (profileData: any) => {
+    try {
+        const formData = new FormData();
+        for (const key in profileData) {
+            formData.append(key, profileData[key]);
+        }
+        const accessToken = await getAccessToken();
+
+        const response = await fetch(`${baseURL}/profile`, {
+            method: 'PATCH',
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+            },
+        });
+        console.log('response', response);
+        return response;
+    } catch (error: any) {
+        console.error('Error updating profile:', error.message);
+        throw error;
+    }
+};

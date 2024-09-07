@@ -12,6 +12,7 @@ import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { styleFormUser } from '@/styles';
 
 interface IProps {
     open: boolean;
@@ -21,20 +22,6 @@ interface IProps {
     roles: Role[];
     User?: UserMaster | null;
 }
-
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 700,
-    maxWidth: 'calc(100% - 20px)',
-    bgcolor: 'background.paper',
-    border: '1px solid #000',
-    boxShadow: 24,
-    p: 3,
-    borderRadius: '8px',
-};
 
 export const UserFormModal = (props: IProps) => {
     const router = useRouter();
@@ -120,7 +107,7 @@ export const UserFormModal = (props: IProps) => {
             }}
         >
             <Fade in={open}>
-                <Box sx={style}>
+                <Box sx={styleFormUser}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <h2>{User ? "Update user" : "Create new user"}</h2>
                         <IconButton onClick={handleClose}>

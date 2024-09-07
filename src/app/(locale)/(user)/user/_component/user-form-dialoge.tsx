@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import { UserMaster } from '@/types';
 import Slide from '@mui/material/Slide';
@@ -7,6 +7,7 @@ import { TransitionProps } from '@mui/material/transitions';
 import { deleteUser, restoreUser } from '@/services';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
+import { forwardRef, ReactElement, Ref } from 'react';
 
 interface IProps {
     open: boolean;
@@ -14,11 +15,11 @@ interface IProps {
     user: UserMaster | null;
 }
 
-const Transition = React.forwardRef(function Transition(
+const Transition = forwardRef(function Transition(
     props: TransitionProps & {
-        children: React.ReactElement<any, any>;
+        children: ReactElement<any, any>;
     },
-    ref: React.Ref<unknown>,
+    ref: Ref<unknown>,
 ) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
