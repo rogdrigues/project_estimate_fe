@@ -10,6 +10,7 @@ import { absoluteWhiteBackground, boxSplitter, flexBoxSpaceBetween, scrollBarSty
 import EditableField from './user-profile-editable-field';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/context/ToastContext';
+import { useSession } from 'next-auth/react';
 
 interface IProps {
     user: UserMaster;
@@ -20,6 +21,7 @@ const AccountProfileInfo = (props: IProps) => {
     const { triggerToast } = useToast();
     const [open, setOpen] = useState(false);
     const router = useRouter();
+    const { data: session } = useSession();
 
     const [editMode, setEditMode] = useState<any>({
         fullName: false,
@@ -93,8 +95,8 @@ const AccountProfileInfo = (props: IProps) => {
                         </Box>
                         <Box sx={{ position: 'relative' }}>
                             <Avatar
-                                src={user?.profile?.avatar || ''}
-                                alt={user?.profile?.fullName}
+                                src={session?.user.profile?.avatar || undefined}
+                                alt={session?.user.username}
                                 sx={{ width: 80, height: 80, border: '2px solid #e0e0e0' }}
                             />
                             <IconButton sx={absoluteWhiteBackground} onClick={() => setOpen(true)}>
@@ -239,7 +241,7 @@ const AccountProfileInfo = (props: IProps) => {
                         onCancel={() => handleCancelEdit('location')}
                     />
                 </Box>
-                <AvatarModal open={open} handleClose={() => setOpen(false)} avatarUrl={user?.profile?.avatar} />
+                <AvatarModal open={open} handleClose={() => setOpen(false)} />
             </Box>
         </>
     );
