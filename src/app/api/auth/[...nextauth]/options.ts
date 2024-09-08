@@ -47,7 +47,7 @@ export const authOptions: NextAuthOptions = {
         strategy: 'jwt',
     },
     callbacks: {
-        async jwt({ token, user }: { token: any, user: any }) {
+        async jwt({ token, user, trigger, session }) {
             if (user) {
                 token.access_token = user.access_token;
                 token.refresh_token = user.refresh_token;
@@ -57,12 +57,18 @@ export const authOptions: NextAuthOptions = {
                     username: user.username,
                     email: user.email,
                     role: user.role,
+                    profile: user.profile,
                     lastLogin: user.lastLogin,
                 };
                 token.error = '';
             }
 
-            if (token.accessTokenExpiresAt && Date.now() > token.accessTokenExpiresAt - 14.5 * 60 * 1000) {
+            //update trigger when user change profile avatar
+            if (trigger === 'update' && session?.avatar) {
+                (token.user as any).profile.avatar = session?.avatar;
+            }
+
+            if (token.accessTokenExpiresAt && Date.now() > Number(token.accessTokenExpiresAt) - 14.5 * 60 * 1000) {
                 try {
                     const refreshedTokens = await customFetch<UserMaster>({
                         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/refresh-token`,
@@ -79,9 +85,7 @@ export const authOptions: NextAuthOptions = {
                             //Get 5 characters from the end of the refresh token
                             token.refresh_token = result.refresh_token;
                         }
-                        console.log('Before access token:', token.access_token.slice(-5));
                         token.access_token = result.access_token;
-                        console.log('After access token:', token.access_token.slice(-5));
 
                         token.accessTokenExpiresAt = result.access_token_expires_at;
                         token.user = {
@@ -89,6 +93,7 @@ export const authOptions: NextAuthOptions = {
                             username: metadata.username,
                             email: metadata.email,
                             role: metadata.role,
+                            profile: metadata.profile,
                             division: metadata.division,
                             department: metadata.department,
                             lastLogin: metadata.lastLogin,

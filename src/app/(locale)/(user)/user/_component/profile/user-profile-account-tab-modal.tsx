@@ -6,23 +6,29 @@ import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { changedButtonStyle, deletedButtonStyle, imageSmallSize, styleAccountTabProfile } from '@/styles';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useToast } from '@/context/ToastContext';
+import { updateUserProfile } from '@/services';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 interface IProps {
     open: boolean;
     handleClose: () => void;
-    avatarUrl: string;
 }
 
 const heightDefault = 570;
 const widthDefault = 400;
 
 export const AvatarModal = (props: IProps) => {
-    const { open, handleClose, avatarUrl } = props;
+    const { open, handleClose } = props;
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
     const [previewMode, setPreviewMode] = useState(false);
     const [modalHeight, setModalHeight] = useState(heightDefault);
     const [modalWidth, setModalWidth] = useState(widthDefault);
+    const router = useRouter();
+    const { data: session, update } = useSession();
+    const { triggerToast } = useToast();
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -38,10 +44,23 @@ export const AvatarModal = (props: IProps) => {
         }
     };
 
-    const handleSaveAvatar = () => {
-        console.log("Avatar saved");
-        handleClose();
+    const handleSaveAvatar = async () => {
+        if (selectedFile) {
+            try {
+                const response: any = await updateUserProfile({ avatar: selectedFile });
+                if (response.EC === 0) {
+                    await update({ avatar: response.data.result.avatar });
+                    triggerToast("Update avatar successfully", true);
+                } else {
+                    triggerToast("Update avatar failed", false);
+                }
+                handleClose();
+            } catch (error) {
+                triggerToast("Update avatar failed", false);
+            }
+        }
     };
+
 
     const handleCancel = () => {
         setPreviewMode(false);
@@ -112,7 +131,7 @@ export const AvatarModal = (props: IProps) => {
                                 </Box>
                             ) : (
                                 <Avatar
-                                    src={selectedFile ? URL.createObjectURL(selectedFile) : avatarUrl || ''}
+                                    src={selectedFile ? URL.createObjectURL(selectedFile) : session?.user.profile?.avatar || undefined}
                                     alt="Profile Picture"
                                     sx={imageSmallSize}
                                 />
@@ -145,7 +164,7 @@ export const AvatarModal = (props: IProps) => {
                         </Typography>
                         <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mt: 2, mb: 2 }}>
                             <Avatar
-                                src={selectedFile ? URL.createObjectURL(selectedFile) : avatarUrl || ''}
+                                src={selectedFile ? URL.createObjectURL(selectedFile) : session?.user.profile?.avatar || undefined}
                                 alt="Profile Picture"
                                 sx={{ width: 150, height: 150, border: '2px solid #e0e0e0' }}
                             />
