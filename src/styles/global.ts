@@ -36,6 +36,8 @@ export const changedButtonStyle = {
     '&:hover': {
         backgroundColor: '#81c784',
     },
+    width: '100%',
+    borderRadius: '8px',
 }
 
 export const imageSmallSize = {
@@ -54,6 +56,8 @@ export const deletedButtonStyle = {
         borderColor: '#ef5350',
         color: '#d32f2f',
     },
+    width: '100%',
+    borderRadius: '8px',
 }
 
 
@@ -66,7 +70,7 @@ export const styleAccountTabProfile = {
     bgcolor: 'background.paper',
     borderRadius: '10px',
     boxShadow: 24,
-    p: 4,
+    p: 2,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
