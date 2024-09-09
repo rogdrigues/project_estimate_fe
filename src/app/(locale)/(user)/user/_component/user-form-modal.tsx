@@ -66,8 +66,7 @@ export const UserFormModal = (props: IProps) => {
                 triggerToast(User ? "Error updating user" : "Error creating user", false);
             }
         } catch (error) {
-            alert('Error creating user');
-            console.error(error);
+            triggerToast(User ? "Error updating user" : "Error creating user", false);
         }
     };
 
@@ -145,7 +144,7 @@ export const UserFormModal = (props: IProps) => {
                             <Controller
                                 name="role"
                                 control={control}
-                                render={({ field }) => (
+                                render={({ field }: { field: any }) => (
                                     <Select
                                         {...field}
                                         labelId="user-role"
@@ -154,7 +153,6 @@ export const UserFormModal = (props: IProps) => {
                                         variant="outlined"
                                         inputProps={{ style: { fontSize: '14px' } }}
                                         size="small"
-                                        //@ts-ignore
                                         value={field?.value?._id || ""}
                                         onChange={(e: SelectChangeEvent) => {
                                             const selectedRole = roles.find(role => role._id === e.target.value);
@@ -176,7 +174,7 @@ export const UserFormModal = (props: IProps) => {
                             <Controller
                                 name="division"
                                 control={control}
-                                render={({ field }) => (
+                                render={({ field }: { field: any }) => (
                                     <Select
                                         {...field}
                                         labelId="user-division"
@@ -185,7 +183,6 @@ export const UserFormModal = (props: IProps) => {
                                         variant="outlined"
                                         inputProps={{ style: { fontSize: '14px' } }}
                                         size="small"
-                                        //@ts-ignore
                                         value={field?.value?._id || ""}
                                         onChange={(e: SelectChangeEvent) => {
                                             const selectedDivision = divisions.find(division => division._id === e.target.value);

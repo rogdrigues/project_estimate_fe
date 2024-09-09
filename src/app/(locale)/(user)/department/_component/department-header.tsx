@@ -4,28 +4,27 @@ import { Box, Button, Typography, TextField } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { UserFormModal } from './user-form-modal';
-import { Department, Division, Role } from '@/types';
-import { exportFile, importUsersFromExcel } from '@/services';
+import { Division, UserMaster } from '@/types';
+import { exportDepartments, exportFile, importDepartments } from '@/services';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { userHeaderButton } from '@/styles';
+import { DepartmentFormModal } from './department-form-modal';
 
 interface IProps {
     divisions: Division[];
-    departments: Department[];
-    roles: Role[];
+    users: UserMaster[];
 }
 
-const UserHeader = (props: IProps) => {
-    const { divisions, departments, roles } = props;
+const DepartmentHeader = (props: IProps) => {
+    const { divisions, users } = props;
     const [open, setOpen] = useState(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const inputFileRef = useRef<HTMLInputElement | null>(null);
     const router = useRouter();
     const { triggerToast } = useToast();
     const handleExport = async () => {
-        await exportFile();
+        await exportDepartments();
     };
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +40,7 @@ const UserHeader = (props: IProps) => {
         }
 
         try {
-            const response = await importUsersFromExcel(selectedFile);
+            const response = await importDepartments(selectedFile);
 
             if (response.EC === 0) {
                 router.refresh();
@@ -79,7 +78,7 @@ const UserHeader = (props: IProps) => {
                 }}
             >
                 <Typography variant="h5" sx={{ fontWeight: 'bold', fontFamily: 'Roboto' }}>
-                    User
+                    Department
                 </Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mb: 2 }}>
                     <Button
@@ -117,15 +116,14 @@ const UserHeader = (props: IProps) => {
                     />
                 </Box>
             </Box>
-            <UserFormModal
+            <DepartmentFormModal
                 open={open}
                 setOpen={setOpen}
                 divisions={divisions}
-                departments={departments}
-                roles={roles}
+                users={users}
             />
         </>
     );
 }
 
-export default UserHeader;
+export default DepartmentHeader;
