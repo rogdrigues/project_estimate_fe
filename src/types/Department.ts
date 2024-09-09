@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { UserMasterSchema, DivisionSchema } from './index';
 
-export const DepartmentSchema = z.object({
+export const DepartmentSchema: any = z.object({
     _id: z.string(),
     name: z.string(),
     description: z.string().nullable().optional(),
