@@ -26,7 +26,7 @@ export const getDepartmentById = async (departmentId: string) => {
     try {
         const accessToken = await getAccessToken();
 
-        const response = await customFetch<any>(
+        const response = await customFetch<Department>(
             {
                 url: `${baseURL}/${departmentId}`,
                 headers: {
@@ -45,9 +45,9 @@ export const getDepartmentById = async (departmentId: string) => {
     }
 };
 
-export const createDepartment = async (departmentData: any, accessToken: string | undefined) => {
+export const createDepartment = async (departmentData: Department, accessToken: string | undefined) => {
     try {
-        const response = await customFetch<any>(
+        const response = await customFetch<Department>(
             {
                 url: `${baseURL}/add-department`,
                 method: 'POST',
@@ -65,7 +65,7 @@ export const createDepartment = async (departmentData: any, accessToken: string 
 
 export const updateDepartment = async (departmentId: string, departmentData: any, accessToken: string | undefined) => {
     try {
-        const response = await customFetch<any>(
+        const response = await customFetch<Department>(
             {
                 url: `${baseURL}/${departmentId}`,
                 method: 'PUT',
@@ -196,7 +196,15 @@ export const exportDepartments = async () => {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        return {
+            EC: 0,
+            message: 'File exported successfully',
+        };
     } catch (error) {
-        console.error('Error exporting file:', error);
+        return {
+            EC: 1,
+            message: 'Error exporting file',
+            data: error,
+        }
     }
 };

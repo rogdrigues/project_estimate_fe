@@ -4,27 +4,26 @@ import { Box, Button, Typography, TextField } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Division, UserMaster } from '@/types';
-import { exportDepartments, exportFile, importDepartments } from '@/services';
+import { UserMaster } from '@/types';
+import { exportDivisions, importDivisions } from '@/services';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { userHeaderButton } from '@/styles';
-import { DepartmentFormModal } from './department-form-modal';
+import { DivisionFormModal } from './division-form-modal';
 
 interface IProps {
-    divisions: Division[];
     users: UserMaster[];
 }
 
-const DepartmentHeader = (props: IProps) => {
-    const { divisions, users } = props;
+const DivisionHeader = (props: IProps) => {
+    const { users } = props;
     const [open, setOpen] = useState(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const inputFileRef = useRef<HTMLInputElement | null>(null);
     const router = useRouter();
     const { triggerToast } = useToast();
     const handleExport = async () => {
-        const response = await exportDepartments();
+        const response = await exportDivisions();
         if (response.EC === 0) {
             triggerToast('File exported successfully', true);
         } else {
@@ -45,7 +44,7 @@ const DepartmentHeader = (props: IProps) => {
         }
 
         try {
-            const response = await importDepartments(selectedFile);
+            const response = await importDivisions(selectedFile);
 
             if (response.EC === 0) {
                 router.refresh();
@@ -83,7 +82,7 @@ const DepartmentHeader = (props: IProps) => {
                 }}
             >
                 <Typography variant="h5" sx={{ fontWeight: 'bold', fontFamily: 'Roboto' }}>
-                    Department
+                    Division
                 </Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mb: 2 }}>
                     <Button
@@ -121,14 +120,13 @@ const DepartmentHeader = (props: IProps) => {
                     />
                 </Box>
             </Box>
-            <DepartmentFormModal
+            <DivisionFormModal
                 open={open}
                 setOpen={setOpen}
-                divisions={divisions}
                 users={users}
             />
         </>
     );
 }
 
-export default DepartmentHeader;
+export default DivisionHeader;
