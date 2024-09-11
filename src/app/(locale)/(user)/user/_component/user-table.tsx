@@ -6,11 +6,12 @@ import IconButton from '@mui/material/IconButton';
 import { GridRenderCellParams } from '@mui/x-data-grid';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { columns } from '@/app/(locale)/(user)/user/_table-config/user-table-columns';
-import UserMenu from '@/app/(locale)/(user)/user/_table-config/user-menu';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
 import { UserFormModal } from './user-form-modal';
-import UserFormDialog from './user-form-dialoge';
+import ObjectRowMenu from '@/components/object-row-menu';
+import ObjectFormDialog from '@/components/object-form-dialoge';
+import { deleteUser, restoreUser } from '@/services';
 
 interface IProps {
     users: UserMaster[];
@@ -83,13 +84,13 @@ export default function UserTable(props: IProps) {
                                             <IconButton aria-label="more" onClick={(event) => handleClick(event, params)}>
                                                 <MoreVertIcon />
                                             </IconButton>
-                                            <UserMenu
+                                            <ObjectRowMenu
                                                 anchorEl={anchorEl}
                                                 isMenuOpen={open}
                                                 handleMenuClose={handleMenuClose}
-                                                SetOpenUpdateModal={(isOpen) => setOpenDialog(prev => ({ ...prev, openUpdate: isOpen }))}
-                                                SetOpenDialog={(isOpen) => setOpenDialog(prev => ({ ...prev, openDialog: isOpen }))}
-                                                userStatus={dataView?.deleted}
+                                                SetOpenUpdateModal={() => setOpenDialog({ ...openDialog, openUpdate: true })}
+                                                SetOpenDialog={() => setOpenDialog({ ...openDialog, openDialog: true })}
+                                                objectStatus={dataView?.deleted}
                                             />
                                         </>
                                     )
@@ -128,10 +129,14 @@ export default function UserTable(props: IProps) {
                 setOpen={(isOpen) => setOpenDialog(prev => ({ ...prev, openUpdate: isOpen }))}
                 User={dataView}
             />
-            <UserFormDialog
+
+            <ObjectFormDialog
                 open={openDialog.openDialog}
                 onClose={() => setOpenDialog(prev => ({ ...prev, openDialog: false }))}
-                user={dataView}
+                markWord='user'
+                Object={dataView}
+                restoreFunction={restoreUser}
+                deleteFunction={deleteUser}
             />
         </>
     );

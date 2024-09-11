@@ -10,11 +10,11 @@ interface IProps {
     handleMenuClose: () => void;
     SetOpenUpdateModal: (value: boolean) => void;
     SetOpenDialog: (value: boolean) => void;
-    userStatus: boolean;
+    objectStatus: boolean;
 }
 
-const UserMenu = (props: IProps) => {
-    const { anchorEl, isMenuOpen, handleMenuClose, SetOpenUpdateModal, SetOpenDialog, userStatus } = props;
+const ObjectRowMenu = (props: IProps) => {
+    const { anchorEl, isMenuOpen, handleMenuClose, SetOpenUpdateModal, SetOpenDialog, objectStatus } = props;
     return (
         <Menu
             anchorEl={anchorEl}
@@ -35,7 +35,7 @@ const UserMenu = (props: IProps) => {
                 },
             }}
         >
-            {!userStatus ?
+            {!objectStatus ?
                 <Box>
 
                     <MenuItem onClick={() => {
@@ -74,4 +74,4 @@ const UserMenu = (props: IProps) => {
     );
 };
 
-export default UserMenu;
+export default ObjectRowMenu;

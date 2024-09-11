@@ -1,10 +1,10 @@
 'use client';
 
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
-import { Division } from '@/types';
+import { Department } from '@/types';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import { deleteDivision, restoreDivision } from '@/services';
+import { deleteDepartment, restoreDepartment } from '@/services';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { forwardRef, ReactElement, Ref } from 'react';
@@ -12,7 +12,10 @@ import { forwardRef, ReactElement, Ref } from 'react';
 interface IProps {
     open: boolean;
     onClose: () => void;
-    division: Division | null;
+    Object: any;
+    markWord: string;
+    restoreFunction: (id: string) => Promise<any>;
+    deleteFunction: (id: string) => Promise<any>;
 }
 
 const Transition = forwardRef(function Transition(
@@ -24,24 +27,23 @@ const Transition = forwardRef(function Transition(
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DivisionFormDialog = (props: IProps) => {
-    const { open, onClose, division } = props;
+const ObjectFormDialog = (props: IProps) => {
+    const { open, onClose, Object, markWord, restoreFunction, deleteFunction } = props;
     const { triggerToast } = useToast();
     const router = useRouter();
     const onConfirm = async () => {
         try {
-            const response = division?.deleted ? await restoreDivision(division?._id) : await deleteDivision(division?._id);
+            const response = Object?.deleted ? await restoreFunction(Object?._id) : await deleteFunction(Object?._id);
 
             if (response.EC === 0) {
-                triggerToast(division?.deleted ? "Division restore successfully!" : "Division deleted successfully!", true)
+                triggerToast(Object?.deleted ? `${markWord} restore successfully!` : `${markWord} deleted successfully!`, true)
                 router.refresh();
                 onClose();
             } else {
-                triggerToast('Error handle the division', false);
+                triggerToast(`Error handle the ${markWord}`, false);
             }
         } catch (error: any) {
-            console.log('Error handle the division', error.message);
-            triggerToast('There was an error handle the division', false);
+            triggerToast(`There was an error handle the ${markWord}`, false);
         }
     }
 
@@ -53,15 +55,15 @@ const DivisionFormDialog = (props: IProps) => {
             onClose={onClose}
             aria-describedby="alert-dialog-slide-description"
         >
-            <DialogTitle sx={{ fontWeight: "bold" }}>{division?.deleted ? "Confirmed restore user" : "Confirmed deleted user"}</DialogTitle>
+            <DialogTitle sx={{ fontWeight: "bold" }}>{Object?.deleted ? `Confirmed restore ${markWord}` : `Confirmed deleted ${markWord}`}</DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-slide-description">
-                    {division?.deleted ? (
+                    {Object?.deleted ? (
                         <>
-                            This action will restore the division <strong>{division?.name}</strong> to the division list. Do you want to proceed?
+                            This action will restore the {markWord} <strong>{Object?.name}</strong> to the {markWord} list. Do you want to proceed?
                         </>) : (
                         <>
-                            This action will delete the division <strong>{division?.name}</strong> from the division list. Do you want to proceed?
+                            This action will delete the {markWord} <strong>{Object?.name}</strong> from the {markWord} list. Do you want to proceed?
                         </>)}
                 </DialogContentText>
             </DialogContent>
@@ -77,4 +79,4 @@ const DivisionFormDialog = (props: IProps) => {
     );
 };
 
-export default DivisionFormDialog;
+export default ObjectFormDialog;

@@ -1,27 +1,27 @@
 'use client'
 import { useState, MouseEvent, useEffect } from 'react';
 import { DataGrid, GridColumnVisibilityModel } from '@mui/x-data-grid';
-import { Division, UserMaster } from '@/types';
+import { Assumption, Category } from '@/types';
 import IconButton from '@mui/material/IconButton';
 import { GridRenderCellParams } from '@mui/x-data-grid';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { columns } from '@/app/(locale)/(user)/division/_table_config/division-table-columns';
+import { columns } from '@/app/(locale)/(user)/assumption/_table_config/assumption-table-columns';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
-import { DivisionFormModal } from './division-form-modal';
 import ObjectRowMenu from '@/components/object-row-menu';
 import ObjectFormDialog from '@/components/object-form-dialoge';
-import { restoreDepartment } from '@/services';
+import { deleteAssumption, restoreAssumption } from '@/services';
+import { AssumptionFormModal } from './assumption-form-modal';
 
 interface IProps {
-    divisions: Division[];
-    users: UserMaster[];
+    categories: Category[];
+    assumptions: Assumption[];
 }
 
-export default function DivisionTable(props: IProps) {
-    const { divisions: rows, users } = props;
+export default function AssumptionTable(props: IProps) {
+    const { assumptions: rows, categories } = props;
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [dataView, setDataView] = useState<Division | null>(null);
+    const [dataView, setDataView] = useState<Assumption | null>(null);
     const isMobile = useMediaQuery('(max-width:1300px)');
     const [openDialog, setOpenDialog] = useState({
         openUpdate: false,
@@ -30,19 +30,17 @@ export default function DivisionTable(props: IProps) {
     const open = Boolean(anchorEl);
 
     const [columnVisibilityModel, setColumnVisibilityModel] = useState({
-        name: true,
-        description: true,
-        division: true,
-        lead: true,
-        code: true,
+        title: true,
+        content: true,
+        category: true,
+        subCategory: true,
         status: true,
-        actions: true,
     });
 
     useEffect(() => {
         setColumnVisibilityModel((prevModel) => ({
             ...prevModel,
-            description: !isMobile,
+            subCategory: !isMobile,
             status: !isMobile,
         }));
     }, [isMobile]);
@@ -115,19 +113,19 @@ export default function DivisionTable(props: IProps) {
                     />
                 </Box>
             </Box>
-            <DivisionFormModal
-                open={openDialog.openUpdate}
-                setOpen={(isOpen) => setOpenDialog(prev => ({ ...prev, openUpdate: isOpen }))}
-                users={users}
-                division={dataView}
-            />
             <ObjectFormDialog
                 open={openDialog.openDialog}
                 onClose={() => setOpenDialog(prev => ({ ...prev, openDialog: false }))}
-                markWord='division'
                 Object={dataView}
-                restoreFunction={restoreDepartment}
-                deleteFunction={restoreDepartment}
+                markWord='assumption'
+                restoreFunction={restoreAssumption}
+                deleteFunction={deleteAssumption}
+            />
+            <AssumptionFormModal
+                categories={categories}
+                open={openDialog.openUpdate}
+                setOpen={(isOpen) => setOpenDialog(prev => ({ ...prev, openUpdate: isOpen }))}
+                assumption={dataView}
             />
         </>
     );
