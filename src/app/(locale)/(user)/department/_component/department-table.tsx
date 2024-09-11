@@ -8,9 +8,10 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { columns } from '@/app/(locale)/(user)/department/_table_config/department-table-columns';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
-import DepartmentMenu from '../_table_config/department-menu';
 import { DepartmentFormModal } from './department-form-modal';
-import DepartmentFormDialog from './department-form-dialoge';
+import ObjectRowMenu from '@/components/object-row-menu';
+import ObjectFormDialog from '@/components/object-form-dialoge';
+import { deleteDepartment, restoreDepartment } from '@/services';
 
 interface IProps {
     divisions: Division[];
@@ -78,13 +79,13 @@ export default function DepartmentTable(props: IProps) {
                                             <IconButton aria-label="more" onClick={(event) => handleClick(event, params)}>
                                                 <MoreVertIcon />
                                             </IconButton>
-                                            <DepartmentMenu
+                                            <ObjectRowMenu
                                                 anchorEl={anchorEl}
                                                 isMenuOpen={open}
                                                 handleMenuClose={handleMenuClose}
                                                 SetOpenUpdateModal={() => setOpenDialog({ ...openDialog, openUpdate: true })}
                                                 SetOpenDialog={() => setOpenDialog({ ...openDialog, openDialog: true })}
-                                                departmentStatus={dataView?.deleted}
+                                                objectStatus={dataView?.deleted}
                                             />
                                         </>
                                     )
@@ -122,10 +123,13 @@ export default function DepartmentTable(props: IProps) {
                 users={users}
                 department={dataView}
             />
-            <DepartmentFormDialog
+            <ObjectFormDialog
                 open={openDialog.openDialog}
                 onClose={() => setOpenDialog(prev => ({ ...prev, openDialog: false }))}
-                department={dataView}
+                Object={dataView}
+                markWord='department'
+                restoreFunction={restoreDepartment}
+                deleteFunction={deleteDepartment}
             />
         </>
     );
