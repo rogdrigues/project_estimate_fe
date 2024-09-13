@@ -4,26 +4,22 @@ import { Box, Button, Typography, TextField } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { UserMaster } from '@/types';
-import { exportDivisions, importDivisions } from '@/services';
+import { Category } from '@/types';
+import { exportCategories, importCategories } from '@/services';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { userHeaderButton } from '@/styles';
-import { DivisionFormModal } from './division-form-modal';
+import { CategoryFormModal } from './category-form-modal';
 
-interface IProps {
-    users: UserMaster[];
-}
-
-const DivisionHeader = (props: IProps) => {
-    const { users } = props;
+const CategoryHeader = () => {
     const [open, setOpen] = useState(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const inputFileRef = useRef<HTMLInputElement | null>(null);
     const router = useRouter();
     const { triggerToast } = useToast();
+
     const handleExport = async () => {
-        const response = await exportDivisions();
+        const response = await exportCategories();
         if (response.EC === 0) {
             triggerToast('File exported successfully', true);
         } else {
@@ -32,6 +28,7 @@ const DivisionHeader = (props: IProps) => {
     };
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+        console.log('event.target.files', event.target.files);
         if (event.target.files && event.target.files.length > 0) {
             setSelectedFile(event.target.files[0]);
         }
@@ -44,7 +41,7 @@ const DivisionHeader = (props: IProps) => {
         }
 
         try {
-            const response = await importDivisions(selectedFile);
+            const response = await importCategories(selectedFile);
 
             if (response.EC === 0) {
                 router.refresh();
@@ -85,7 +82,7 @@ const DivisionHeader = (props: IProps) => {
                 }}
             >
                 <Typography variant="h5" sx={{ fontWeight: 'bold', fontFamily: 'Roboto' }}>
-                    Division
+                    Category
                 </Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mb: 2 }}>
                     <Button
@@ -123,13 +120,12 @@ const DivisionHeader = (props: IProps) => {
                     />
                 </Box>
             </Box>
-            <DivisionFormModal
+            <CategoryFormModal
                 open={open}
                 setOpen={setOpen}
-                users={users}
             />
         </>
     );
 }
 
-export default DivisionHeader;
+export default CategoryHeader;

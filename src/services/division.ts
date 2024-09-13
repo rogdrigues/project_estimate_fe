@@ -4,16 +4,19 @@ import { getAccessToken } from '@/utils';
 
 const baseURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/division`;
 
-export const getAllDivisions = async (accessToken: string | undefined) => {
+export const getAllDivisions = async (accessToken: string | undefined, includeDeleted: boolean = false) => {
     try {
         const response = await customFetch<Division[]>(
             {
-                url: `${baseURL}/get-all-divisions`,
+                url: `${baseURL}/get-all-divisions?includeDeleted=${includeDeleted}`,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + accessToken,
                 },
-                method: 'GET'
+                method: 'GET',
+                nextOptions: {
+                    cache: 'no-store'
+                }
             }
         );
         return response.data;

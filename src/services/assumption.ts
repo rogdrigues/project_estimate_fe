@@ -4,11 +4,11 @@ import { getAccessToken } from '@/utils';
 
 const baseURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/assumption`;
 
-export const getAllAssumptions = async (accessToken: string | undefined) => {
+export const getAllAssumptions = async (accessToken: string | undefined, includeDeleted: boolean = false) => {
     try {
         const response = await customFetch<Assumption[]>(
             {
-                url: `${baseURL}/get-all-assumptions`,
+                url: `${baseURL}/get-all-assumptions?includeDeleted=${includeDeleted}`,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + accessToken,
@@ -22,6 +22,7 @@ export const getAllAssumptions = async (accessToken: string | undefined) => {
     }
 };
 
+
 export const getAssumptionById = async (assumptionId: string) => {
     try {
         const accessToken = await getAccessToken();
@@ -33,6 +34,9 @@ export const getAssumptionById = async (assumptionId: string) => {
                     'Authorization': 'Bearer ' + accessToken,
                 },
                 method: 'GET',
+                nextOptions: {
+                    cache: 'no-store'
+                }
             }
         );
         return response.data;

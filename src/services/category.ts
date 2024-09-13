@@ -4,16 +4,19 @@ import { getAccessToken } from '@/utils';
 
 const baseURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/category`;
 
-export const getAllCategories = async (accessToken: string | undefined) => {
+export const getAllCategories = async (accessToken: string | undefined, includeDeleted: boolean = false) => {
     try {
         const response = await customFetch<Category[]>(
             {
-                url: `${baseURL}/get-all-categories`,
+                url: `${baseURL}/get-all-categories?includeDeleted=${includeDeleted}`,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + accessToken,
                 },
-                method: 'GET'
+                method: 'GET',
+                nextOptions: {
+                    cache: 'no-store'
+                }
             }
         );
         return response.data;
@@ -199,7 +202,15 @@ export const exportCategories = async () => {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        return {
+            EC: 0,
+            message: 'File exported successfully',
+        };
     } catch (error) {
-        console.error('Error exporting file:', error);
+        return {
+            EC: 1,
+            message: 'Error exporting file',
+            data: error,
+        }
     }
 };

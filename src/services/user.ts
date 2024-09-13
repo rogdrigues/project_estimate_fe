@@ -13,7 +13,10 @@ export const getAllRoles = async (accessToken: string | undefined) => {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + accessToken,
                 },
-                method: 'GET'
+                method: 'GET',
+                nextOptions: {
+                    cache: 'no-store'
+                }
             }
         );
         return response.data;
@@ -22,11 +25,11 @@ export const getAllRoles = async (accessToken: string | undefined) => {
     }
 }
 
-export const getAllUsers = async (accessToken: string | undefined) => {
+export const getAllUsers = async (accessToken: string | undefined, includeDeleted: boolean = false) => {
     try {
         const response = await customFetch<UserMaster[]>(
             {
-                url: `${baseURL}/get-all-users`,
+                url: `${baseURL}/get-all-users?includeDeleted=${includeDeleted}`,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + accessToken,

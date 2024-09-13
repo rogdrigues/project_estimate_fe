@@ -4,16 +4,19 @@ import { getAccessToken } from '@/utils';
 
 const baseURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/department`;
 
-export const getAllDepartments = async (accessToken: string | undefined) => {
+export const getAllDepartments = async (accessToken: string | undefined, includeDeleted: boolean = false) => {
     try {
         const response = await customFetch<Department[]>(
             {
-                url: `${baseURL}/get-all-department`,
+                url: `${baseURL}/get-all-department?includeDeleted=${includeDeleted}`,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + accessToken,
                 },
-                method: 'GET'
+                method: 'GET',
+                nextOptions: {
+                    cache: 'no-store'
+                }
             }
         );
         return response.data;

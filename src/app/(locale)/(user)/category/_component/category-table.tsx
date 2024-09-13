@@ -1,27 +1,26 @@
 'use client'
 import { useState, MouseEvent, useEffect } from 'react';
 import { DataGrid, GridColumnVisibilityModel } from '@mui/x-data-grid';
-import { Assumption, Category } from '@/types';
+import { Category } from '@/types';
 import IconButton from '@mui/material/IconButton';
 import { GridRenderCellParams } from '@mui/x-data-grid';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { columns } from '@/app/(locale)/(user)/assumption/_table_config/assumption-table-columns';
+import { columns } from '@/app/(locale)/(user)/category/_table_config/category-table-columns';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
 import ObjectRowMenu from '@/components/_table_form-config/object-row-menu';
 import ObjectFormDialog from '@/components/_table_form-config/object-form-dialoge';
-import { deleteAssumption, restoreAssumption } from '@/services';
-import { AssumptionFormModal } from './assumption-form-modal';
+import { deleteCategory, restoreCategory } from '@/services';
+import { CategoryFormModal } from './category-form-modal';
 
 interface IProps {
     categories: Category[];
-    assumptions: Assumption[];
 }
 
-export default function AssumptionTable(props: IProps) {
-    const { assumptions: rows, categories } = props;
+export default function CategoryTable(props: IProps) {
+    const { categories: rows } = props;
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [dataView, setDataView] = useState<Assumption | null>(null);
+    const [dataView, setDataView] = useState<Category | null>(null);
     const isMobile = useMediaQuery('(max-width:1300px)');
     const [openDialog, setOpenDialog] = useState({
         openUpdate: false,
@@ -117,15 +116,14 @@ export default function AssumptionTable(props: IProps) {
                 open={openDialog.openDialog}
                 onClose={() => setOpenDialog(prev => ({ ...prev, openDialog: false }))}
                 Object={dataView}
-                markWord='assumption'
-                restoreFunction={restoreAssumption}
-                deleteFunction={deleteAssumption}
+                markWord='category'
+                restoreFunction={restoreCategory}
+                deleteFunction={deleteCategory}
             />
-            <AssumptionFormModal
-                categories={categories}
+            <CategoryFormModal
                 open={openDialog.openUpdate}
                 setOpen={(isOpen) => setOpenDialog(prev => ({ ...prev, openUpdate: isOpen }))}
-                assumption={dataView}
+                category={dataView}
             />
         </>
     );
