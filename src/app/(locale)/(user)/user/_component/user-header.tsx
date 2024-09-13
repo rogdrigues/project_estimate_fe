@@ -46,8 +46,10 @@ const UserHeader = (props: IProps) => {
             if (response.EC === 0) {
                 router.refresh();
                 selectedFile && setSelectedFile(null);
+                if (inputFileRef.current) {
+                    inputFileRef.current.value = '';
+                }
                 triggerToast('File uploaded successfully', true);
-
             } else {
                 triggerToast('An error occurred while uploading the file', false);
             }

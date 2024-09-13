@@ -9,8 +9,8 @@ import { columns } from '@/app/(locale)/(user)/division/_table_config/division-t
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
 import { DivisionFormModal } from './division-form-modal';
-import ObjectRowMenu from '@/components/object-row-menu';
-import ObjectFormDialog from '@/components/object-form-dialoge';
+import ObjectRowMenu from '@/components/_table_form-config/object-row-menu';
+import ObjectFormDialog from '@/components/_table_form-config/object-form-dialoge';
 import { restoreDepartment } from '@/services';
 
 interface IProps {

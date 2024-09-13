@@ -9,8 +9,8 @@ import { columns } from '@/app/(locale)/(user)/department/_table_config/departme
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
 import { DepartmentFormModal } from './department-form-modal';
-import ObjectRowMenu from '@/components/object-row-menu';
-import ObjectFormDialog from '@/components/object-form-dialoge';
+import ObjectRowMenu from '@/components/_table_form-config/object-row-menu';
+import ObjectFormDialog from '@/components/_table_form-config/object-form-dialoge';
 import { deleteDepartment, restoreDepartment } from '@/services';
 
 interface IProps {
