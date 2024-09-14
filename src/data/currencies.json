@@ -1,0 +1,50 @@
+[
+    {
+        "code": "USD",
+        "name": "United States Dollar"
+    },
+    {
+        "code": "EUR",
+        "name": "Euro"
+    },
+    {
+        "code": "JPY",
+        "name": "Japanese Yen"
+    },
+    {
+        "code": "VND",
+        "name": "Vietnamese Dong"
+    },
+    {
+        "code": "GBP",
+        "name": "British Pound"
+    },
+    {
+        "code": "CAD",
+        "name": "Canadian Dollar"
+    },
+    {
+        "code": "AUD",
+        "name": "Australian Dollar"
+    },
+    {
+        "code": "CNY",
+        "name": "Chinese Yuan"
+    },
+    {
+        "code": "KRW",
+        "name": "South Korean Won"
+    },
+    {
+        "code": "SGD",
+        "name": "Singapore Dollar"
+    },
+    {
+        "code": "INR",
+        "name": "Indian Rupee"
+    },
+    {
+        "code": "IDR",
+        "name": "Indonesian Rupiah"
+    }
+]

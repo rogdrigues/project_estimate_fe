@@ -6,7 +6,7 @@ import { getServerSession } from 'next-auth';
 
 const UserPage = async () => {
     const session = await getServerSession(authOptions);
-    const users = await getAllUsers(session?.access_token);
+    const users = await getAllUsers(session?.access_token, true);
     const divisions = await getAllDivisions(session?.access_token);
     const departments = await getAllDepartments(session?.access_token);
     const roles = await getAllRoles(session?.access_token);

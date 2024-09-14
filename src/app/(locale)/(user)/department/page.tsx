@@ -8,7 +8,7 @@ import DepartmentHeader from './_component/department-header';
 const DepartmentPage = async () => {
     const session = await getServerSession(authOptions);
     const divisions = await getAllDivisions(session?.access_token);
-    const departments = await getAllDepartments(session?.access_token);
+    const departments = await getAllDepartments(session?.access_token, true);
     const users = await getAllUsers(session?.access_token);
 
     return (
