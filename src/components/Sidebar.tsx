@@ -25,14 +25,14 @@ const menuItems = [
     { name: 'Division', icon: <BusinessIcon />, path: '/division' },
     { name: 'Department', icon: <ApartmentIcon />, path: '/department' },
     { name: 'User', icon: <PeopleIcon />, path: '/user' },
+    { name: 'Category', icon: <CategoryIcon />, path: '/category' },
     { name: 'Project', icon: <WorkIcon />, path: '/projects' },
     { name: 'Assumption', icon: <AssignmentIcon />, path: '/assumption' },
     { name: 'Checklist', icon: <CheckBoxIcon />, path: '/checklist' },
     { name: 'Technology', icon: <DevicesIcon />, path: '/technology' },
     { name: 'Resource', icon: <StorageIcon />, path: '/resource' },
-    { name: 'Template', icon: <FileCopyIcon />, path: '/template' },
-    { name: 'Category', icon: <CategoryIcon />, path: '/category' },
     { name: 'Productivity', icon: <ShowChartIcon />, path: '/productivity' },
+    { name: 'Template', icon: <FileCopyIcon />, path: '/template' },
 ];
 
 
@@ -66,13 +66,6 @@ const Sidebar = () => {
                         </ListItem>
                     </Link>
                 ))}
-                <Divider />
-                <ListItem button>
-                    <ListItemIcon>
-                        <SettingsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Settings" />
-                </ListItem>
             </List>
         </Drawer>
     );
