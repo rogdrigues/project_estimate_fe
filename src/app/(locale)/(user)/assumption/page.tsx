@@ -5,10 +5,9 @@ import { getServerSession } from 'next-auth';
 import AssumptionTable from './_component/assumption-table';
 import AssumptionHeader from './_component/assumption-header';
 
-
 const AssumptionPage = async () => {
     const session = await getServerSession(authOptions);
-    const assumptions = await getAllAssumptions(session?.access_token);
+    const assumptions = await getAllAssumptions(session?.access_token, true);
     const categories = await getAllCategories(session?.access_token);
 
     return (
