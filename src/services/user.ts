@@ -223,8 +223,16 @@ export const exportFile = async () => {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        return {
+            EC: 0,
+            message: 'File exported successfully',
+        };
     } catch (error) {
-        console.error('Error exporting file:', error);
+        return {
+            EC: 1,
+            message: 'Error exporting file',
+            data: error,
+        };
     }
 };
 
