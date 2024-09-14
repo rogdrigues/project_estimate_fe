@@ -90,7 +90,7 @@ export const styleFormUser = {
     borderRadius: '8px',
 };
 
-export const userHeaderButton = {
+export const HeaderButton = {
     color: '#6f42c1',
     borderColor: '#6f42c1',
     fontWeight: 'bold',

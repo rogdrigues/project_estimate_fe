@@ -6,7 +6,7 @@ import GetAppIcon from '@mui/icons-material/GetApp';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
-import { userHeaderButton } from '@/styles';
+import { HeaderButton } from '@/styles';
 
 interface IHeaderProps {
     title: string;
@@ -86,7 +86,7 @@ const HeaderComponent = (props: IHeaderProps) => {
                     <Button
                         variant="outlined"
                         startIcon={<AddCircleOutlineIcon />}
-                        sx={userHeaderButton}
+                        sx={HeaderButton}
                         onClick={onCreateOpen}
                     >
                         CREATE
@@ -94,7 +94,7 @@ const HeaderComponent = (props: IHeaderProps) => {
                     <Button
                         variant="outlined"
                         startIcon={<GetAppIcon />}
-                        sx={userHeaderButton}
+                        sx={HeaderButton}
                         onClick={handleExport}
                     >
                         EXPORT
@@ -102,7 +102,7 @@ const HeaderComponent = (props: IHeaderProps) => {
                     <Button
                         variant="outlined"
                         startIcon={<CloudUploadIcon />}
-                        sx={userHeaderButton}
+                        sx={HeaderButton}
                         onClick={handleImportClick}
                     >
                         IMPORT

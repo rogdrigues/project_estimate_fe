@@ -8,13 +8,14 @@ interface IProps {
     anchorEl: null | HTMLElement;
     isMenuOpen: boolean;
     handleMenuClose: () => void;
+    openUpdateModal?: boolean;
     SetOpenUpdateModal: (value: boolean) => void;
     SetOpenDialog: (value: boolean) => void;
     objectStatus: boolean;
 }
 
 const ObjectRowMenu = (props: IProps) => {
-    const { anchorEl, isMenuOpen, handleMenuClose, SetOpenUpdateModal, SetOpenDialog, objectStatus } = props;
+    const { anchorEl, isMenuOpen, handleMenuClose, SetOpenUpdateModal, SetOpenDialog, objectStatus, openUpdateModal } = props;
     return (
         <Menu
             anchorEl={anchorEl}
@@ -39,7 +40,7 @@ const ObjectRowMenu = (props: IProps) => {
                 <Box>
 
                     <MenuItem onClick={() => {
-                        SetOpenUpdateModal(true)
+                        SetOpenUpdateModal(!openUpdateModal);
                         handleMenuClose();
                     }}>
                         <ListItemIcon>
