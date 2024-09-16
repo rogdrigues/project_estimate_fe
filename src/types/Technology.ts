@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const TechnologySchema = z.object({
+export const TechnologySchema: any = z.object({
     _id: z.string().optional(),
     name: z.string(),
     version: z.string().optional(),

@@ -34,6 +34,7 @@ export const columns: GridColDef[] = [
     {
         field: 'division',
         headerName: 'Division',
+        description: 'This column displays the division of the user.',
         width: 100,
         sortable: true,
         flex: 1,
@@ -44,6 +45,7 @@ export const columns: GridColDef[] = [
     {
         field: 'department',
         headerName: 'Department',
+        description: 'This column displays the department of the user.',
         width: 130,
         flex: 1,
         sortable: true,
@@ -65,6 +67,7 @@ export const columns: GridColDef[] = [
     {
         field: 'status',
         headerName: 'Status',
+        description: 'This column displays the status of the user (Enabled/Disabled).',
         width: 150,
         sortable: true,
         flex: 1,
@@ -85,6 +88,7 @@ export const columns: GridColDef[] = [
     {
         field: 'actions',
         headerName: 'Actions',
+        description: 'This column displays the actions that can be performed on the user.',
         width: 70,
         flex: 1,
     },
