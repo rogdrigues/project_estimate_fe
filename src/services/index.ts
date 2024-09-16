@@ -4,3 +4,4 @@ export * from './department';
 export * from './category'
 export * from './assumption'
 export * from './resource'
+export * from './technology'
