@@ -68,6 +68,7 @@ export const columns: GridColDef[] = [
     {
         field: 'actions',
         headerName: 'Actions',
+        description: 'This column displays the actions that can be performed on the division.',
         width: 70,
         flex: 1,
     },

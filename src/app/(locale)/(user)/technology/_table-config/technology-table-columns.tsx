@@ -3,38 +3,48 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import BlockIcon from '@mui/icons-material/Block';
 import { GridRenderCellParams } from '@mui/x-data-grid';
 
-//Category Table Columns
 export const columns: GridColDef[] = [
     {
-        field: 'id',
-        headerName: 'ID',
-        description: 'This column displays the ID of the category.',
-        width: 70,
-        flex: 1
-    },
-    {
-        field: 'CategoryName',
+        field: 'name',
         headerName: 'Name',
-        description: 'This column displays the name of the category.',
-        width: 125,
-        flex: 2
+        description: 'This column displays the name of the technology.',
+        width: 200,
+        flex: 1,
+        sortable: true,
     },
     {
-        field: 'SubCategory',
-        headerName: 'Sub category',
-        description: 'This column displays the sub category of the category.',
-        width: 175,
-        flex: 2
+        field: 'version',
+        headerName: 'Version',
+        description: 'This column displays the version of the technology.',
+        width: 150,
+        flex: 1,
+        sortable: true,
+    },
+    {
+        field: 'category',
+        headerName: 'Category',
+        description: 'This column displays the category of the technology (Frontend, Backend, etc.).',
+        width: 200,
+        flex: 1,
+        sortable: true,
+    },
+    {
+        field: 'standard',
+        headerName: 'Standard',
+        description: 'This column displays the standard of the technology.',
+        width: 150,
+        flex: 1,
+        sortable: true,
     },
     {
         field: 'status',
         headerName: 'Status',
-        description: 'This column displays the status of the category.',
+        description: 'This column displays the status of the technology (Enabled/Disabled).',
         width: 150,
         sortable: true,
         flex: 1,
         renderCell: (params: GridRenderCellParams) => (
-            !params?.row?.deleted ? (
+            !params.row.deleted ? (
                 <span style={{ color: '#6550cf', display: 'flex', alignItems: 'center' }}>
                     <CheckCircleOutlineIcon color="success" fontSize="small" style={{ marginRight: '4px', color: "#6550cf" }} />
                     Enabled
@@ -50,7 +60,7 @@ export const columns: GridColDef[] = [
     {
         field: 'actions',
         headerName: 'Actions',
-        description: 'This column displays the actions that can be performed on the category.',
+        description: 'This column displays the actions that can be performed on the technology.',
         width: 70,
         flex: 1,
     },
