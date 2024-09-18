@@ -1,5 +1,5 @@
 import { customFetch } from '@/lib';
-import { Division } from '@/types';
+import { Division, UserMaster } from '@/types';
 import { getAccessToken } from '@/utils';
 
 const baseURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/division`;
@@ -9,6 +9,29 @@ export const getAllDivisions = async (accessToken: string | undefined, includeDe
         const response = await customFetch<Division[]>(
             {
                 url: `${baseURL}/get-all-divisions?includeDeleted=${includeDeleted}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + accessToken,
+                },
+                method: 'GET',
+                nextOptions: {
+                    cache: 'no-store'
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        throw new Error('Error fetching divisions');
+    }
+};
+
+export const getDivisionUsers = async () => {
+    try {
+        const accessToken = await getAccessToken();
+
+        const response = await customFetch<UserMaster[]>(
+            {
+                url: `${baseURL}/division-leads`,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + accessToken,

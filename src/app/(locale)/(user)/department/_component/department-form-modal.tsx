@@ -6,7 +6,7 @@ import Fade from '@mui/material/Fade';
 import CloseIcon from '@mui/icons-material/Close';
 import { useForm, Controller } from 'react-hook-form';
 import { Department, Division, UserMaster } from '@/types';
-import { createDepartment, updateDepartment } from '@/services/department';
+import { createDepartment, getDepartmentUsers, updateDepartment } from '@/services/department';
 import { useSession } from 'next-auth/react';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
@@ -18,14 +18,14 @@ interface IProps {
     open: boolean;
     setOpen: (open: boolean) => void;
     divisions: Division[];
-    users: UserMaster[];
     department?: Department | null;
 }
 
 export const DepartmentFormModal = (props: IProps) => {
     const router = useRouter();
     const { data: session } = useSession();
-    const { open, setOpen, divisions, department, users } = props;
+    const [users, setUsers] = React.useState<UserMaster[]>([]);
+    const { open, setOpen, divisions, department } = props;
     const { triggerToast } = useToast();
     const { handleSubmit, reset, control, watch } = useForm({
         defaultValues: {
@@ -84,6 +84,20 @@ export const DepartmentFormModal = (props: IProps) => {
             });
         }
     }, [department, reset]);
+
+    useEffect(() => {
+        if (open) {
+            const fetchDepartmentLeads = async () => {
+                try {
+                    const departmentLeads = await getDepartmentUsers();
+                    setUsers(departmentLeads?.result);
+                } catch (error) {
+                    console.error('Error fetching department leads', error);
+                }
+            };
+            fetchDepartmentLeads();
+        }
+    }, [open]);
 
     return (
         <Modal
@@ -170,7 +184,7 @@ export const DepartmentFormModal = (props: IProps) => {
                                             field.onChange(selectedLead);
                                         }}
                                     >
-                                        {users.map((user) => (
+                                        {users?.map((user) => (
                                             <MenuItem key={user._id} value={user._id}>
                                                 {user.username}
                                             </MenuItem>

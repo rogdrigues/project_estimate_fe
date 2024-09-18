@@ -1,5 +1,5 @@
 
-import { getAllDivisions, getAllUsers } from '@/services';
+import { getAllDivisions } from '@/services';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth';
 import DivisionHeader from './_component/division-header';
@@ -8,16 +8,12 @@ import DivisionTable from './_component/division-table';
 const DepartmentPage = async () => {
     const session = await getServerSession(authOptions);
     const divisions = await getAllDivisions(session?.access_token, true);
-    const users = await getAllUsers(session?.access_token);
 
     return (
         <div>
-            <DivisionHeader
-                users={users?.result}
-            />
+            <DivisionHeader />
             <DivisionTable
                 divisions={divisions?.result}
-                users={users?.result}
             />
         </div>
     );
