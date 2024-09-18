@@ -78,7 +78,6 @@ export const UserFormModal = (props: IProps) => {
     useEffect(() => {
         if (User) {
             reset(User);
-            console.log(control._defaultValues);
         } else {
             reset({
                 email: '',
@@ -157,7 +156,6 @@ export const UserFormModal = (props: IProps) => {
                                         onChange={(e: SelectChangeEvent) => {
                                             const selectedRole = roles.find(role => role._id === e.target.value);
                                             field.onChange(selectedRole);
-                                            console.log(field.value)
                                         }}
                                     >
                                         {roles.map((role) => (

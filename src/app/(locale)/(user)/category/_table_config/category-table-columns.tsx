@@ -24,7 +24,11 @@ export const columns: GridColDef[] = [
         headerName: 'Sub category',
         description: 'This column displays the sub category of the category.',
         width: 175,
-        flex: 2
+        flex: 2,
+        valueGetter: (params: any) => {
+            //Also avoid some case when input just a space (need to strim it) or empty string
+            return params || 'N/A';
+        }
     },
     {
         field: 'status',

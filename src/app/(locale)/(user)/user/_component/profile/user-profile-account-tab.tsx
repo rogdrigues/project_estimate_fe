@@ -65,7 +65,6 @@ const AccountProfileInfo = (props: IProps) => {
 
     const handleInputChange = (field: string, value: string) => {
         setProfileData((prev) => ({ ...prev, [field]: value }));
-        console.log('profileData', profileData);
     };
 
     const handleCancelEdit = (field: string) => {

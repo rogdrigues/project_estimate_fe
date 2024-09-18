@@ -242,7 +242,6 @@ export const updateUserProfile = async (profileData: any) => {
         for (const key in profileData) {
             formData.append(key, profileData[key]);
         }
-        console.log('formData', formData);
         const accessToken = await getAccessToken();
 
         const response = await fetch(`${baseURL}/profile`, {

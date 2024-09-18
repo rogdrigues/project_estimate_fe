@@ -8,3 +8,4 @@ export * from './Assumption';
 export * from './Category';
 export * from './Resource';
 export * from './Technology';
+export * from './Productivity';

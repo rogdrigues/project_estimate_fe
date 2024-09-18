@@ -69,6 +69,7 @@ export const authOptions: NextAuthOptions = {
             }
 
             if (token.accessTokenExpiresAt && Date.now() > Number(token.accessTokenExpiresAt) - 14.5 * 60 * 1000) {
+                console.log('Access token expired, refreshing...');
                 try {
                     const refreshedTokens = await customFetch<UserMaster>({
                         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/refresh-token`,
@@ -83,6 +84,9 @@ export const authOptions: NextAuthOptions = {
                         const { result, metadata } = refreshedTokens.data;
                         if (result.refresh_token) {
                             //Get 5 characters from the end of the refresh token
+                            const lastFiveChars = result.refresh_token.slice(-5);
+                            console.log('Last 5 chars:', lastFiveChars);
+                            //Set refresh token cookie
                             token.refresh_token = result.refresh_token;
                         }
                         token.access_token = result.access_token;

@@ -1,30 +1,29 @@
 'use client'
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { Modal, Box, TextField, Button, FormControl, InputLabel, MenuItem, Divider, IconButton } from '@mui/material';
 import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';
 import CloseIcon from '@mui/icons-material/Close';
 import { useForm, Controller } from 'react-hook-form';
 import { Division, UserMaster } from '@/types';
-import { createDivision, updateDivision } from '@/services/division';
+import { createDivision, getDivisionUsers, updateDivision } from '@/services/division';
 import { useSession } from 'next-auth/react';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { styleFormUser } from '@/styles';
 
 interface IProps {
     open: boolean;
     setOpen: (open: boolean) => void;
-    users: UserMaster[];
     division?: Division | null;
 }
 
 export const DivisionFormModal = (props: IProps) => {
     const router = useRouter();
     const { data: session } = useSession();
-    const { open, setOpen, division, users } = props;
+    const [users, setUsers] = useState<UserMaster[]>([]);
+    const { open, setOpen, division } = props;
     const { triggerToast } = useToast();
     const { handleSubmit, reset, control } = useForm({
         defaultValues: {
@@ -80,6 +79,20 @@ export const DivisionFormModal = (props: IProps) => {
             });
         }
     }, [division, reset]);
+
+    useEffect(() => {
+        if (open) {
+            const fetchDivisionLeads = async () => {
+                try {
+                    const divisionLeads = await getDivisionUsers();
+                    setUsers(divisionLeads?.result);
+                } catch (error) {
+                    console.error('Error fetching division leads', error);
+                }
+            };
+            fetchDivisionLeads();
+        }
+    }, [open]);
 
     return (
         <Modal
@@ -162,11 +175,11 @@ export const DivisionFormModal = (props: IProps) => {
                                         size="small"
                                         value={field?.value._id || ""}
                                         onChange={(e: SelectChangeEvent) => {
-                                            const selectedLead = users.find(user => user._id === e.target.value);
+                                            const selectedLead = users?.find(user => user._id === e.target.value);
                                             field.onChange(selectedLead);
                                         }}
                                     >
-                                        {users.map((user) => (
+                                        {users?.map((user) => (
                                             <MenuItem key={user._id} value={user._id}>
                                                 {user.username}
                                             </MenuItem>

@@ -1,5 +1,5 @@
 import { customFetch } from '@/lib';
-import { Department } from '@/types';
+import { Department, UserMaster } from '@/types';
 import { getAccessToken } from '@/utils';
 
 const baseURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/department`;
@@ -22,6 +22,29 @@ export const getAllDepartments = async (accessToken: string | undefined, include
         return response.data;
     } catch (error) {
         throw new Error('Error fetching users');
+    }
+};
+
+export const getDepartmentUsers = async () => {
+    try {
+        const accessToken = await getAccessToken();
+
+        const response = await customFetch<UserMaster[]>(
+            {
+                url: `${baseURL}/department-leads`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + accessToken,
+                },
+                method: 'GET',
+                nextOptions: {
+                    cache: 'no-store'
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        throw new Error('Error fetching divisions');
     }
 };
 
