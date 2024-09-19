@@ -9,3 +9,4 @@ export * from './Category';
 export * from './Resource';
 export * from './Technology';
 export * from './Productivity';
+export * from './Checklist';
