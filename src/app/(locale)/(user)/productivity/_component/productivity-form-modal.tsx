@@ -129,7 +129,7 @@ export const ProductivityFormModal = (props: IProps) => {
                         />
 
                         <FormControl fullWidth required margin="normal" sx={{ marginBottom: '16px' }}>
-                            <InputLabel id="technology-select" style={{ fontSize: '14px' }}>Technology</InputLabel>
+                            <InputLabel id="technology-select" style={{ fontSize: '14px', top: "-5px" }}>Technology</InputLabel>
                             <Controller
                                 name="technology"
                                 control={control}
@@ -161,7 +161,7 @@ export const ProductivityFormModal = (props: IProps) => {
                         </FormControl>
 
                         <FormControl fullWidth required margin="normal" sx={{ marginBottom: '16px' }}>
-                            <InputLabel id="norm-select" style={{ fontSize: '14px' }}>Norm</InputLabel>
+                            <InputLabel id="norm-select" style={{ fontSize: '14px', top: "-5px" }}>Norm</InputLabel>
                             <Controller
                                 name="norm"
                                 control={control}
@@ -186,7 +186,7 @@ export const ProductivityFormModal = (props: IProps) => {
                         </FormControl>
 
                         <FormControl fullWidth required margin="normal" sx={{ marginBottom: '16px' }}>
-                            <InputLabel id="unit-select" style={{ fontSize: '14px' }}>Unit</InputLabel>
+                            <InputLabel id="unit-select" style={{ fontSize: '14px', top: "-5px" }}>Unit</InputLabel>
                             <Controller
                                 name="unit"
                                 control={control}
