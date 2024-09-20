@@ -48,10 +48,12 @@ export default function TableComponent<T>(props: IProps<T>) {
         setAnchorEl(null);
     };
 
-    const rowsWithIds = rows.map((row, index) => ({
-        ...row,
-        id: index + 1,
-    }));
+    const rowsWithIds = rows.length > 0
+        ? rows.map((row, index) => ({
+            ...row,
+            id: index + 1,
+        }))
+        : [];
 
     return (
         <>
@@ -60,7 +62,6 @@ export default function TableComponent<T>(props: IProps<T>) {
                     <DataGrid
                         autoHeight
                         rows={rowsWithIds}
-                        loading={rows.length === 0}
                         onRowClick={(params) => setDataView(params.row)}
                         columns={columns.map(col =>
                             col.field === 'actions'

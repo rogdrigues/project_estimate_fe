@@ -49,10 +49,10 @@ export async function middleware(req: NextRequest) {
     }
 
     //@ts-ignore
-    const role = string().parse(token?.user.role.roleName).toLowerCase();
-    if (role !== 'admin') {
-        return NextResponse.redirect(new URL('/unauthorized', req.url));
-    }
+    // const role = string().parse(token?.user.role.roleName).toLowerCase();
+    // if (role !== 'admin') {
+    //     return NextResponse.redirect(new URL('/unauthorized', req.url));
+    // }
 
     return NextResponse.next();
 }
