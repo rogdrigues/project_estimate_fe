@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, Divider } from '@mui/material';
+import { Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import BusinessIcon from '@mui/icons-material/Business';
 import ApartmentIcon from '@mui/icons-material/Apartment';
@@ -13,31 +13,38 @@ import StorageIcon from '@mui/icons-material/Storage';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import CategoryIcon from '@mui/icons-material/Category';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
-import SettingsIcon from '@mui/icons-material/Settings';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import PlanIcon from '@mui/icons-material/Receipt';
 import { useSidebar } from '@/context/SidebarContext';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 const drawerWidth = 260;
 const miniDrawerWidth = 60;
 
 const menuItems = [
-    { name: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
-    { name: 'Division', icon: <BusinessIcon />, path: '/division' },
-    { name: 'Department', icon: <ApartmentIcon />, path: '/department' },
-    { name: 'User', icon: <PeopleIcon />, path: '/user' },
-    { name: 'Category', icon: <CategoryIcon />, path: '/category' },
-    { name: 'Project', icon: <WorkIcon />, path: '/projects' },
-    { name: 'Assumption', icon: <AssignmentIcon />, path: '/assumption' },
-    { name: 'Checklist', icon: <CheckBoxIcon />, path: '/checklist' },
-    { name: 'Technology', icon: <DevicesIcon />, path: '/technology' },
-    { name: 'Resource', icon: <StorageIcon />, path: '/resource' },
-    { name: 'Productivity', icon: <ShowChartIcon />, path: '/productivity' },
-    { name: 'Template', icon: <FileCopyIcon />, path: '/template' },
+    { name: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard', tag: ['view_dashboard'] },
+    { name: 'Division', icon: <BusinessIcon />, path: '/division', tag: ['manage_division', 'view_division', 'view_division_profile'] },
+    { name: 'Department', icon: <ApartmentIcon />, path: '/department', tag: ['manage_department', 'view_department', 'view_department_profile'] },
+    { name: 'User', icon: <PeopleIcon />, path: '/user', tag: ['manage_users'] },
+    { name: 'Category', icon: <CategoryIcon />, path: '/category', tag: ['manage_categories', 'view_categories'] },
+    { name: 'Project', icon: <WorkIcon />, path: '/projects', tag: ['manage_projects', 'view_projects'] },
+    { name: 'Assumption', icon: <AssignmentIcon />, path: '/assumption', tag: ['manage_assumptions', 'view_assumptions'] },
+    { name: 'Checklist', icon: <CheckBoxIcon />, path: '/checklist', tag: ['manage_checklists', 'view_checklists'] },
+    { name: 'Technology', icon: <DevicesIcon />, path: '/technology', tag: ['manage_technology', 'view_technology'] },
+    { name: 'Resource', icon: <StorageIcon />, path: '/resource', tag: ['manage_resources', 'view_resources'] },
+    { name: 'Productivity', icon: <ShowChartIcon />, path: '/productivity', tag: ['manage_productivity', 'view_productivity'] },
+    { name: 'Template', icon: <FileCopyIcon />, path: '/template', tag: ['manage_template', 'view_template'] },
+    { name: 'Opportunity', icon: <TrendingUpIcon />, path: '/opportunity', tag: ['manage_opportunity', 'view_opportunity'] },
+    { name: 'Presale Plan', icon: <PlanIcon />, path: '/presale_plan', tag: ['manage_presale_plan', 'view_presale_plan'] }
 ];
-
 
 const Sidebar = () => {
     const { isSidebarOpen } = useSidebar();
+    const { data: session } = useSession();
+    const userPermissions = session?.user?.role?.permissions || [];
+
+    const hasPermission = (tags: string[]) => tags.some(tag => userPermissions.includes(tag));
 
     return (
         <Drawer
@@ -59,12 +66,14 @@ const Sidebar = () => {
         >
             <List>
                 {menuItems.map((item) => (
-                    <Link href={item.path} key={item.name} passHref legacyBehavior>
-                        <ListItem button component="a">
-                            <ListItemIcon>{item.icon}</ListItemIcon>
-                            <ListItemText primary={item.name} />
-                        </ListItem>
-                    </Link>
+                    hasPermission(item.tag) && (
+                        <Link href={item.path} key={item.name} passHref legacyBehavior>
+                            <ListItem button component="a">
+                                <ListItemIcon>{item.icon}</ListItemIcon>
+                                <ListItemText primary={item.name} />
+                            </ListItem>
+                        </Link>
+                    )
                 ))}
             </List>
         </Drawer>

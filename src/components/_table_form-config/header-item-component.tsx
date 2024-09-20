@@ -10,14 +10,15 @@ import { HeaderButton } from '@/styles';
 
 interface IHeaderProps {
     title: string;
-    onExport: () => Promise<any>;
-    onImport: (file: File) => Promise<void>;
+    onExport?: () => Promise<any>;
+    onImport?: (file: File) => Promise<void>;
     onCreateOpen: () => void;
     modal: ReactNode;
+    hideExportImport?: boolean; // Optional prop to hide Export and Import buttons
 }
 
 const HeaderComponent = (props: IHeaderProps) => {
-    const { title, onExport, onImport, onCreateOpen, modal } = props;
+    const { title, onExport, onImport, onCreateOpen, modal, hideExportImport = false } = props;
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const inputFileRef = useRef<HTMLInputElement | null>(null);
     const { triggerToast } = useToast();
@@ -91,31 +92,35 @@ const HeaderComponent = (props: IHeaderProps) => {
                     >
                         CREATE
                     </Button>
-                    <Button
-                        variant="outlined"
-                        startIcon={<GetAppIcon />}
-                        sx={HeaderButton}
-                        onClick={handleExport}
-                    >
-                        EXPORT
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        startIcon={<CloudUploadIcon />}
-                        sx={HeaderButton}
-                        onClick={handleImportClick}
-                    >
-                        IMPORT
-                    </Button>
-                    <TextField
-                        type="file"
-                        inputRef={inputFileRef}
-                        style={{ display: 'none' }}
-                        onChange={handleFileChange}
-                        inputProps={{
-                            accept: ".xlsx, .xls"
-                        }}
-                    />
+                    {!hideExportImport && (
+                        <>
+                            <Button
+                                variant="outlined"
+                                startIcon={<GetAppIcon />}
+                                sx={HeaderButton}
+                                onClick={handleExport}
+                            >
+                                EXPORT
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                startIcon={<CloudUploadIcon />}
+                                sx={HeaderButton}
+                                onClick={handleImportClick}
+                            >
+                                IMPORT
+                            </Button>
+                            <TextField
+                                type="file"
+                                inputRef={inputFileRef}
+                                style={{ display: 'none' }}
+                                onChange={handleFileChange}
+                                inputProps={{
+                                    accept: ".xlsx, .xls"
+                                }}
+                            />
+                        </>
+                    )}
                 </Box>
             </Box>
             {modal}
