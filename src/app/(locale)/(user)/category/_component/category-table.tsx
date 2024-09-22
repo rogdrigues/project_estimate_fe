@@ -33,6 +33,7 @@ export default function CategoryTable(props: IProps) {
                 status: true,
             }}
             hiddenColumnsOnMobile={['status']}
+            currentPage="categories"
         >
             <CategoryFormModal
                 open={openUpdate}

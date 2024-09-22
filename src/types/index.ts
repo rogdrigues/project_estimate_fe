@@ -11,3 +11,4 @@ export * from './Technology';
 export * from './Productivity';
 export * from './Checklist';
 export * from './Opportunity';
+export * from './OpportunityVersion';

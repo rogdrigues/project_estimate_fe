@@ -36,6 +36,7 @@ export default function TechnologyTable(props: IProps) {
                 actions: true,
             }}
             hiddenColumnsOnMobile={['standard', 'status']}
+            currentPage="technology"
         >
             <TechnologyFormModal
                 open={openUpdate}

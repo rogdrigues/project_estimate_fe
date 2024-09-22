@@ -28,6 +28,17 @@ export const columns: GridColDef[] = [
         }
     },
     {
+        field: 'division',
+        headerName: 'Section',
+        description: 'This column displays the section of the opportunity.',
+        width: 150,
+        sortable: true,
+        flex: 1,
+        valueGetter: (params: any) => {
+            return params?.code || "N/A";
+        }
+    },
+    {
         field: 'opportunityLead',
         headerName: 'Opp Lead',
         description: 'This column displays the opportunity lead of the opportunity.',
@@ -99,55 +110,6 @@ export const columns: GridColDef[] = [
         width: 150,
         sortable: true,
         flex: 1,
-    },
-    {
-        field: 'stage',
-        headerName: 'Stage',
-        description: 'This column displays the stage of the opportunity.',
-        width: 150,
-        sortable: true,
-        flex: 1,
-        renderCell: (params: GridRenderCellParams) => {
-            const stage = params.value;
-            let icon = null;
-            let color = '';
-            let label = '';
-
-            switch (stage) {
-                case 'New':
-                    icon = <FiberNewIcon fontSize="small" style={{ marginRight: '4px', color: '#00aaff' }} />;
-                    color = '#00aaff';
-                    label = 'New';
-                    break;
-                case 'In Review':
-                    icon = <PendingActionsIcon fontSize="small" style={{ marginRight: '4px', color: '#ffbf00' }} />;
-                    color = '#ffbf00';
-                    label = 'In Review';
-                    break;
-                case 'Approved':
-                    icon = <CheckCircleIcon fontSize="small" style={{ marginRight: '4px', color: '#28a745' }} />;
-                    color = '#28a745';
-                    label = 'Approved';
-                    break;
-                case 'Rejected':
-                    icon = <CancelIcon fontSize="small" style={{ marginRight: '4px', color: '#dc3545' }} />;
-                    color = '#dc3545';
-                    label = 'Rejected';
-                    break;
-                default:
-                    icon = <BlockIcon fontSize="small" style={{ marginRight: '4px', color: '#6c757d' }} />;
-                    color = '#6c757d';
-                    label = 'Unknown';
-                    break;
-            }
-
-            return (
-                <span style={{ color, display: 'flex', alignItems: 'center' }}>
-                    {icon}
-                    {label}
-                </span>
-            );
-        },
     },
     {
         field: 'approvalStatus',

@@ -37,6 +37,7 @@ export default function ResourceTable(props: IProps) {
                 actions: true,
             }}
             hiddenColumnsOnMobile={['location', 'status']}
+            currentPage="resources"
         >
             <ResourceFormModal
                 open={openUpdate}

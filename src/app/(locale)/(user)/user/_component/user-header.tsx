@@ -21,6 +21,7 @@ const UserHeader = (props: IProps) => {
             onExport={exportFile}
             onImport={importUsersFromExcel}
             onCreateOpen={() => setOpen(true)}
+            currentPage="users"
             modal={
                 <UserFormModal
                     open={open}

@@ -19,6 +19,7 @@ const DepartmentHeader = (props: IProps) => {
             onExport={exportDepartments}
             onImport={importDepartments}
             onCreateOpen={() => setOpen(true)}
+            currentPage="departments"
             modal={
                 <DepartmentFormModal
                     open={open}

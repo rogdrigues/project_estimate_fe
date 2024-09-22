@@ -46,7 +46,6 @@ export const OpportunityFormModal = (props: IProps) => {
             moneyType: '',
         },
     });
-
     const [filteredDepartments, setFilteredDepartments] = useState<Department[]>([]);
 
     const watchDivision: any = watch("division");
@@ -59,6 +58,16 @@ export const OpportunityFormModal = (props: IProps) => {
             setFilteredDepartments([]);
         }
     }, [watchDivision, departments]);
+
+    useEffect(() => {
+        if (session?.user) {
+            const userDivision = session.user.division?._id || '';
+            const userDepartment = session.user.department?._id || '';
+
+            setValue('division', userDivision);
+            setValue('department', userDepartment);
+        }
+    }, [session, setValue]);
 
     const onSubmit = async (data: Opportunity) => {
         try {
@@ -79,8 +88,6 @@ export const OpportunityFormModal = (props: IProps) => {
             const response = opportunity
                 ? await updateOpportunity(opportunity._id, opportunityForm)
                 : await createOpportunity(opportunityForm);
-
-            console.log(response);
 
             if (response.EC === 0) {
                 router.refresh();
@@ -187,64 +194,45 @@ export const OpportunityFormModal = (props: IProps) => {
                                     />
                                 )}
                             />
-                            <FormControl fullWidth required margin="normal" sx={{ marginBottom: '16px' }}>
-                                <InputLabel id="division-select-label" style={{ fontSize: '14px', top: "-5px" }}>Division</InputLabel>
-                                <Controller
-                                    name="division"
-                                    control={control}
-                                    render={({ field }: { field: any }) => (
-                                        <Select
-                                            {...field}
-                                            labelId="division-select-label"
-                                            id="division-select"
-                                            label="Division"
-                                            inputProps={{ style: { fontSize: '14px' } }}
-                                            size='small'
-                                            value={field?.value?._id || ""}
-                                            onChange={(e: SelectChangeEvent) => {
-                                                const selectedDivision = divisions.find(division => division._id === e.target.value);
-                                                field.onChange(selectedDivision);
-                                                setValue('department', '');
-                                            }}
-                                        >
-                                            {divisions.map(division => (
-                                                <MenuItem key={division._id} value={division._id}>
-                                                    {division.name}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    )}
-                                />
-                            </FormControl>
+                            <Controller
+                                name="division"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        label="Division"
+                                        fullWidth
+                                        margin="normal"
+                                        variant="outlined"
+                                        inputProps={{ style: { fontSize: '14px' } }}
+                                        InputLabelProps={{ style: { fontSize: '14px' } }}
+                                        size="small"
+                                        disabled
+                                        value={session?.user?.division?.name || ''} // Hiển thị tên Division
+                                        sx={{ marginBottom: '16px' }}
+                                    />
+                                )}
+                            />
 
-                            <FormControl fullWidth required margin="normal" sx={{ marginBottom: '16px' }} disabled={!watchDivision}>
-                                <InputLabel id="department-select-label" style={{ fontSize: '14px', top: "-5px" }}>Department</InputLabel>
-                                <Controller
-                                    name="department"
-                                    control={control}
-                                    render={({ field }: { field: any }) => (
-                                        <Select
-                                            {...field}
-                                            labelId="department-select-label"
-                                            id="department-select"
-                                            label="Department"
-                                            inputProps={{ style: { fontSize: '14px' } }}
-                                            size='small'
-                                            value={field?.value?._id || ""}
-                                            onChange={(e: SelectChangeEvent) => {
-                                                const selectedDepartment = filteredDepartments.find(department => department._id === e.target.value);
-                                                field.onChange(selectedDepartment);
-                                            }}
-                                        >
-                                            {filteredDepartments.map(department => (
-                                                <MenuItem key={department._id} value={department._id}>
-                                                    {department.name}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    )}
-                                />
-                            </FormControl>
+                            <Controller
+                                name="department"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        label="Department"
+                                        fullWidth
+                                        margin="normal"
+                                        variant="outlined"
+                                        inputProps={{ style: { fontSize: '14px' } }}
+                                        InputLabelProps={{ style: { fontSize: '14px' } }}
+                                        size="small"
+                                        disabled
+                                        value={session?.user?.department?.name || ''} // Hiển thị tên Department
+                                        sx={{ marginBottom: '16px' }}
+                                    />
+                                )}
+                            />
 
                             <FormControl fullWidth margin="normal" sx={{ marginBottom: '16px' }}>
                                 <InputLabel id="opportunity-lead-select-label" style={{ fontSize: '14px', top: "-5px" }}>Opportunity Lead</InputLabel>

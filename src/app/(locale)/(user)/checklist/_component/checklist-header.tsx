@@ -19,6 +19,7 @@ const ChecklistHeader = (props: IProps) => {
             onExport={exportChecklists}
             onImport={importChecklists}
             onCreateOpen={() => setOpen(true)}
+            currentPage='checklists'
             modal={
                 <ChecklistFormModal
                     open={open}

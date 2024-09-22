@@ -137,3 +137,39 @@ export const restoreOpportunity = async (opportunityId: string) => {
         throw new Error('Error restoring opportunity');
     }
 };
+
+export const updateApprovalStatus = async (opportunityId: string, approvalData: { approvalStatus: string; comment?: string }) => {
+    try {
+        const accessToken = await getAccessToken();
+
+        const response = await customFetch({
+            url: `${baseURL}/approve/${opportunityId}`,
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + accessToken,
+            },
+            body: approvalData,
+        });
+        return response;
+    } catch (error) {
+        throw new Error('Error updating approval status');
+    }
+};
+
+export const updateOpportunityAfterRejection = async (opportunityId: string, updatedData: Opportunity) => {
+    try {
+        const accessToken = await getAccessToken();
+
+        const response = await customFetch({
+            url: `${baseURL}/update-rejection/${opportunityId}`,
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + accessToken,
+            },
+            body: updatedData,
+        });
+        return response;
+    } catch (error) {
+        throw new Error('Error updating opportunity after rejection');
+    }
+};
