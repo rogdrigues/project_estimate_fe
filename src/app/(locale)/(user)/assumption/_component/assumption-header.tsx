@@ -19,6 +19,7 @@ const AssumptionHeader = (props: IProps) => {
             onExport={exportAssumptions}
             onImport={importAssumptions}
             onCreateOpen={() => setOpen(true)}
+            currentPage='assumptions'
             modal={
                 <AssumptionFormModal
                     open={open}

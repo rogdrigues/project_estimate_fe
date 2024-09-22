@@ -13,6 +13,7 @@ const ResourceHeader = () => {
             onExport={exportResources}
             onImport={importResources}
             onCreateOpen={() => setOpen(true)}
+            currentPage="resources"
             modal={
                 <ResourceFormModal
                     open={open}

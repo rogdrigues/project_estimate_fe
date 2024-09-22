@@ -38,6 +38,7 @@ export default function DepartmentTable(props: IProps) {
                 actions: true,
             }}
             hiddenColumnsOnMobile={['description', 'status']}
+            currentPage="departments"
         >
             <DepartmentFormModal
                 open={openUpdate}

@@ -13,6 +13,7 @@ const CategoryHeader = () => {
             onExport={exportCategories}
             onImport={importCategories}
             onCreateOpen={() => setOpen(true)}
+            currentPage="categories"
             modal={
                 <CategoryFormModal
                     open={open}

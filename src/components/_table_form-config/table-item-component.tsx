@@ -21,13 +21,18 @@ interface IProps<T> {
     setDataView: (data: T) => void;
     children: ReactNode;
     hiddenColumnsOnMobile: string[];
+    currentPage: string;
+    opportunityReview?: ReactNode;
+    openReview?: boolean;
+    setOpenReview?: (isOpen: boolean) => void;
 }
 
 export default function TableComponent<T>(props: IProps<T>) {
-    const { rows, columns, onRestore, onDelete, markWord, initialVisibility, children, openUpdate, setOpenUpdate, dataView, setDataView, hiddenColumnsOnMobile } = props;
+    const { rows, columns, onRestore, onDelete, markWord, initialVisibility, children, openUpdate, setOpenUpdate, dataView, setDataView, hiddenColumnsOnMobile, openReview, setOpenReview, opportunityReview } = props;
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const isMobile = useMediaQuery('(max-width:1300px)');
     const [openDialog, setOpenDialog] = useState(false);
+
     const open = Boolean(anchorEl);
     const [columnVisibilityModel, setColumnVisibilityModel] = useState<GridColumnVisibilityModel>(initialVisibility);
 
@@ -80,6 +85,9 @@ export default function TableComponent<T>(props: IProps<T>) {
                                                 SetOpenUpdateModal={() => setOpenUpdate(!openUpdate)}
                                                 SetOpenDialog={() => setOpenDialog(true)}
                                                 objectStatus={(dataView as any)?.deleted}
+                                                entity={markWord}
+                                                SetOpenReview={setOpenReview}
+                                                openReviewModal={openReview}
                                             />
                                         </>
                                     )
@@ -119,6 +127,9 @@ export default function TableComponent<T>(props: IProps<T>) {
                 deleteFunction={() => onDelete((dataView as any)?._id)}
             />
             {children}
+
+            {openReview && opportunityReview}
+
         </>
     );
 }

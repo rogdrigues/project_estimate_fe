@@ -37,6 +37,7 @@ export default function ChecklistTable(props: IProps) {
                 actions: true,
             }}
             hiddenColumnsOnMobile={['description', 'note', 'status']}
+            currentPage="checklists"
         >
             <ChecklistFormModal
                 open={openUpdate}

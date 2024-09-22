@@ -46,7 +46,6 @@ export const columns: GridColDef[] = [
         flex: 1,
         minWidth: 150,
         valueGetter: (params: any) => {
-            console.log(params);
             return params || 'N/A';
         }
     },

@@ -19,6 +19,7 @@ const ProductivityHeader = (props: IProps) => {
             onExport={exportProductivities}
             onImport={importProductivities}
             onCreateOpen={() => setOpen(true)}
+            currentPage="productivity"
             modal={
                 <ProductivityFormModal
                     open={open}

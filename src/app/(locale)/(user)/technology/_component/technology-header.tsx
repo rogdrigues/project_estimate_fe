@@ -13,6 +13,7 @@ const TechnologyHeader = () => {
             onExport={exportTechnologies}
             onImport={importTechnologies}
             onCreateOpen={() => setOpen(true)}
+            currentPage="technology"
             modal={
                 <TechnologyFormModal
                     open={open}

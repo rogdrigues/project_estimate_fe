@@ -21,6 +21,7 @@ export const OpportunityHeader = (props: OpportunityHeaderProps) => {
             title="Opportunities"
             onCreateOpen={() => setOpen(true)}
             hideExportImport={true}
+            currentPage="opportunity"
             modal={
                 <OpportunityFormModal
                     open={open}

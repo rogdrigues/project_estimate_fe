@@ -36,6 +36,7 @@ export default function ProductivityTable(props: IProps) {
                 actions: true,
             }}
             hiddenColumnsOnMobile={['technology', 'norm']}
+            currentPage="productivity"
         >
             <ProductivityFormModal
                 open={openUpdate}

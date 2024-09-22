@@ -13,7 +13,6 @@ const OpportunityPage = async () => {
     const opportunities = await getAllOpportunities(session?.access_token, true);
     const categories = await getAllCategories(session?.access_token);
 
-    console.log('opportunities', categories);
     return (
         <div>
             <OpportunityHeader
