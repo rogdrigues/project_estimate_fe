@@ -47,7 +47,6 @@ export const OpportunityFormModal = (props: IProps) => {
         },
     });
     const [filteredDepartments, setFilteredDepartments] = useState<Department[]>([]);
-
     const watchDivision: any = watch("division");
 
     useEffect(() => {
@@ -95,7 +94,7 @@ export const OpportunityFormModal = (props: IProps) => {
                 setOpen(false);
                 reset();
             } else {
-                triggerToast(opportunity ? 'Error updating opportunity' : 'Error creating opportunity', false);
+                triggerToast(opportunity ? `Error updating opportunity ${response.message}` : `Error creating opportunity ${response.message}`, false);
             }
         } catch (error) {
             triggerToast(opportunity ? 'Error updating opportunity' : 'Error creating opportunity', false);

@@ -1,14 +1,14 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Typography, TextField, Modal, Divider, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { Opportunity, OpportunityVersion, Division, Department, Category, UserMaster } from '@/types';
-import { updateApprovalStatus, updateOpportunityAfterRejection } from '@/services/opportunity';
+import { getLastVersionForOpportunity, updateApprovalStatus, updateOpportunityAfterRejection } from '@/services/opportunity';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { styleFormUser } from '@/styles';
 import moment from 'moment';
-import CloseIcon from '@mui/icons-material/Close';
+import { useSession } from 'next-auth/react';
 
 interface IProps {
     opportunity: Opportunity;
@@ -24,6 +24,7 @@ export const OpportunityReviewModal = (props: IProps) => {
     const { opportunity, divisions, departments, opportunityLeads, categories, isOpen, setOpen } = props;
     const { triggerToast } = useToast();
     const router = useRouter();
+    const { data: session } = useSession();
     const { handleSubmit, control, reset, setValue, watch } = useForm({
         defaultValues: {
             name: opportunity?.name || '',
@@ -37,10 +38,22 @@ export const OpportunityReviewModal = (props: IProps) => {
             category: opportunity?.category?._id || '',
             nation: opportunity?.nation || '',
             moneyType: opportunity?.moneyType || '',
-            approvalStatus: 'Pending',
+            approvalStatus: opportunity?.approvalStatus || '',
             comment: '',
         },
     });
+
+    useEffect(() => {
+        //Call opportunity version
+        const fetchOpportunityVersion = async () => {
+            const response = await getLastVersionForOpportunity(opportunity._id);
+            if (response) {
+                setValue('approvalStatus', response.approvalStatus);
+                setValue('comment', response.comment);
+            }
+        }
+        fetchOpportunityVersion();
+    }, [isOpen])
 
     const [action, setAction] = useState<'approve' | 'reject' | 'update' | null>(null);
 
@@ -89,9 +102,26 @@ export const OpportunityReviewModal = (props: IProps) => {
                     </Typography>
                 </Box>
                 <Divider sx={{ marginBottom: '16px' }} />
-                <Box sx={{ maxHeight: '85vh', overflowY: 'auto', paddingRight: '16px' }}> {/* Added scrollable box */}
-                    {action === 'update' ? (
+                <Box sx={{ maxHeight: '85vh', overflowY: 'auto', paddingRight: '16px' }}>
+                    {action === 'update' || (opportunity?.approvalStatus === "Rejected" && session?.user?.role?.roleName !== "Opportunity") ? (
                         <form onSubmit={handleSubmit(onSubmitUpdateAfterRejection)}>
+                            <Controller
+                                name="comment"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        label="Rejection Comment"
+                                        size="small"
+                                        fullWidth
+                                        rows={4}
+                                        margin="normal"
+                                        inputProps={{ style: { fontSize: '14px' }, rows: 4 }}
+                                        multiline
+                                        disabled={true}
+                                    />
+                                )}
+                            />
                             <Controller
                                 name="name"
                                 control={control}
@@ -244,6 +274,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                         margin="normal"
                                         inputProps={{ style: { fontSize: '14px' }, rows: 4 }}
                                         multiline
+                                        disabled={opportunity.approvalStatus === 'Approved'}
                                     />
                                 )}
                             />
@@ -254,6 +285,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                     variant="contained"
                                     color="primary"
                                     sx={{ marginRight: '8px', backgroundColor: '#7367F0' }}
+                                    disabled={opportunity.approvalStatus === 'Approved'}
                                 >
                                     Approve
                                 </Button>
@@ -262,6 +294,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                     onClick={() => setValue('approvalStatus', 'Rejected')}
                                     variant="outlined"
                                     color="secondary"
+                                    disabled={opportunity.approvalStatus === 'Approved'}
                                 >
                                     Reject
                                 </Button>
