@@ -17,18 +17,18 @@ interface IProps<T> {
     initialVisibility: GridColumnVisibilityModel;
     openUpdate: boolean;
     setOpenUpdate: (isOpen: boolean) => void;
-    dataView: T | null;
-    setDataView: (data: T) => void;
-    children: ReactNode;
     hiddenColumnsOnMobile: string[];
     currentPage: string;
     opportunityReview?: ReactNode;
+    children: ReactNode;
+    dataView: T | null;
+    setDataView: (data: T) => void;
     openReview?: boolean;
     setOpenReview?: (isOpen: boolean) => void;
 }
 
 export default function TableComponent<T>(props: IProps<T>) {
-    const { rows, columns, onRestore, onDelete, markWord, initialVisibility, children, openUpdate, setOpenUpdate, dataView, setDataView, hiddenColumnsOnMobile, openReview, setOpenReview, opportunityReview } = props;
+    const { rows, columns, onRestore, onDelete, markWord, initialVisibility, children, openUpdate, setOpenUpdate, dataView, setDataView, hiddenColumnsOnMobile, openReview, setOpenReview, opportunityReview, currentPage } = props;
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const isMobile = useMediaQuery('(max-width:1300px)');
     const [openDialog, setOpenDialog] = useState(false);
@@ -84,8 +84,8 @@ export default function TableComponent<T>(props: IProps<T>) {
                                                 openUpdateModal={openUpdate}
                                                 SetOpenUpdateModal={() => setOpenUpdate(!openUpdate)}
                                                 SetOpenDialog={() => setOpenDialog(true)}
-                                                objectStatus={(dataView as any)?.deleted}
-                                                entity={markWord}
+                                                dataView={dataView}
+                                                entity={currentPage}
                                                 SetOpenReview={setOpenReview}
                                                 openReviewModal={openReview}
                                             />
@@ -129,7 +129,6 @@ export default function TableComponent<T>(props: IProps<T>) {
             {children}
 
             {openReview && opportunityReview}
-
         </>
     );
 }
