@@ -101,7 +101,6 @@ const HeaderComponent = (props: IHeaderProps) => {
                     {title}
                 </Typography>
 
-                {/* Hiển thị nút CREATE, EXPORT, IMPORT nếu có quyền tương ứng */}
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mb: 2 }}>
                     {hasPermission('manage') && (
                         <Button

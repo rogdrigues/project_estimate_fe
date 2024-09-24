@@ -36,7 +36,7 @@ const menuItems = [
     { name: 'Productivity', icon: <ShowChartIcon />, path: '/productivity', tag: ['manage_productivity', 'view_productivity'] },
     { name: 'Template', icon: <FileCopyIcon />, path: '/template', tag: ['manage_template', 'view_template'] },
     { name: 'Opportunity', icon: <TrendingUpIcon />, path: '/opportunity', tag: ['manage_opportunity', 'view_opportunity'] },
-    { name: 'Presale Plan', icon: <PlanIcon />, path: '/presale_plan', tag: ['manage_presale_plan', 'view_presale_plan'] }
+    { name: 'Presale Plan', icon: <PlanIcon />, path: '/presaleplan', tag: ['manage_presale_plan', 'view_presale_plan'] }
 ];
 
 const Sidebar = () => {

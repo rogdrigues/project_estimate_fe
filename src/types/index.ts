@@ -12,3 +12,4 @@ export * from './Productivity';
 export * from './Checklist';
 export * from './Opportunity';
 export * from './OpportunityVersion';
+export * from './PresalePlan';

@@ -19,7 +19,7 @@ interface IProps<T> {
     setOpenUpdate: (isOpen: boolean) => void;
     hiddenColumnsOnMobile: string[];
     currentPage: string;
-    opportunityReview?: ReactNode;
+    optionReview?: ReactNode;
     children: ReactNode;
     dataView: T | null;
     setDataView: (data: T) => void;
@@ -28,7 +28,7 @@ interface IProps<T> {
 }
 
 export default function TableComponent<T>(props: IProps<T>) {
-    const { rows, columns, onRestore, onDelete, markWord, initialVisibility, children, openUpdate, setOpenUpdate, dataView, setDataView, hiddenColumnsOnMobile, openReview, setOpenReview, opportunityReview, currentPage } = props;
+    const { rows, columns, onRestore, onDelete, markWord, initialVisibility, children, openUpdate, setOpenUpdate, dataView, setDataView, hiddenColumnsOnMobile, openReview, setOpenReview, optionReview, currentPage } = props;
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const isMobile = useMediaQuery('(max-width:1300px)');
     const [openDialog, setOpenDialog] = useState(false);
@@ -128,7 +128,7 @@ export default function TableComponent<T>(props: IProps<T>) {
             />
             {children}
 
-            {openReview && opportunityReview}
+            {openReview && optionReview}
         </>
     );
 }
