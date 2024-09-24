@@ -44,7 +44,7 @@ export default function OpportunityTable(props: IProps) {
             }}
             hiddenColumnsOnMobile={['description', 'scope', 'budget']}
             currentPage="opportunity"
-            opportunityReview={
+            optionReview={
                 <OpportunityReviewModal
                     isOpen={openReview}
                     setOpen={setOpenReview}

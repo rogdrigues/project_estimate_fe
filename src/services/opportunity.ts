@@ -23,6 +23,25 @@ export const getAllOpportunities = async (accessToken: string | undefined, inclu
     }
 };
 
+export const getApproveOpportunities = async (accessToken: string | undefined, includeDeleted: boolean = false, includeApproveOnly: boolean = false) => {
+    try {
+        const response = await customFetch<Opportunity[]>({
+            url: `${baseURL}/list-approved?includeDeleted=${includeDeleted}&includeApproveOnly=${includeApproveOnly}`,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accessToken,
+            },
+            method: 'GET',
+            nextOptions: {
+                cache: 'no-store',
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error('Error fetching opportunities');
+    }
+};
+
 export const getOppLead = async (accessToken: string | undefined) => {
     try {
 

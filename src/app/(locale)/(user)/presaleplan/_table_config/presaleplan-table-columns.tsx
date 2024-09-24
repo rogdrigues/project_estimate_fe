@@ -1,23 +1,22 @@
-import { GridColDef } from '@mui/x-data-grid';
+import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import BlockIcon from '@mui/icons-material/Block';
-import { GridRenderCellParams } from '@mui/x-data-grid';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import moment from 'moment';
-//Opportunity Table Columns
+
 export const columns: GridColDef[] = [
     {
         field: 'id',
         headerName: 'ID',
-        description: 'This column displays the ID of the opportunity.',
+        description: 'This column displays the ID of the Presale Plan.',
         width: 100,
         sortable: true,
     },
     {
         field: 'department',
         headerName: 'Company',
-        description: 'This column displays the company of the opportunity.',
+        description: 'This column displays the company of the Presale Plan.',
         width: 150,
         sortable: true,
         flex: 1,
@@ -28,7 +27,7 @@ export const columns: GridColDef[] = [
     {
         field: 'division',
         headerName: 'Section',
-        description: 'This column displays the section of the opportunity.',
+        description: 'This column displays the section of the Presale Plan.',
         width: 150,
         sortable: true,
         flex: 1,
@@ -37,9 +36,9 @@ export const columns: GridColDef[] = [
         }
     },
     {
-        field: 'opportunityLead',
-        headerName: 'Opp Lead',
-        description: 'This column displays the opportunity lead of the opportunity.',
+        field: 'createdBy',
+        headerName: 'Created By',
+        description: 'This column displays the creator of the Presale Plan.',
         width: 150,
         sortable: true,
         flex: 1,
@@ -49,70 +48,16 @@ export const columns: GridColDef[] = [
     },
     {
         field: 'name',
-        headerName: 'Name',
-        description: 'This column displays the name of the opportunity.',
+        headerName: 'Presale Plan Name',
+        description: 'This column displays the name of the Presale Plan.',
         width: 150,
         sortable: true,
         flex: 1,
     },
     {
-        field: 'customerName',
-        headerName: 'Customer',
-        description: 'This column displays the customer of the opportunity.',
-        width: 150,
-        sortable: true,
-        flex: 1,
-    },
-    {
-        field: 'nation',
-        headerName: 'Market',
-        description: 'This column displays the market of the opportunity.',
-        width: 150,
-        sortable: true,
-        flex: 1,
-    },
-    {
-        field: 'budget',
-        headerName: 'Budget',
-        description: 'This column displays the budget of the opportunity.',
-        width: 150,
-        sortable: true,
-        flex: 1,
-    },
-    {
-        field: 'timeline',
-        headerName: 'Deadline',
-        description: 'This column displays the timeline of the opportunity.',
-        width: 150,
-        sortable: true,
-        flex: 1,
-        valueGetter: (params: any) => {
-            return moment(params).format('YYYY-MM-DD');
-        }
-    },
-    {
-        field: 'category',
-        headerName: 'Category',
-        description: 'This column displays the category of the opportunity.',
-        width: 150,
-        sortable: true,
-        flex: 1,
-        valueGetter: (params: any) => {
-            return params?.CategoryName || "N/A";
-        }
-    },
-    {
-        field: 'version',
-        headerName: 'Version',
-        description: 'This column displays the version of the opportunity.',
-        width: 150,
-        sortable: true,
-        flex: 1,
-    },
-    {
-        field: 'approvalStatus',
+        field: 'status',
         headerName: 'Status',
-        description: 'This column displays the approval status of the opportunity.',
+        description: 'This column displays the approval status of the Presale Plan.',
         width: 150,
         sortable: true,
         flex: 1,
@@ -152,6 +97,25 @@ export const columns: GridColDef[] = [
                 </span>
             );
         },
+    },
+    {
+        field: 'pendingUntil',
+        headerName: 'Pending Until',
+        description: 'This column displays the pending deadline of the Presale Plan.',
+        width: 150,
+        sortable: true,
+        flex: 1,
+        valueGetter: (params: any) => {
+            return moment(params?.row.pendingUntil).format('YYYY-MM-DD') || "N/A";
+        }
+    },
+    {
+        field: 'version',
+        headerName: 'Version',
+        description: 'This column displays the version of the Presale Plan.',
+        width: 150,
+        sortable: true,
+        flex: 1,
     },
     {
         field: 'actions',
