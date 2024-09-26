@@ -47,7 +47,7 @@ export const OpportunityReviewModal = (props: IProps) => {
 
 
     const [versions, setVersions] = useState<OpportunityVersion[]>([]);
-    const [comments, setComments] = useState<OpportunityComment>(null);
+    const [comments, setComments] = useState<OpportunityComment[]>([]);
     const [action, setAction] = useState<'approve' | 'reject' | 'update' | null>(null);
 
     const checkingRole = action === 'update' || (opportunity.approvalStatus === "Rejected" && session?.user?.role?.roleName !== "Opportunity");
@@ -57,7 +57,7 @@ export const OpportunityReviewModal = (props: IProps) => {
             getCommentForOpportunity(opportunity._id)
                 .then((data) => {
                     console.log('Comments:', data);
-                    setComments(data || null);
+                    setComments(data || []);
                 })
                 .catch((error) => console.error('Error fetching versions:', error));
 
@@ -129,309 +129,299 @@ export const OpportunityReviewModal = (props: IProps) => {
 
                     <Grid container spacing={2}>
                         {/* Left Section: Opportunity Details */}
+
                         <Grid item xs={12} md={5}>
                             <Box sx={{ paddingRight: '16px' }}>
-                                <Grid container spacing={2}>
-                                    <Grid item xs={12} md={6}>
-                                        <Typography variant="subtitle1">Name</Typography>
-                                        {(checkingRole) ? (
-                                            <Controller
-                                                name="name"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <TextField {...field} size="small" fullWidth margin="normal" />
-                                                )}
-                                            />
-                                        ) : (
-                                            <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
-                                                {opportunity.name || 'N/A'}
-                                            </Typography>
-                                        )}
-                                    </Grid>
 
-                                    <Grid item xs={12} md={6}>
-                                        <Typography variant="subtitle1">Customer Name</Typography>
-                                        {(checkingRole) ? (
-                                            <Controller
-                                                name="customerName"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <TextField {...field} size="small" fullWidth margin="normal" />
-                                                )}
-                                            />
-                                        ) : (
-                                            <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
-                                                {opportunity.customerName || 'N/A'}
-                                            </Typography>
-                                        )}
-                                    </Grid>
-
-                                    <Grid item xs={12} md={6}>
-                                        <Typography variant="subtitle1">Division</Typography>
-                                        {(checkingRole) ? (
-                                            <FormControl fullWidth margin="normal">
+                                <form onSubmit={handleSubmit(onSubmitUpdateAfterRejection)}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="subtitle1">Name</Typography>
+                                            {(checkingRole) ? (
                                                 <Controller
-                                                    name="division"
+                                                    name="name"
                                                     control={control}
                                                     render={({ field }) => (
-                                                        <Select size="small" {...field} disabled>
-                                                            {divisions.map((division) => (
-                                                                <MenuItem key={division._id} value={division._id}>
-                                                                    {division.name}
-                                                                </MenuItem>
-                                                            ))}
-                                                        </Select>
+                                                        <TextField {...field} size="small" fullWidth margin="normal" />
                                                     )}
                                                 />
-                                            </FormControl>
-                                        ) : (
-                                            <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
-                                                {opportunity.division?.name || 'N/A'}
-                                            </Typography>
-                                        )}
-                                    </Grid>
+                                            ) : (
+                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                    {opportunity.name || 'N/A'}
+                                                </Typography>
+                                            )}
+                                        </Grid>
 
-                                    <Grid item xs={12} md={6}>
-                                        <Typography variant="subtitle1">Department</Typography>
-                                        {(checkingRole) ? (
-                                            <FormControl fullWidth margin="normal">
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="subtitle1">Customer Name</Typography>
+                                            {(checkingRole) ? (
                                                 <Controller
-                                                    name="department"
+                                                    name="customerName"
                                                     control={control}
                                                     render={({ field }) => (
-                                                        <Select size="small" {...field} disabled>
-                                                            {departments.map((dept) => (
-                                                                <MenuItem key={dept._id} value={dept._id}>
-                                                                    {dept.name}
-                                                                </MenuItem>
-                                                            ))}
-                                                        </Select>
+                                                        <TextField {...field} size="small" fullWidth margin="normal" />
                                                     )}
                                                 />
-                                            </FormControl>
-                                        ) : (
-                                            <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
-                                                {opportunity.department?.name || 'N/A'}
-                                            </Typography>
-                                        )}
-                                    </Grid>
+                                            ) : (
+                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                    {opportunity.customerName || 'N/A'}
+                                                </Typography>
+                                            )}
+                                        </Grid>
 
-                                    <Grid item xs={12} md={6}>
-                                        <Typography variant="subtitle1">Status</Typography>
-                                        {(checkingRole) ? (
-                                            <Controller
-                                                name="approvalStatus"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <TextField {...field} size="small" fullWidth margin="normal" disabled />
-                                                )}
-                                            />
-                                        ) : (
-                                            <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
-                                                {opportunity.approvalStatus || 'N/A'}
-                                            </Typography>
-                                        )}
-                                    </Grid>
-
-                                    <Grid item xs={12} md={6}>
-                                        <Typography variant="subtitle1">Version</Typography>
-                                        {(checkingRole) ? (
-                                            <Controller
-                                                name="version"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <TextField {...field} size="small" fullWidth margin="normal" disabled />
-                                                )}
-                                            />
-                                        ) : (
-                                            <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
-                                                {opportunity.version || 'N/A'}
-                                            </Typography>
-                                        )}
-                                    </Grid>
-
-                                    <Grid item xs={12} md={6}>
-                                        <Typography variant="subtitle1">Timeline</Typography>
-                                        {(checkingRole) ? (
-                                            <Controller
-                                                name="timeline"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <TextField
-                                                        {...field}
-                                                        size="small"
-                                                        type="date"
-                                                        fullWidth
-                                                        margin="normal"
-                                                        InputLabelProps={{ shrink: true }}
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="subtitle1">Division</Typography>
+                                            {(checkingRole) ? (
+                                                <FormControl fullWidth margin="normal">
+                                                    <Controller
+                                                        name="division"
+                                                        control={control}
+                                                        render={({ field }) => (
+                                                            <Select size="small" {...field} disabled>
+                                                                {divisions.map((division) => (
+                                                                    <MenuItem key={division._id} value={division._id}>
+                                                                        {division.name}
+                                                                    </MenuItem>
+                                                                ))}
+                                                            </Select>
+                                                        )}
                                                     />
-                                                )}
-                                            />
-                                        ) : (
-                                            <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
-                                                {moment(opportunity.timeline).format('YYYY-MM-DD') || 'N/A'}
-                                            </Typography>
-                                        )}
-                                    </Grid>
+                                                </FormControl>
+                                            ) : (
+                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                    {opportunity.division?.name || 'N/A'}
+                                                </Typography>
+                                            )}
+                                        </Grid>
 
-                                    <Grid item xs={12} md={6}>
-                                        <Typography variant="subtitle1">Budget</Typography>
-                                        {(checkingRole) ? (
-                                            <Controller
-                                                name="budget"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <TextField {...field} size="small" type="number" fullWidth margin="normal" />
-                                                )}
-                                            />
-                                        ) : (
-                                            <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
-                                                {opportunity.budget || 'N/A'}
-                                            </Typography>
-                                        )}
-                                    </Grid>
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="subtitle1">Department</Typography>
+                                            {(checkingRole) ? (
+                                                <FormControl fullWidth margin="normal">
+                                                    <Controller
+                                                        name="department"
+                                                        control={control}
+                                                        render={({ field }) => (
+                                                            <Select size="small" {...field} disabled>
+                                                                {departments.map((dept) => (
+                                                                    <MenuItem key={dept._id} value={dept._id}>
+                                                                        {dept.name}
+                                                                    </MenuItem>
+                                                                ))}
+                                                            </Select>
+                                                        )}
+                                                    />
+                                                </FormControl>
+                                            ) : (
+                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                    {opportunity.department?.name || 'N/A'}
+                                                </Typography>
+                                            )}
+                                        </Grid>
 
-                                    <Grid item xs={12} md={6}>
-                                        <Typography variant="subtitle1">Scope</Typography>
-                                        {(checkingRole) ? (
-                                            <Controller
-                                                name="scope"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <TextField {...field} size="small" fullWidth margin="normal" />
-                                                )}
-                                            />
-                                        ) : (
-                                            <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
-                                                {opportunity.scope || 'N/A'}
-                                            </Typography>
-                                        )}
-                                    </Grid>
-
-                                    <Grid item xs={12} md={6}>
-                                        <Typography variant="subtitle1">Category</Typography>
-                                        {(checkingRole) ? (
-                                            <FormControl fullWidth margin="normal">
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="subtitle1">Status</Typography>
+                                            {(checkingRole) ? (
                                                 <Controller
-                                                    name="category"
+                                                    name="approvalStatus"
                                                     control={control}
                                                     render={({ field }) => (
-                                                        <Select {...field} size="small" >
-                                                            {categories.map((cat) => (
-                                                                <MenuItem key={cat._id} value={cat._id}>
-                                                                    {cat.CategoryName}
-                                                                </MenuItem>
-                                                            ))}
-                                                        </Select>
+                                                        <TextField {...field} size="small" fullWidth margin="normal" disabled />
                                                     )}
                                                 />
-                                            </FormControl>
-                                        ) : (
-                                            <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
-                                                {opportunity.category ? opportunity.category.CategoryName : 'N/A'}
-                                            </Typography>
+                                            ) : (
+                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                    {opportunity.approvalStatus || 'N/A'}
+                                                </Typography>
+                                            )}
+                                        </Grid>
+
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="subtitle1">Version</Typography>
+                                            {(checkingRole) ? (
+                                                <Controller
+                                                    name="version"
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <TextField {...field} size="small" fullWidth margin="normal" disabled />
+                                                    )}
+                                                />
+                                            ) : (
+                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                    {opportunity.version || 'N/A'}
+                                                </Typography>
+                                            )}
+                                        </Grid>
+
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="subtitle1">Timeline</Typography>
+                                            {(checkingRole) ? (
+                                                <Controller
+                                                    name="timeline"
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <TextField
+                                                            {...field}
+                                                            size="small"
+                                                            type="date"
+                                                            fullWidth
+                                                            margin="normal"
+                                                            InputLabelProps={{ shrink: true }}
+                                                        />
+                                                    )}
+                                                />
+                                            ) : (
+                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                    {moment(opportunity.timeline).format('YYYY-MM-DD') || 'N/A'}
+                                                </Typography>
+                                            )}
+                                        </Grid>
+
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="subtitle1">Budget</Typography>
+                                            {(checkingRole) ? (
+                                                <Controller
+                                                    name="budget"
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <TextField {...field} size="small" type="number" fullWidth margin="normal" />
+                                                    )}
+                                                />
+                                            ) : (
+                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                    {opportunity.budget || 'N/A'}
+                                                </Typography>
+                                            )}
+                                        </Grid>
+
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="subtitle1">Scope</Typography>
+                                            {(checkingRole) ? (
+                                                <Controller
+                                                    name="scope"
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <TextField {...field} size="small" fullWidth margin="normal" />
+                                                    )}
+                                                />
+                                            ) : (
+                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                    {opportunity.scope || 'N/A'}
+                                                </Typography>
+                                            )}
+                                        </Grid>
+
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="subtitle1">Category</Typography>
+                                            {(checkingRole) ? (
+                                                <FormControl fullWidth margin="normal">
+                                                    <Controller
+                                                        name="category"
+                                                        control={control}
+                                                        render={({ field }) => (
+                                                            <Select {...field} size="small" >
+                                                                {categories.map((cat) => (
+                                                                    <MenuItem key={cat._id} value={cat._id}>
+                                                                        {cat.CategoryName}
+                                                                    </MenuItem>
+                                                                ))}
+                                                            </Select>
+                                                        )}
+                                                    />
+                                                </FormControl>
+                                            ) : (
+                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                    {opportunity.category ? opportunity.category.CategoryName : 'N/A'}
+                                                </Typography>
+                                            )}
+                                        </Grid>
+
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="subtitle1">Budget</Typography>
+                                            {(checkingRole) ? (
+                                                <Controller
+                                                    name="budget"
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <TextField {...field} size="small" type="number" fullWidth margin="normal" />
+                                                    )}
+                                                />
+                                            ) : (
+                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                    {opportunity.budget || 'N/A'}
+                                                </Typography>
+                                            )}
+                                        </Grid>
+
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="subtitle1">Nation</Typography>
+                                            {(checkingRole) ? (
+                                                <Controller
+                                                    name="nation"
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <TextField {...field} size="small" fullWidth margin="normal" />
+                                                    )}
+                                                />
+                                            ) : (
+                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                    {opportunity.nation || 'N/A'}
+                                                </Typography>
+                                            )}
+                                        </Grid>
+
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="subtitle1">Money Type</Typography>
+                                            {(checkingRole) ? (
+                                                <Controller
+                                                    name="moneyType"
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <TextField {...field} size="small" fullWidth margin="normal" />
+                                                    )}
+                                                />
+                                            ) : (
+                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                    {opportunity.moneyType || 'N/A'}
+                                                </Typography>
+                                            )}
+                                        </Grid>
+
+                                        <Grid item xs={12} md={6}>
+                                            <Typography variant="subtitle1">Opportunity Lead</Typography>
+                                            {(checkingRole) ? (
+                                                <Controller
+                                                    name="opportunityLead"
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <FormControl fullWidth margin="normal">
+                                                            <Select {...field} size="small" disabled>
+                                                                {opportunityLeads.map((lead) => (
+                                                                    <MenuItem key={lead._id} value={lead._id}>
+                                                                        {lead.profile?.fullName || lead.username}
+                                                                    </MenuItem>
+                                                                ))}
+                                                            </Select>
+                                                        </FormControl>
+                                                    )}
+                                                />
+                                            ) : (
+                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                    {opportunity.opportunityLead?.username || 'N/A'}
+                                                </Typography>
+                                            )}
+                                        </Grid>
+
+                                        {checkingRole && (
+                                            <Grid item xs={12} md={12}>
+                                                <Button type="submit" variant="contained" fullWidth color="primary" sx={{ marginTop: '16px' }}>
+                                                    Send
+                                                </Button>
+                                            </Grid>
                                         )}
                                     </Grid>
+                                </form>
 
-                                    <Grid item xs={12} md={6}>
-                                        <Typography variant="subtitle1">Budget</Typography>
-                                        {(checkingRole) ? (
-                                            <Controller
-                                                name="budget"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <TextField {...field} size="small" type="number" fullWidth margin="normal" />
-                                                )}
-                                            />
-                                        ) : (
-                                            <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
-                                                {opportunity.budget || 'N/A'}
-                                            </Typography>
-                                        )}
-                                    </Grid>
-
-                                    <Grid item xs={12} md={6}>
-                                        <Typography variant="subtitle1">Nation</Typography>
-                                        {(checkingRole) ? (
-                                            <Controller
-                                                name="nation"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <TextField {...field} size="small" fullWidth margin="normal" />
-                                                )}
-                                            />
-                                        ) : (
-                                            <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
-                                                {opportunity.nation || 'N/A'}
-                                            </Typography>
-                                        )}
-                                    </Grid>
-
-                                    <Grid item xs={12} md={6}>
-                                        <Typography variant="subtitle1">Money Type</Typography>
-                                        {(checkingRole) ? (
-                                            <Controller
-                                                name="moneyType"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <TextField {...field} size="small" fullWidth margin="normal" />
-                                                )}
-                                            />
-                                        ) : (
-                                            <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
-                                                {opportunity.moneyType || 'N/A'}
-                                            </Typography>
-                                        )}
-                                    </Grid>
-
-                                    <Grid item xs={12} md={6}>
-                                        <Typography variant="subtitle1">Scope</Typography>
-                                        {(checkingRole) ? (
-                                            <Controller
-                                                name="scope"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <TextField {...field} size="small" fullWidth margin="normal" />
-                                                )}
-                                            />
-                                        ) : (
-                                            <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
-                                                {opportunity.scope || 'N/A'}
-                                            </Typography>
-                                        )}
-                                    </Grid>
-
-                                    <Grid item xs={12} md={12}>
-                                        <Typography variant="subtitle1">Opportunity Lead</Typography>
-                                        {(checkingRole) ? (
-                                            <Controller
-                                                name="opportunityLead"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <FormControl fullWidth margin="normal">
-                                                        <Select {...field} size="small" disabled>
-                                                            {opportunityLeads.map((lead) => (
-                                                                <MenuItem key={lead._id} value={lead._id}>
-                                                                    {lead.profile?.fullName || lead.username}
-                                                                </MenuItem>
-                                                            ))}
-                                                        </Select>
-                                                    </FormControl>
-                                                )}
-                                            />
-                                        ) : (
-                                            <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
-                                                {opportunity.opportunityLead?.username || 'N/A'}
-                                            </Typography>
-                                        )}
-                                    </Grid>
-
-                                    <Grid item xs={12} md={12}>
-                                        <Button type="submit" onClick={onSubmitUpdateAfterRejection} variant="contained" fullWidth color="primary" sx={{ marginTop: '16px' }}>
-                                            Send
-                                        </Button>
-                                    </Grid>
-                                </Grid>
                             </Box>
                         </Grid>
 
@@ -444,7 +434,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                         <Typography variant="h6">Version History</Typography>
                                         <Divider sx={{ my: 1 }} />
 
-                                        <Box sx={{ maxHeight: '200px', overflowY: 'auto', paddingRight: '10px', paddingLeft: "10px" }}>
+                                        <Box sx={{ maxHeight: '135px', overflowY: 'auto', paddingRight: '10px', paddingLeft: "10px" }}>
                                             {versions.length > 0 ? (
                                                 versions.map((version) => (
                                                     <Box
@@ -487,92 +477,96 @@ export const OpportunityReviewModal = (props: IProps) => {
                                 {/* Comments */}
                                 <Grid item xs={12}>
                                     <Box>
-                                        <Typography variant="h6">Comment from Opportunity Lead</Typography>
+                                        <Typography variant="h6">Comments from Opportunity Lead</Typography>
                                         <Divider sx={{ my: 1 }} />
-                                        <Box sx={{ maxHeight: '400px', height: '350px', overflowY: 'auto' }}>
-
-                                            {opportunity.opportunityLead && comments ? (
-                                                <Box
-                                                    sx={{
-                                                        display: 'flex',
-                                                        mb: 2,
-                                                        alignItems: 'flex-start',
-                                                        justifyContent: 'flex-start',
-                                                        animation: 'fadeIn 0.5s ease-out',
-                                                        '@keyframes fadeIn': {
-                                                            '0%': { opacity: 0, transform: 'translateY(10px)' },
-                                                            '100%': { opacity: 1, transform: 'translateY(0)' },
-                                                        },
-                                                    }}
-                                                >
-                                                    {/* Avatar */}
+                                        <Box sx={{ maxHeight: '400px', height: '300px', overflowY: 'auto' }}>
+                                            {comments && comments.length > 0 ? (
+                                                comments.map((comment, index) => (
                                                     <Box
-                                                        component="img"
-                                                        src={opportunity.opportunityLead.avatar || ''}
-                                                        alt="Opportunity Lead Avatar"
+                                                        key={index}
                                                         sx={{
-                                                            width: 40,
-                                                            height: 40,
-                                                            borderRadius: '50%',
-                                                            mr: 2,
-                                                        }}
-                                                    />
-
-                                                    {/* Comment Box */}
-                                                    <Box
-                                                        sx={{
-                                                            maxWidth: '80%',
-                                                            backgroundColor: '#f1f3f4',
-                                                            borderRadius: '16px',
-                                                            p: 1.5,
-                                                            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.12)',
-                                                            textAlign: 'left',
+                                                            display: 'flex',
+                                                            mb: 2,
+                                                            alignItems: 'flex-start',
+                                                            justifyContent: 'flex-start',
+                                                            animation: 'fadeIn 0.5s ease-out',
+                                                            '@keyframes fadeIn': {
+                                                                '0%': { opacity: 0, transform: 'translateY(10px)' },
+                                                                '100%': { opacity: 1, transform: 'translateY(0)' },
+                                                            },
                                                         }}
                                                     >
-                                                        {/* Username and Status */}
-                                                        <Typography
-                                                            variant="body2"
+                                                        {/* Avatar */}
+                                                        <Box
+                                                            component="img"
+                                                            src={comment.createdBy?.avatar || ''}
+                                                            alt="Opportunity Lead Avatar"
                                                             sx={{
-                                                                fontWeight: 'bold',
-                                                                display: 'flex',
-                                                                alignItems: 'center',
+                                                                width: 40,
+                                                                height: 40,
+                                                                borderRadius: '50%',
+                                                                mr: 2,
+                                                            }}
+                                                        />
+
+                                                        {/* Comment Box */}
+                                                        <Box
+                                                            sx={{
+                                                                maxWidth: '80%',
+                                                                backgroundColor: '#f1f3f4',
+                                                                borderRadius: '16px',
+                                                                p: 1.5,
+                                                                boxShadow: '0 1px 3px rgba(0, 0, 0, 0.12)',
+                                                                textAlign: 'left',
                                                             }}
                                                         >
-                                                            <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
-                                                                {comments?.createdBy?.username ? comments?.createdBy?.username : 'N/A'}
-                                                            </Typography>
+                                                            {/* Username and Status */}
                                                             <Typography
-                                                                variant="caption"
+                                                                variant="body2"
                                                                 sx={{
-                                                                    fontStyle: 'italic',
-                                                                    ml: 1,
-                                                                    color: comments.approvalStatus === 'Approved' ? 'green' : 'red',
+                                                                    fontWeight: 'bold',
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
                                                                 }}
                                                             >
-                                                                ({comments.approvalStatus})
+                                                                <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
+                                                                    {comment.createdBy?.username || 'N/A'}
+                                                                </Typography>
+                                                                <Typography
+                                                                    variant="caption"
+                                                                    sx={{
+                                                                        fontStyle: 'italic',
+                                                                        ml: 1,
+                                                                        color: comment.approvalStatus === 'Approved' ? 'green' : 'red',
+                                                                    }}
+                                                                >
+                                                                    ({comment.approvalStatus})
+                                                                </Typography>
                                                             </Typography>
-                                                        </Typography>
 
-                                                        {/* Comment Text */}
-                                                        <Typography variant="body2" sx={{ mt: 1 }}>
-                                                            {comments.comment}
-                                                        </Typography>
+                                                            {/* Comment Text */}
+                                                            <Typography variant="body2" sx={{ mt: 1 }}>
+                                                                {comment.comment}
+                                                            </Typography>
+                                                        </Box>
                                                     </Box>
-                                                </Box>
+                                                ))
                                             ) : (
                                                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                                                     <Typography variant="body2" sx={{ fontStyle: 'italic', color: '#6c757d' }}>
-                                                        No comment available.
+                                                        No comments available.
                                                     </Typography>
                                                 </Box>
                                             )}
                                         </Box>
                                     </Box>
-                                    <CommentInput
-                                        entityId={opportunity._id}
-                                        currentPage='opportunity'
-                                        setOpen={setOpen}
-                                    />
+                                    {!checkingRole && (
+                                        <CommentInput
+                                            dataView={opportunity}
+                                            currentPage='opportunity'
+                                            setOpen={setOpen}
+                                        />
+                                    )}
                                 </Grid>
                             </Grid>
                         </Grid>

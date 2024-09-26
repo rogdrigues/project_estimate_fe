@@ -9,13 +9,13 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@/context/ToastContext';
 
 interface IProps {
-    entityId: string;
+    dataView: any;
     onCommentSubmit?: (newComment: PresalePlanComment) => void;
     currentPage: string;
     setOpen?: (value: boolean) => void;
 }
 export const CommentInput = (props: IProps) => {
-    const { entityId, onCommentSubmit, currentPage, setOpen } = props;
+    const { dataView, onCommentSubmit, currentPage, setOpen } = props;
     const [comment, setComment] = useState('');
     const [status, setStatus] = useState<'approve' | 'reject'>('approve');
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -42,7 +42,7 @@ export const CommentInput = (props: IProps) => {
                     const commentData = {
                         comment,
                         approvalStatus: status === 'approve' ? 'Approved' : 'Rejected',
-                        presalePlan: entityId,
+                        presalePlan: dataView._id,
                     };
 
                     const response = await createPresalePlanComment(commentData);
@@ -65,7 +65,7 @@ export const CommentInput = (props: IProps) => {
                         approvalStatus: status === 'approve' ? 'Approved' : 'Rejected',
                         comment,
                     }
-                    const response = await updateApprovalStatus(entityId, data);
+                    const response = await updateApprovalStatus(dataView._id, data);
                     if (response.EC === 0) {
                         setOpen && setOpen(false);
                         triggerToast(`Opportunity ${data.approvalStatus} successfully`, true);
@@ -149,10 +149,15 @@ export const CommentInput = (props: IProps) => {
                     sx: { marginLeft: 1 },
                 }}
             />
-
-            <IconButton onClick={handleSend} disabled={!comment.trim()}>
-                <SendIcon sx={{ color: comment.trim() ? '#1976d2' : '#bdbdbd' }} />
-            </IconButton>
+            {currentPage === 'presale_plan' ? (
+                <IconButton onClick={handleSend} disabled={!comment.trim()}>
+                    <SendIcon sx={{ color: comment.trim() ? '#1976d2' : '#bdbdbd' }} />
+                </IconButton>
+            ) : (
+                <IconButton onClick={handleSend} disabled={!comment.trim() || ['Rejected', 'Approved'].includes(dataView?.approvalStatus)}>
+                    <SendIcon sx={{ color: comment.trim() ? '#1976d2' : '#bdbdbd' }} />
+                </IconButton>
+            )}
         </Box>
     );
 };
