@@ -1,5 +1,5 @@
 import { customFetch } from '@/lib';
-import { Opportunity, OpportunityVersion, UserMaster } from '@/types';
+import { Opportunity, OpportunityComment, OpportunityVersion, UserMaster } from '@/types';
 import { getAccessToken } from '@/utils';
 
 const baseURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/opportunity`;
@@ -85,11 +85,11 @@ export const getOpportunityById = async (opportunityId: string) => {
     }
 };
 
-export const getLastVersionForOpportunity = async (opportunityId: string) => {
+export const getCommentForOpportunity = async (opportunityId: string) => {
     try {
         const accessToken = await getAccessToken();
 
-        const response = await customFetch<OpportunityVersion>({
+        const response = await customFetch<OpportunityComment>({
             url: `${baseURL}/${opportunityId}/latest-version`,
             headers: {
                 'Content-Type': 'application/json',
@@ -103,6 +103,21 @@ export const getLastVersionForOpportunity = async (opportunityId: string) => {
         return response.data;
     } catch (error) {
         throw new Error('Error fetching opportunity');
+    }
+};
+
+export const getOpportunityVersions = async (opportunityId: string) => {
+    try {
+        const accessToken = await getAccessToken();
+        const response = await customFetch<OpportunityVersion[]>({
+            url: `${baseURL}/get-version/${opportunityId}`,
+            method: 'GET',
+            headers: { 'Authorization': 'Bearer ' + accessToken },
+            nextOptions: { cache: 'no-store' },
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error('Error fetching versions');
     }
 };
 

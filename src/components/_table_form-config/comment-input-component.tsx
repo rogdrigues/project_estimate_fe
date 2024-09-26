@@ -4,16 +4,18 @@ import RecommendIcon from '@mui/icons-material/Recommend';
 import DoNotDisturbOffIcon from '@mui/icons-material/DoNotDisturbOff';
 import { useState } from 'react';
 import { PresalePlanComment } from '@/types';
-import { createPresalePlanComment } from '@/services';
+import { createPresalePlanComment, updateApprovalStatus } from '@/services';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/context/ToastContext';
 
 interface IProps {
-    presalePlanId: string;
-    onCommentSubmit: (newComment: PresalePlanComment) => void;
+    entityId: string;
+    onCommentSubmit?: (newComment: PresalePlanComment) => void;
+    currentPage: string;
+    setOpen?: (value: boolean) => void;
 }
 export const CommentInput = (props: IProps) => {
-    const { presalePlanId, onCommentSubmit } = props;
+    const { entityId, onCommentSubmit, currentPage, setOpen } = props;
     const [comment, setComment] = useState('');
     const [status, setStatus] = useState<'approve' | 'reject'>('approve');
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -34,27 +36,46 @@ export const CommentInput = (props: IProps) => {
     };
 
     const handleSend = async () => {
-        if (comment.trim()) {
-            try {
-                const commentData = {
-                    comment,
-                    approvalStatus: status === 'approve' ? 'Approved' : 'Rejected',
-                    presalePlan: presalePlanId,
-                };
+        if (comment.trim() && currentPage) {
+            if (currentPage === 'presale_plan') {
+                try {
+                    const commentData = {
+                        comment,
+                        approvalStatus: status === 'approve' ? 'Approved' : 'Rejected',
+                        presalePlan: entityId,
+                    };
 
-                const response = await createPresalePlanComment(commentData);
+                    const response = await createPresalePlanComment(commentData);
 
-                if (response?.EC === 0) {
-                    onCommentSubmit(response.data);
-                    triggerToast('Your comment had been approve successfully', true)
-                    router.refresh();
-                } else {
-                    triggerToast("Can't send your comment, please check again.", false)
+                    if (response?.EC === 0) {
+                        onCommentSubmit && onCommentSubmit(response.data);
+                        triggerToast('Your comment had been approve successfully', true)
+                        router.refresh();
+                    } else {
+                        triggerToast("Can't send your comment, please check again.", false)
 
+                    }
+                    setComment('');
+                } catch (error) {
+                    console.error('Error submitting comment:', error);
                 }
-                setComment('');
-            } catch (error) {
-                console.error('Error submitting comment:', error);
+            } else {
+                try {
+                    const data = {
+                        approvalStatus: status === 'approve' ? 'Approved' : 'Rejected',
+                        comment,
+                    }
+                    const response = await updateApprovalStatus(entityId, data);
+                    if (response.EC === 0) {
+                        setOpen && setOpen(false);
+                        triggerToast(`Opportunity ${data.approvalStatus} successfully`, true);
+                        router.refresh();
+                    } else {
+                        triggerToast(`Error during ${data.approvalStatus}`, false);
+                    }
+                } catch (error) {
+                    triggerToast('Error processing approval', false);
+                }
             }
         }
     };

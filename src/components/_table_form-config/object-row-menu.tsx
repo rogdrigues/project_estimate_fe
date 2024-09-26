@@ -104,7 +104,7 @@ const ObjectRowMenu = (props: IProps) => {
                 {isPresaleRoleOpportunity && isRejectedOpportunity ? (
                     <MenuItem
                         onClick={() => {
-                            SetOpenUpdateModal(!openUpdateModal);
+                            SetOpenReview && SetOpenReview(!openReviewModal);
                             handleMenuClose();
                         }}
                     >

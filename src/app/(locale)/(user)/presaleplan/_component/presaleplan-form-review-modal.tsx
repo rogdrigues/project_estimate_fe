@@ -36,7 +36,6 @@ export const PresalePlanReviewModal = (props: IProps) => {
 
             getPresalePlanComments(presalePlan._id)
                 .then((data) => {
-                    console.log(data);
                     setComments(data || [])
                 })
                 .catch((error) => {
@@ -315,7 +314,7 @@ export const PresalePlanReviewModal = (props: IProps) => {
                                                 </Box>
                                             )}
                                         </Box>
-                                        <CommentInput presalePlanId={presalePlan._id} onCommentSubmit={handleCommentSubmit} />
+                                        <CommentInput entityId={presalePlan._id} onCommentSubmit={handleCommentSubmit} currentPage='presale_plan' />
                                     </Box>
                                 </Grid>
 
