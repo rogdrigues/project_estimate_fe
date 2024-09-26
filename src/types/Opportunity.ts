@@ -25,3 +25,15 @@ export const OpportunitySchema: any = z.object({
 });
 
 export type Opportunity = z.infer<typeof OpportunitySchema>;
+
+export const OpportunityCommentSchema: any = z.object({
+    _id: z.string().optional(),
+    opportunity: OpportunitySchema,
+    comment: z.string(),
+    createdBy: UserMasterSchema,
+    approvalStatus: z.enum(['Approved', 'Rejected']),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+});
+
+export type OpportunityComment = z.infer<typeof OpportunityCommentSchema>;

@@ -6,7 +6,7 @@ export const OpportunityVersionSchema: any = z.object({
     opportunity: OpportunitySchema,
     approvalStatus: z.string(),
     comment: z.string().optional(),
-    versionDate: z.string().optional(),
+    versionNumber: z.number(),
     createdBy: UserMasterSchema,
 });
 
