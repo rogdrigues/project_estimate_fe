@@ -36,6 +36,17 @@ export const columns: GridColDef[] = [
         }
     },
     {
+        field: 'description',
+        headerName: 'Description',
+        description: 'This column displays the description of the Presale Plan.',
+        width: 150,
+        sortable: true,
+        flex: 1,
+        valueGetter: (params: any) => {
+            return params || "N/A";
+        }
+    },
+    {
         field: 'createdBy',
         headerName: 'Created By',
         description: 'This column displays the creator of the Presale Plan.',
@@ -106,7 +117,7 @@ export const columns: GridColDef[] = [
         sortable: true,
         flex: 1,
         valueGetter: (params: any) => {
-            return moment(params?.row.pendingUntil).format('YYYY-MM-DD') || "N/A";
+            return moment(params).format('YYYY-MM-DD') || "N/A";
         }
     },
     {

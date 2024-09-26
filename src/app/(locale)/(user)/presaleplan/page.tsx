@@ -11,7 +11,6 @@ const PresalePlanPage = async () => {
     const departments = await getAllDepartments(session?.access_token);
     const presalePlans = await getAllPresalePlans(session?.access_token, true);
     const approveOpportunities = await getApproveOpportunities(session?.access_token, false, true);
-
     return (
         <div>
             <PresalePlanHeader

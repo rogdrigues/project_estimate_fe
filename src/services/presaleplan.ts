@@ -120,11 +120,11 @@ export const createPresalePlanComment = async (commentData: Partial<PresalePlanC
 };
 
 // Fetch Comments for Presale Plan
-export const fetchCommentsForPresalePlan = async (presalePlanId: string) => {
+export const getPresalePlanComments = async (presalePlanId: string) => {
     try {
         const accessToken = await getAccessToken();
         const response = await customFetch<PresalePlanComment[]>({
-            url: `${baseURL}/comment/${presalePlanId}`,
+            url: `${baseURL}/comments/${presalePlanId}`,
             method: 'GET',
             headers: { 'Authorization': 'Bearer ' + accessToken },
             nextOptions: { cache: 'no-store' },
@@ -185,7 +185,7 @@ export const createPresalePlanVersion = async (versionData: Partial<PresalePlanV
 };
 
 // Fetch Versions for Presale Plan
-export const fetchVersionsForPresalePlan = async (presalePlanId: string) => {
+export const getPresalePlanVersions = async (presalePlanId: string) => {
     try {
         const accessToken = await getAccessToken();
         const response = await customFetch<PresalePlanVersion[]>({

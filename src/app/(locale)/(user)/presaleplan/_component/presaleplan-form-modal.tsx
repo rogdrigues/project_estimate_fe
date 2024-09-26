@@ -10,7 +10,7 @@ import { createPresalePlan, updatePresalePlan } from '@/services';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import Select from '@mui/material/Select';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { styleFormUser } from '@/styles';
 
 interface IProps {
@@ -20,11 +20,12 @@ interface IProps {
     opportunities: Opportunity[];
     departments: Department[];
     divisions: Division[];
+    readOnly?: boolean;
 }
 
 export const PresalePlanFormModal = (props: IProps) => {
     const router = useRouter();
-    const { open, setOpen, presalePlan, opportunities, departments, divisions } = props;
+    const { open, setOpen, presalePlan, opportunities, departments, divisions, readOnly } = props;
     const { triggerToast } = useToast();
     const { data: session } = useSession();
     const { handleSubmit, reset, control, setValue } = useForm({
@@ -38,6 +39,7 @@ export const PresalePlanFormModal = (props: IProps) => {
     });
 
     const onSubmit = async (data: any) => {
+        if (readOnly) return;
         try {
             const presalePlanForm = {
                 name: data.name,
@@ -57,7 +59,7 @@ export const PresalePlanFormModal = (props: IProps) => {
                 setOpen(false);
                 reset();
             } else {
-                triggerToast(presalePlan ? "Error updating presale plan" : "Error creating presale plan", false);
+                triggerToast(presalePlan ? `Error updating presale plan: ${response.message}` : `Error creating presale plan: ${response.message}`, false);
             }
         } catch (error) {
             triggerToast(presalePlan ? "Error updating presale plan" : "Error creating presale plan", false);
@@ -77,8 +79,8 @@ export const PresalePlanFormModal = (props: IProps) => {
                 name: '',
                 description: '',
                 opportunity: '',
-                department: session?.user?.department?.name || '', // Set giá trị từ session
-                division: session?.user?.division?.name || '', // Set giá trị từ session
+                department: session?.user?.department?.name || '',
+                division: session?.user?.division?.name || '',
             });
         }
     }, [presalePlan, reset, session]);
@@ -113,14 +115,16 @@ export const PresalePlanFormModal = (props: IProps) => {
                             render={({ field, fieldState: { error } }) => (
                                 <TextField
                                     {...field}
-                                    label="Presale Plan Name"
+                                    label="Name"
                                     fullWidth
+                                    required
                                     margin="normal"
                                     variant="outlined"
                                     error={!!error}
                                     helperText={error ? error.message : ''}
                                     size="small"
                                     inputProps={{ style: { fontSize: '14px' } }}
+                                    disabled={readOnly}
                                 />
                             )}
                         />
@@ -139,6 +143,7 @@ export const PresalePlanFormModal = (props: IProps) => {
                                     variant="outlined"
                                     size="small"
                                     inputProps={{ style: { fontSize: '14px' } }}
+                                    disabled={readOnly}
                                 />
                             )}
                         />
@@ -148,7 +153,7 @@ export const PresalePlanFormModal = (props: IProps) => {
                             <Controller
                                 name="opportunity"
                                 control={control}
-                                render={({ field }) => (
+                                render={({ field }: { field: any }) => (
                                     <Select
                                         {...field}
                                         labelId="opportunity-select-label"
@@ -156,8 +161,14 @@ export const PresalePlanFormModal = (props: IProps) => {
                                         label="Opportunity"
                                         variant="outlined"
                                         size="small"
+                                        required
                                         inputProps={{ style: { fontSize: '14px' } }}
-                                        disabled={opportunities.length === 0}
+                                        disabled={opportunities.length === 0 || readOnly}
+                                        value={field?.value?._id || ""}
+                                        onChange={(e: SelectChangeEvent) => {
+                                            const selectedOpp = opportunities.find(opp => opp._id === e.target.value);
+                                            field.onChange(selectedOpp);
+                                        }}
                                     >
                                         {opportunities.length === 0 ? (
                                             <MenuItem value="">
@@ -188,7 +199,7 @@ export const PresalePlanFormModal = (props: IProps) => {
                                     inputProps={{ style: { fontSize: '14px' } }}
                                     size="small"
                                     disabled
-                                    value={session?.user?.division?.name || ''} // Hiển thị Division từ session
+                                    value={session?.user?.division?.name || ''}
                                     sx={{ marginBottom: '16px' }}
                                 />
                             )}
@@ -207,7 +218,7 @@ export const PresalePlanFormModal = (props: IProps) => {
                                     inputProps={{ style: { fontSize: '14px' } }}
                                     size="small"
                                     disabled
-                                    value={session?.user?.department?.name || ''} // Hiển thị Department từ session
+                                    value={session?.user?.department?.name || ''}
                                     sx={{ marginBottom: '16px' }}
                                 />
                             )}
