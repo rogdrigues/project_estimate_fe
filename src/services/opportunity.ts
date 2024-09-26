@@ -215,7 +215,7 @@ export const updateOpportunityAfterRejection = async (opportunityId: string, upd
     try {
         const accessToken = await getAccessToken();
 
-        const response = await customFetch({
+        const response = await customFetch<Opportunity>({
             url: `${baseURL}/update-rejection/${opportunityId}`,
             method: 'PUT',
             headers: {
@@ -223,6 +223,8 @@ export const updateOpportunityAfterRejection = async (opportunityId: string, upd
             },
             body: updatedData,
         });
+
+        console.log('response', response);
         return response;
     } catch (error) {
         throw new Error('Error updating opportunity after rejection');
