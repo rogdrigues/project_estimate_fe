@@ -71,7 +71,7 @@ export const authOptions: NextAuthOptions = {
             }
 
             if (token.accessTokenExpiresAt && Date.now() > Number(token.accessTokenExpiresAt) - 14.5 * 60 * 1000) {
-                console.log('Access token expired, refreshing...');
+                console.log('Access token expired, refreshing...', token.refresh_token);
                 try {
                     const refreshedTokens = await customFetch<UserMaster>({
                         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/refresh-token`,
@@ -81,6 +81,7 @@ export const authOptions: NextAuthOptions = {
                         method: 'POST',
                         useCredentials: true
                     });
+                    console.log("New: ", refreshedTokens);
 
                     if (refreshedTokens.EC === 0) {
                         const { result, metadata } = refreshedTokens.data;

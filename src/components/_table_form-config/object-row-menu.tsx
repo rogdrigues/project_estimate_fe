@@ -26,7 +26,6 @@ const ObjectRowMenu = (props: IProps) => {
         anchorEl, isMenuOpen, handleMenuClose, SetOpenUpdateModal, SetOpenDialog, openUpdateModal,
         entity, SetOpenReview, openReviewModal, dataView } = props;
 
-    //Oppurtunity status
     const opportunityStatus = dataView?.approvalStatus;
     const objectStatus = dataView?.deleted;
     const timeLeftForOpportunity = dataView?.createdAt;
@@ -39,13 +38,15 @@ const ObjectRowMenu = (props: IProps) => {
     const hasPermission = (permissionTag: string) => userPermissions.includes(permissionTag);
 
     const isOpportunityLead = entity === 'opportunity' && session?.user?.role?.roleName === 'Opportunity';
-    const isPresaleRole = entity === 'opportunity' && session?.user?.role?.roleName.startsWith('Presale');
+    const isPresaleRoleOpportunity = entity === 'opportunity' && session?.user?.role?.roleName.startsWith('Presale');
+    const isPresaleRole = entity === 'presale_plan' && session?.user?.role?.roleName.startsWith('Presale');
+    const isCreatorOfPresale = entity === 'presale_plan' && session?.user?.id === dataView?.createdBy?._id;
 
     const timeLeft = moment().diff(moment(timeLeftForOpportunity), 'minutes');
     const isTimeExceeded = timeLeft > 60;
 
     const handleActionWithWarning = (selectedAction: 'edit' | 'delete' | 'restore') => {
-        if (isPresaleRole) {
+        if (isPresaleRole || isPresaleRoleOpportunity) {
             setShowWarning(true);
             setAction(selectedAction);
         } else {
@@ -60,7 +61,7 @@ const ObjectRowMenu = (props: IProps) => {
         setShowWarning(false);
     };
 
-    const isDisabledForPresale = opportunityStatus === 'Approved' && isPresaleRole;
+    const isDisabledForPresale = opportunityStatus === 'Approved' && isPresaleRoleOpportunity;
     const isRejectedOpportunity = opportunityStatus === 'Rejected';
 
     return (
@@ -84,6 +85,7 @@ const ObjectRowMenu = (props: IProps) => {
                     },
                 }}
             >
+                {/* Logic Opportunity Lead */}
                 {isOpportunityLead && (
                     <MenuItem
                         onClick={() => {
@@ -98,7 +100,8 @@ const ObjectRowMenu = (props: IProps) => {
                     </MenuItem>
                 )}
 
-                {isPresaleRole && isRejectedOpportunity ? (
+                {/* Presale Opportunity Rejected Logic */}
+                {isPresaleRoleOpportunity && isRejectedOpportunity ? (
                     <MenuItem
                         onClick={() => {
                             SetOpenUpdateModal(!openUpdateModal);
@@ -110,25 +113,23 @@ const ObjectRowMenu = (props: IProps) => {
                         </ListItemIcon>
                         <ListItemText>Edit to Submit</ListItemText>
                     </MenuItem>
-                ) : isPresaleRole && (
-                    <>
+                ) : isPresaleRoleOpportunity && (
+                    <div>
                         {isDisabledForPresale ? (
-                            <>
-                                <MenuItem
-                                    onClick={() => {
-                                        handleActionWithWarning('edit');
-                                        handleMenuClose();
-                                    }}
-                                    disabled={isDisabledForPresale}
-                                >
-                                    <ListItemIcon>
-                                        <EditIcon fontSize="small" />
-                                    </ListItemIcon>
-                                    <ListItemText>This opportunity had been granted</ListItemText>
-                                </MenuItem>
-                            </>
+                            <MenuItem
+                                onClick={() => {
+                                    handleActionWithWarning('edit');
+                                    handleMenuClose();
+                                }}
+                                disabled={isDisabledForPresale}
+                            >
+                                <ListItemIcon>
+                                    <EditIcon fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText>This opportunity had been granted</ListItemText>
+                            </MenuItem>
                         ) : (
-                            <>
+                            <div>
                                 <MenuItem
                                     onClick={() => {
                                         handleActionWithWarning('edit');
@@ -153,12 +154,78 @@ const ObjectRowMenu = (props: IProps) => {
                                     </ListItemIcon>
                                     <ListItemText>Delete</ListItemText>
                                 </MenuItem>
-                            </>
+                            </div>
                         )}
-                    </>
+                    </div>
                 )}
 
-                {!isPresaleRole && !isOpportunityLead && (
+                {/* Presale Role Logic */}
+                {isPresaleRole && isCreatorOfPresale && !isTimeExceeded && (
+                    <div>
+                        {!objectStatus && hasPermission(`manage_${entity}`) && (
+                            <>
+                                <MenuItem
+                                    onClick={() => {
+                                        handleActionWithWarning('edit');
+                                        handleMenuClose();
+                                    }}
+                                >
+                                    <ListItemIcon>
+                                        <EditIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText>Edit</ListItemText>
+                                </MenuItem>
+                                <MenuItem
+                                    onClick={() => {
+                                        handleActionWithWarning('delete');
+                                        handleMenuClose();
+                                    }}
+                                >
+                                    <ListItemIcon>
+                                        <DeleteIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText>Delete</ListItemText>
+                                </MenuItem>
+                            </>
+                        )}
+                        <MenuItem
+                            onClick={() => {
+                                handleActionWithWarning('restore');
+                                handleMenuClose();
+                            }}
+                        >
+                            {objectStatus && hasPermission(`manage_${entity}`) && (
+                                <MenuItem
+                                    onClick={() => {
+                                        SetOpenDialog(true);
+                                        handleMenuClose();
+                                    }}
+                                >
+                                    <ListItemIcon>
+                                        <RestoreIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText>Restore</ListItemText>
+                                </MenuItem>
+                            )}
+                        </MenuItem>
+                    </div>
+                )}
+
+                {isPresaleRole && !isCreatorOfPresale && (
+                    <MenuItem
+                        onClick={() => {
+                            SetOpenReview && SetOpenReview(!openReviewModal);
+                            handleMenuClose();
+                        }}
+                    >
+                        <ListItemIcon>
+                            <RateReviewIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText>Review</ListItemText>
+                    </MenuItem>
+                )}
+
+                {!isPresaleRoleOpportunity && !isOpportunityLead && !isPresaleRole && (
                     <Box>
                         {!objectStatus && hasPermission(`manage_${entity}`) && (
                             <>
@@ -203,7 +270,8 @@ const ObjectRowMenu = (props: IProps) => {
                 )}
             </Menu>
 
-            {isPresaleRole && (
+            {/* Warning Modal */}
+            {(isPresaleRoleOpportunity || isPresaleRole) && (
                 <WarningModal
                     open={showWarning}
                     handleClose={() => setShowWarning(false)}

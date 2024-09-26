@@ -1,10 +1,11 @@
 'use client';
 import { useState } from 'react';
 import TableComponent from '@/components/_table_form-config/table-item-component';
-import { PresalePlan, Division, Department, UserMaster, Opportunity } from '@/types';
+import { PresalePlan, Division, Department, UserMaster, Opportunity, PresalePlanComment, PresalePlanVersion } from '@/types';
 import { columns } from '@/app/(locale)/(user)/presaleplan/_table_config/presaleplan-table-columns';
 import { PresalePlanFormModal } from './presaleplan-form-modal';
 import { deletePresalePlan, restorePresalePlan } from '@/services';
+import { PresalePlanReviewModal } from './presaleplan-form-review-modal';
 
 interface IProps {
     presalePlans: PresalePlan[];
@@ -39,7 +40,16 @@ export default function PresalePlanTable(props: IProps) {
                 pendingUntil: true,
                 actions: true,
             }}
-            optionReview={null} //Deal later
+            optionReview={
+                <PresalePlanReviewModal
+                    open={openReview}
+                    setOpen={setOpenReview}
+                    presalePlan={dataView}
+                    departments={departments}
+                    divisions={divisions}
+                    opportunities={opportunities}
+                />
+            }
             hiddenColumnsOnMobile={['description', 'pendingUntil']}
             currentPage="presale_plan"
             openReview={openReview}
