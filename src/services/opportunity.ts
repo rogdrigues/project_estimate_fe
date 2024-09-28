@@ -90,7 +90,7 @@ export const getCommentForOpportunity = async (opportunityId: string) => {
         const accessToken = await getAccessToken();
 
         const response = await customFetch<OpportunityComment>({
-            url: `${baseURL}/${opportunityId}/latest-version`,
+            url: `${baseURL}/${opportunityId}/opp-lead-comments`,
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + accessToken,

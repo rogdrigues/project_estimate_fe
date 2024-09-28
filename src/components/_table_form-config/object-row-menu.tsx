@@ -7,6 +7,8 @@ import { useSession } from 'next-auth/react';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import WarningModal from '@/components/_table_form-config/modal-warning-table-component';
 import moment from 'moment';
+import DownloadIcon from '@mui/icons-material/Download';
+import { downloadTemplate } from '@/services';
 
 interface IProps {
     anchorEl: null | HTMLElement;
@@ -41,6 +43,7 @@ const ObjectRowMenu = (props: IProps) => {
     const isPresaleRoleOpportunity = entity === 'opportunity' && session?.user?.role?.roleName.startsWith('Presale');
     const isPresaleRole = entity === 'presale_plan' && session?.user?.role?.roleName.startsWith('Presale');
     const isCreatorOfPresale = entity === 'presale_plan' && session?.user?.id === dataView?.createdBy?._id;
+    const isWorkingTemplate = entity === 'template' && session?.user?.role?.roleName === 'Opportunity';
 
     const timeLeft = moment().diff(moment(timeLeftForOpportunity), 'minutes');
     const isTimeExceeded = timeLeft > 60;
@@ -250,6 +253,20 @@ const ObjectRowMenu = (props: IProps) => {
                                         <DeleteIcon fontSize="small" />
                                     </ListItemIcon>
                                     <ListItemText>Delete</ListItemText>
+                                </MenuItem>
+                            </>
+                        )}
+                        {!objectStatus && hasPermission(`manage_${entity}`) && isWorkingTemplate && (
+                            <>
+                                <MenuItem
+                                    onClick={() => {
+                                        downloadTemplate(dataView._id);
+                                    }}
+                                >
+                                    <ListItemIcon>
+                                        <DownloadIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText>Download template file</ListItemText>
                                 </MenuItem>
                             </>
                         )}

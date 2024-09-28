@@ -250,8 +250,8 @@ export const PresalePlanReviewModal = (props: IProps) => {
                                                             {!isCurrentUser && (
                                                                 <Box
                                                                     component="img"
-                                                                    src={comment.createdBy?.avatar || '/path/to/default-avatar.jpg'}
-                                                                    alt="User Avatar"
+                                                                    src={comment.createdBy?.profile?.avatar || undefined}
+                                                                    alt={comment.createdBy?.username}
                                                                     sx={{
                                                                         width: 40,
                                                                         height: 40,
@@ -314,7 +314,7 @@ export const PresalePlanReviewModal = (props: IProps) => {
                                                 </Box>
                                             )}
                                         </Box>
-                                        <CommentInput entityId={presalePlan._id} onCommentSubmit={handleCommentSubmit} currentPage='presale_plan' />
+                                        <CommentInput dataView={presalePlan} onCommentSubmit={handleCommentSubmit} currentPage='presale_plan' />
                                     </Box>
                                 </Grid>
 
