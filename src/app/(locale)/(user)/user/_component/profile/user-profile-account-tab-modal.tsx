@@ -8,7 +8,6 @@ import { changedButtonStyle, deletedButtonStyle, imageSmallSize, styleAccountTab
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useToast } from '@/context/ToastContext';
 import { updateUserProfile } from '@/services';
-import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
 interface IProps {
@@ -26,7 +25,6 @@ export const AvatarModal = (props: IProps) => {
     const [previewMode, setPreviewMode] = useState(false);
     const [modalHeight, setModalHeight] = useState(heightDefault);
     const [modalWidth, setModalWidth] = useState(widthDefault);
-    const router = useRouter();
     const { data: session, update } = useSession();
     const { triggerToast } = useToast();
 

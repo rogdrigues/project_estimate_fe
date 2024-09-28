@@ -5,6 +5,13 @@ import { GridRenderCellParams } from '@mui/x-data-grid';
 
 export const columns: GridColDef[] = [
     {
+        field: 'id',
+        headerName: 'ID',
+        description: 'This column displays the ID of the technology.',
+        width: 100,
+        sortable: true,
+    },
+    {
         field: 'name',
         headerName: 'Name',
         description: 'This column displays the name of the technology.',

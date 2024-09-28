@@ -16,11 +16,13 @@ interface IHeaderProps {
     onCreateOpen: () => void;
     modal: ReactNode;
     hideExportImport?: boolean;
+    showGuideTemplate?: boolean;
     currentPage: string;
+
 }
 
 const HeaderComponent = (props: IHeaderProps) => {
-    const { title, onExport, onImport, onCreateOpen, modal, hideExportImport = false, currentPage } = props;
+    const { title, onExport, onImport, onCreateOpen, modal, hideExportImport = false, currentPage, showGuideTemplate = false } = props;
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const inputFileRef = useRef<HTMLInputElement | null>(null);
     const { triggerToast } = useToast();
@@ -110,6 +112,16 @@ const HeaderComponent = (props: IHeaderProps) => {
                             onClick={onCreateOpen}
                         >
                             CREATE
+                        </Button>
+                    )}
+                    {(showGuideTemplate && hideExportImport) && (
+                        <Button
+                            variant="outlined"
+                            startIcon={<GetAppIcon />}
+                            sx={HeaderButton}
+                            onClick={handleExport}
+                        >
+                            Export Guide Template
                         </Button>
                     )}
                     {!hideExportImport && (

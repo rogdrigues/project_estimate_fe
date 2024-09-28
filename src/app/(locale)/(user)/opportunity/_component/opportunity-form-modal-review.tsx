@@ -499,8 +499,8 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                         {/* Avatar */}
                                                         <Box
                                                             component="img"
-                                                            src={comment.createdBy?.avatar || ''}
-                                                            alt="Opportunity Lead Avatar"
+                                                            src={comment.createdBy?.profile?.avatar || undefined}
+                                                            alt={comment.createdBy?.username}
                                                             sx={{
                                                                 width: 40,
                                                                 height: 40,
