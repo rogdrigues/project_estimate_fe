@@ -19,7 +19,7 @@ const UserPage = async () => {
                 roles={roles?.result}
             />
             <UserTable
-                users={users?.result}
+                users={users?.result || []}
                 paginate={users?.pagination}
                 divisions={divisions?.result}
                 departments={departments?.result}

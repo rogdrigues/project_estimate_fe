@@ -38,6 +38,7 @@ export default function DivisionTable(props: IProps) {
                     actions: true,
                 }}
                 hiddenColumnsOnMobile={['description', 'status']}
+                currentPage="division"
             >
                 <DivisionFormModal
                     open={openUpdate}

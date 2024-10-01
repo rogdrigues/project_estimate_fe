@@ -63,10 +63,10 @@ export const UserFormModal = (props: IProps) => {
                 reset();
             }
             else {
-                triggerToast(User ? "Error updating user" : "Error creating user", false);
+                triggerToast(User ? `Error updating user: ${response.message}` : `Error creating user: ${response.message}`, false);
             }
-        } catch (error) {
-            triggerToast(User ? "Error updating user" : "Error creating user", false);
+        } catch (error: any) {
+            triggerToast(User ? `Error updating user: ${error.message}` : `Error creating user: ${error.message}`, false);
         }
     };
 

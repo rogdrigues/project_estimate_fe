@@ -28,7 +28,7 @@ const menuItems = [
     { name: 'Department', icon: <ApartmentIcon />, path: '/department', tag: ['manage_department', 'view_department', 'view_department_profile'] },
     { name: 'User', icon: <PeopleIcon />, path: '/user', tag: ['manage_users'] },
     { name: 'Category', icon: <CategoryIcon />, path: '/category', tag: ['manage_categories', 'view_categories'] },
-    { name: 'Project', icon: <WorkIcon />, path: '/projects', tag: ['manage_projects', 'view_projects'] },
+    { name: 'Project', icon: <WorkIcon />, path: '/project', tag: ['manage_projects', 'view_projects'] },
     { name: 'Assumption', icon: <AssignmentIcon />, path: '/assumption', tag: ['manage_assumptions', 'view_assumptions'] },
     { name: 'Checklist', icon: <CheckBoxIcon />, path: '/checklist', tag: ['manage_checklists', 'view_checklists'] },
     { name: 'Technology', icon: <DevicesIcon />, path: '/technology', tag: ['manage_technology', 'view_technology'] },

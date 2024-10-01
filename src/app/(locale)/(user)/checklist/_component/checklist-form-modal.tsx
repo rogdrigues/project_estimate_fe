@@ -59,10 +59,10 @@ export const ChecklistFormModal = (props: IProps) => {
                 setOpen(false);
                 reset();
             } else {
-                triggerToast(checklist ? 'Error updating checklist' : 'Error creating checklist', false);
+                triggerToast(checklist ? `Error updating checklist: ${response.message}` : `Error creating checklist: ${response.message}`, false);
             }
-        } catch (error) {
-            triggerToast(checklist ? 'Error updating checklist' : 'Error creating checklist', false);
+        } catch (error: any) {
+            triggerToast(checklist ? `Error updating checklist: ${error.message}` : `Error creating checklist: ${error.message}`, false);
         }
     };
 

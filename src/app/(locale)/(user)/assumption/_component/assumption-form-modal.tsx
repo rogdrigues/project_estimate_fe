@@ -50,10 +50,10 @@ export const AssumptionFormModal = (props: IProps) => {
                 setOpen(false);
                 reset();
             } else {
-                triggerToast(assumption ? "Error updating assumption" : "Error creating assumption", false);
+                triggerToast(assumption ? `Error updating assumption: ${response.message}` : `Error creating assumption: ${response.message}`, false);
             }
-        } catch (error) {
-            triggerToast(assumption ? "Error updating assumption" : "Error creating assumption", false);
+        } catch (error: any) {
+            triggerToast(assumption ? `Error updating assumption: ${error.message}` : `Error creating assumption: ${error.message}`, false);
         }
     };
 

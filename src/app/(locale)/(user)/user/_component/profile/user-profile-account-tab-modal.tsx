@@ -50,11 +50,11 @@ export const AvatarModal = (props: IProps) => {
                     await update({ avatar: response.data.result.avatar });
                     triggerToast("Update avatar successfully", true);
                 } else {
-                    triggerToast("Update avatar failed", false);
+                    triggerToast(`Update avatar failed: ${response.message}`, false);
                 }
                 handleClose();
-            } catch (error) {
-                triggerToast("Update avatar failed", false);
+            } catch (error: any) {
+                triggerToast(`Update avatar failed: ${error.message}`, false);
             }
         }
     };

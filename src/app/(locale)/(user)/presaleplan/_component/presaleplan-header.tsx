@@ -4,13 +4,13 @@ import { Division, Department, Opportunity, PresalePlan } from '@/types';
 import HeaderComponent from '@/components/_table_form-config/header-item-component';
 import { PresalePlanFormModal } from './presaleplan-form-modal';
 
-interface PresalePlanHeaderProps {
+interface IProps {
     divisions: Division[];
     departments: Department[];
     opportunities: Opportunity[];
 }
 
-export const PresalePlanHeader = (props: PresalePlanHeaderProps) => {
+export const PresalePlanHeader = (props: IProps) => {
     const { divisions, departments, opportunities } = props;
     const [open, setOpen] = useState(false);
 

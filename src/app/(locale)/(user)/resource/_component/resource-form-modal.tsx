@@ -12,7 +12,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Select from '@mui/material/Select';
 import { styleFormUser } from '@/styles';
-
 import locations from '@/data/locations.json';
 import currencies from '@/data/currencies.json';
 
@@ -56,10 +55,10 @@ export const ResourceFormModal = (props: IProps) => {
                 setOpen(false);
                 reset();
             } else {
-                triggerToast(resource ? 'Error updating resource' : 'Error creating resource', false);
+                triggerToast(resource ? `Error updating resource: ${response.message}` : `Error creating resource: ${response.message}`, false);
             }
-        } catch (error) {
-            triggerToast(resource ? 'Error updating resource' : 'Error creating resource', false);
+        } catch (error: any) {
+            triggerToast(resource ? `Error updating resource: ${error.message}` : `Error creating resource: ${error.message}`, false);
         }
     };
 

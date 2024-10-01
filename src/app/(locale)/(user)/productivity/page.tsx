@@ -14,7 +14,7 @@ const ProductivityPage = async () => {
     return (
         <div>
             <ProductivityHeader technologies={technologies?.result} />
-            <ProductivityTable productivities={productivities?.result} technologies={technologies?.result} />
+            <ProductivityTable productivities={productivities?.result || []} technologies={technologies?.result} />
         </div>
     );
 }

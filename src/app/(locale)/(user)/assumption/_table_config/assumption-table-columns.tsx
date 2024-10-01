@@ -3,7 +3,6 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import BlockIcon from '@mui/icons-material/Block';
 import { GridRenderCellParams } from '@mui/x-data-grid';
 
-//Assumption Table Columns
 export const columns: GridColDef[] = [
     {
         field: 'id',

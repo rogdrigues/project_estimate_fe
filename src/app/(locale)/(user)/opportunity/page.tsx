@@ -22,7 +22,7 @@ const OpportunityPage = async () => {
                 categories={categories?.result}
             />
             <OpportunityTable
-                opportunities={opportunities?.result}
+                opportunities={opportunities?.result || []}
                 divisions={divisions?.result}
                 departments={departments?.result}
                 opportunityLeads={oppLeads?.result}

@@ -1,13 +1,11 @@
 import React from 'react';
-import { Box, Typography, Avatar, IconButton, TextField, MenuItem, Select, FormControl } from '@mui/material';
+import { Box, Typography, IconButton, TextField, MenuItem, Select, FormControl } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import { flexBoxSpaceBetween, flexGap } from '@/styles';
 
-
-
-interface EditableFieldProps {
+interface IProps {
     label: string;
     value: string;
     isEditing: boolean;
@@ -20,18 +18,8 @@ interface EditableFieldProps {
     selectOptions?: { value: string; label: string }[];
 }
 
-const EditableField = ({
-    label,
-    value,
-    isEditing,
-    onChange,
-    onEdit,
-    onSave,
-    onCancel,
-    type = 'text',
-    isSelect = false,
-    selectOptions = [],
-}: EditableFieldProps) => {
+const EditableField = (props: IProps) => {
+    const { label, value, isEditing, onChange, onEdit, onSave, onCancel, type = 'text', isSelect = false, selectOptions = [] } = props;
     return (
         <Box sx={flexBoxSpaceBetween}>
             <Box sx={{ width: '80%' }}>
