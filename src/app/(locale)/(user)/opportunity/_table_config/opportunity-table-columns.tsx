@@ -5,7 +5,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import moment from 'moment';
-//Opportunity Table Columns
+
 export const columns: GridColDef[] = [
     {
         field: 'id',

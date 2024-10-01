@@ -17,7 +17,7 @@ const DepartmentPage = async () => {
             />
             <DepartmentTable
                 divisions={divisions?.result}
-                departments={departments?.result}
+                departments={departments?.result || []}
             />
         </div>
     );

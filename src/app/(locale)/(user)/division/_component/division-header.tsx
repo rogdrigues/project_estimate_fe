@@ -19,6 +19,7 @@ const DivisionHeader = () => {
                     setOpen={setOpen}
                 />
             }
+            currentPage="division"
         />
     );
 };

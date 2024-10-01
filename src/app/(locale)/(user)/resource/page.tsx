@@ -11,7 +11,7 @@ const ResourcePage = async () => {
     return (
         <div>
             <ResourceHeader />
-            <ResourceTable resources={resources?.result} />
+            <ResourceTable resources={resources?.result || []} />
         </div>
     );
 }

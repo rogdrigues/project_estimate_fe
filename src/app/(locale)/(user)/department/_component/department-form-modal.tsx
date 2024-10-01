@@ -58,10 +58,10 @@ export const DepartmentFormModal = (props: IProps) => {
                 setOpen(false);
                 reset();
             } else {
-                triggerToast(department ? "Error updating department" : "Error creating department", false);
+                triggerToast(department ? `Error updating department: ${response.message}` : `Error creating department: ${response.message}`, false);
             }
-        } catch (error) {
-            triggerToast(department ? "Error updating department" : "Error creating department", false);
+        } catch (error: any) {
+            triggerToast(department ? `Error updating department: ${error.message}` : `Error creating department: ${error.message}`, false);
         }
     };
 

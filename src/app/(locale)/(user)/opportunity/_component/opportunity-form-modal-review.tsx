@@ -59,14 +59,14 @@ export const OpportunityReviewModal = (props: IProps) => {
                     console.log('Comments:', data);
                     setComments(data || []);
                 })
-                .catch((error) => console.error('Error fetching versions:', error));
+                .catch((error) => console.error('Error fetching versions:', error.message));
 
             getOpportunityVersions(opportunity._id)
                 .then((data) => {
                     console.log('Versions:', data);
                     setVersions(data || []);
                 })
-                .catch((error) => console.error('Error fetching versions:', error));
+                .catch((error) => console.error('Error fetching versions:', error.message));
         } else {
             setComments([]);
             setVersions([]);
@@ -87,10 +87,10 @@ export const OpportunityReviewModal = (props: IProps) => {
                 router.refresh();
                 handleClose();
             } else {
-                triggerToast('Error updating opportunity', false);
+                triggerToast(`Error updating opportunity after rejection: ${response.message}`, false);
             }
-        } catch (error) {
-            triggerToast('Error updating opportunity after rejection', false);
+        } catch (error: any) {
+            triggerToast(`Error updating opportunity after rejection: ${error.message}`, false);
         }
     };
 

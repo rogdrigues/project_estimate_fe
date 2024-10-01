@@ -70,16 +70,18 @@ export const authOptions: NextAuthOptions = {
                 (token.user as any).profile.avatar = session?.avatar;
             }
 
-            if (token.accessTokenExpiresAt && Date.now() > Number(token.accessTokenExpiresAt) - 14.5 * 60 * 1000) {
-                console.log('Access token expired, refreshing...', token.refresh_token);
+            if (token.accessTokenExpiresAt && Date.now() > Number(token.accessTokenExpiresAt) - 14 * 60 * 1000) {
+                console.log('Access token expired, refreshing...');
                 try {
                     const refreshedTokens = await customFetch<UserMaster>({
                         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/refresh-token`,
                         headers: {
                             'Cookie': `${token.refresh_token}`,
                         },
+                        nextOptions: {
+                            cache: 'no-store'
+                        },
                         method: 'POST',
-                        useCredentials: true
                     });
                     console.log("New: ", refreshedTokens);
 

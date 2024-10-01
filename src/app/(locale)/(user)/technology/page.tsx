@@ -11,7 +11,7 @@ const TechnologyPage = async () => {
     return (
         <div>
             <TechnologyHeader />
-            <TechnologyTable technologies={technology?.result} />
+            <TechnologyTable technologies={technology?.result || []} />
         </div>
     );
 }

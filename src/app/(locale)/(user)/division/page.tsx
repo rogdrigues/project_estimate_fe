@@ -13,7 +13,7 @@ const DepartmentPage = async () => {
         <div>
             <DivisionHeader />
             <DivisionTable
-                divisions={divisions?.result}
+                divisions={divisions?.result || []}
             />
         </div>
     );

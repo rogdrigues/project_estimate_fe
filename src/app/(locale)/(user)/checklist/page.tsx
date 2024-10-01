@@ -14,7 +14,7 @@ const ChecklistPage = async () => {
     return (
         <div>
             <ChecklistHeader categories={categories?.result} />
-            <ChecklistTable checklists={checklists?.result} categories={categories?.result} />
+            <ChecklistTable checklists={checklists?.result || []} categories={categories?.result} />
         </div>
     );
 }

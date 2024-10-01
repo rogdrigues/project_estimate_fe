@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { styleFormUser } from '@/styles';
 import UploadIcon from '@mui/icons-material/Upload';
+
 interface IProps {
     open: boolean;
     setOpen: (open: boolean) => void;
@@ -60,10 +61,10 @@ export const TemplateFormModal = (props: IProps) => {
                 setFile(null);
                 setFileName('');
             } else {
-                triggerToast(template ? "Error updating template" : "Error creating template", false);
+                triggerToast(template ? `Error updating template: ${response.message}` : `Error creating template: ${response.message}`, false);
             }
-        } catch (error) {
-            triggerToast(template ? "Error updating template" : "Error creating template", false);
+        } catch (error: any) {
+            triggerToast(template ? `Error updating template: ${error.message}` : `Error creating template: ${error.message}`, false);
         }
     };
 

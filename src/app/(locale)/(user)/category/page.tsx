@@ -12,7 +12,7 @@ const CategoryPage = async () => {
     return (
         <div>
             <CategoryHeader />
-            <CategoryTable categories={categories?.result} />
+            <CategoryTable categories={categories?.result || []} />
         </div>
     );
 }

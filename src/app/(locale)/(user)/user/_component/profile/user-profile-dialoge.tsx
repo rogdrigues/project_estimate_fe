@@ -15,7 +15,6 @@ interface IProps {
     setOpen: (open: boolean) => void;
 }
 
-
 const UserProfileModal = (props: IProps) => {
     const { open, setOpen } = props;
     const [selectedSection, setSelectedSection] = useState('My Account');
@@ -33,8 +32,8 @@ const UserProfileModal = (props: IProps) => {
                 try {
                     const response = await getUser(session?.user.id);
                     setUser(response.result);
-                } catch (error) {
-                    console.error("Error fetching user data:", error);
+                } catch (error: any) {
+                    console.error(`Error fetching user data: ${error.message}`);
                 }
             };
 
@@ -59,7 +58,6 @@ const UserProfileModal = (props: IProps) => {
             aria-describedby="modal-description"
         >
             <Box sx={profileDialoge}>
-                {/* Sidebar */}
                 <Box sx={{ width: '20%', borderRight: '1px solid #ddd' }}>
                     <Typography variant="h6" sx={{ padding: 2, fontWeight: 'bold' }}>Profile</Typography>
                     <Divider />
@@ -112,7 +110,6 @@ const UserProfileModal = (props: IProps) => {
                     </List>
                 </Box>
 
-                {/* Main content */}
                 <Box sx={{ width: '80%', padding: 3 }}>
                     {renderContent()}
                 </Box>

@@ -96,8 +96,8 @@ export const OpportunityFormModal = (props: IProps) => {
             } else {
                 triggerToast(opportunity ? `Error updating opportunity ${response.message}` : `Error creating opportunity ${response.message}`, false);
             }
-        } catch (error) {
-            triggerToast(opportunity ? 'Error updating opportunity' : 'Error creating opportunity', false);
+        } catch (error: any) {
+            triggerToast(opportunity ? `Error updating opportunity ${error.message}` : `Error creating opportunity ${error.message}`, false);
         }
     };
 

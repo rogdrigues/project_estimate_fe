@@ -54,10 +54,10 @@ export const DivisionFormModal = (props: IProps) => {
                 setOpen(false);
                 reset();
             } else {
-                triggerToast(division ? "Error updating division" : "Error creating division", false);
+                triggerToast(division ? `Error updating division: ${response.message}` : `Error creating division: ${response.message}`, false);
             }
-        } catch (error) {
-            triggerToast(division ? "Error updating division" : "Error creating division", false);
+        } catch (error: any) {
+            triggerToast(division ? `Error updating division: ${error.message}` : `Error creating division: ${error.message}`, false);
         }
     };
 

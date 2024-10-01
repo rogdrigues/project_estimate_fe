@@ -61,8 +61,8 @@ export const PresalePlanFormModal = (props: IProps) => {
             } else {
                 triggerToast(presalePlan ? `Error updating presale plan: ${response.message}` : `Error creating presale plan: ${response.message}`, false);
             }
-        } catch (error) {
-            triggerToast(presalePlan ? "Error updating presale plan" : "Error creating presale plan", false);
+        } catch (error: any) {
+            triggerToast(presalePlan ? `Error updating presale plan: ${error.message}` : `Error creating presale plan: ${error.message}`, false);
         }
     };
 

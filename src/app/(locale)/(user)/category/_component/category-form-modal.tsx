@@ -46,10 +46,10 @@ export const CategoryFormModal = (props: IProps) => {
                 setOpen(false);
                 reset();
             } else {
-                triggerToast(category ? "Error updating category" : "Error creating category", false);
+                triggerToast(category ? `Error updating category: ${response.message}` : `Error creating category: ${response.message}`, false);
             }
-        } catch (error) {
-            triggerToast(category ? "Error updating category" : "Error creating category", false);
+        } catch (error: any) {
+            triggerToast(category ? `Error updating category: ${error.message}` : `Error creating category: ${error.message}`, false);
         }
     };
 

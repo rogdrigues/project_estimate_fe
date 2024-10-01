@@ -4,8 +4,19 @@ import BlockIcon from '@mui/icons-material/Block';
 import { GridRenderCellParams } from '@mui/x-data-grid';
 
 export const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 70, flex: 1 },
-    { field: 'displayName', headerName: 'Account', width: 175, flex: 2 },
+    {
+        field: 'id',
+        headerName: 'ID',
+        width: 70,
+        flex: 1
+    },
+    {
+        field:
+            'displayName',
+        headerName: 'Account',
+        width: 175,
+        flex: 2
+    },
     {
         field: 'profile',
         headerName: 'Full Name',

@@ -17,7 +17,7 @@ import { styleFormUser } from '@/styles';
 interface IProps {
     open: boolean;
     setOpen: (open: boolean) => void;
-    technologies: Technology[];  // List of technologies for selection
+    technologies: Technology[];
     productivityData?: Productivity | null;
 }
 
@@ -54,10 +54,10 @@ export const ProductivityFormModal = (props: IProps) => {
                 setOpen(false);
                 reset();
             } else {
-                triggerToast(productivityData ? "Error updating productivity" : "Error creating productivity", false);
+                triggerToast(productivityData ? `Error updating productivity: ${response.message}` : `Error creating productivity: ${response.message}`, false);
             }
-        } catch (error) {
-            triggerToast(productivityData ? "Error updating productivity" : "Error creating productivity", false);
+        } catch (error: any) {
+            triggerToast(productivityData ? `Error updating productivity: ${error.message}` : `Error creating productivity: ${error.message}`, false);
         }
     };
 

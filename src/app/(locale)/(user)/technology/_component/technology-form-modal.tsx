@@ -55,10 +55,10 @@ export const TechnologyFormModal = (props: IProps) => {
                 setOpen(false);
                 reset();
             } else {
-                triggerToast(technology ? "Error updating technology" : "Error creating technology", false);
+                triggerToast(technology ? `Error updating technology: ${response.message}` : `Error creating technology: ${response.message}`, false);
             }
-        } catch (error) {
-            triggerToast(technology ? "Error updating technology" : "Error creating technology", false);
+        } catch (error: any) {
+            triggerToast(technology ? `Error updating technology: ${error.message}` : `Error creating technology: ${error.message}`, false);
         }
     };
 

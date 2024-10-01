@@ -155,7 +155,7 @@ export const CommentInput = (props: IProps) => {
                 </IconButton>
             ) : (
                 <IconButton onClick={handleSend} disabled={!comment.trim() || ['Rejected', 'Approved'].includes(dataView?.approvalStatus)}>
-                    <SendIcon sx={{ color: comment.trim() ? '#1976d2' : '#bdbdbd' }} />
+                    <SendIcon sx={{ color: !comment.trim() || ['Rejected', 'Approved'].includes(dataView?.approvalStatus) ? '#bdbdbd' : '#1976d2' }} />
                 </IconButton>
             )}
         </Box>
