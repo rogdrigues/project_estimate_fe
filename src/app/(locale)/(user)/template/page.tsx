@@ -9,7 +9,7 @@ const TemplatePage = async () => {
     const session = await getServerSession(authOptions);
     const templates = await getAllTemplates(session?.access_token, true);
     const categories = await getAllCategories(session?.access_token);
-    console.log(templates);
+
     return (
         <div>
             <TemplateHeader categories={categories?.result} />

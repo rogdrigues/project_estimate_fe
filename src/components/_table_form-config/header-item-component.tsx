@@ -8,21 +8,22 @@ import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { HeaderButton } from '@/styles';
 import { useSession } from 'next-auth/react';
-
+import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
 interface IHeaderProps {
     title: string;
     onExport?: () => Promise<any>;
     onImport?: (file: File) => Promise<void>;
-    onCreateOpen: () => void;
+    onCreateOpen?: () => void;
     modal: ReactNode;
     hideExportImport?: boolean;
     showGuideTemplate?: boolean;
     currentPage: string;
-
+    onAssignOpen?: () => void;
+    showAssign?: boolean;
 }
 
 const HeaderComponent = (props: IHeaderProps) => {
-    const { title, onExport, onImport, onCreateOpen, modal, hideExportImport = false, currentPage, showGuideTemplate = false } = props;
+    const { title, onExport, onImport, onCreateOpen, modal, hideExportImport = false, currentPage, showGuideTemplate = false, onAssignOpen, showAssign = false } = props;
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const inputFileRef = useRef<HTMLInputElement | null>(null);
     const { triggerToast } = useToast();
@@ -102,62 +103,77 @@ const HeaderComponent = (props: IHeaderProps) => {
                 <Typography variant="h5" sx={{ fontWeight: 'bold', fontFamily: 'Roboto' }}>
                     {title}
                 </Typography>
-
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mb: 2 }}>
-                    {hasPermission('manage') && (
-                        <Button
-                            variant="outlined"
-                            startIcon={<AddCircleOutlineIcon />}
-                            sx={HeaderButton}
-                            onClick={onCreateOpen}
-                        >
-                            CREATE
-                        </Button>
-                    )}
-                    {(showGuideTemplate && hideExportImport) && (
-                        <Button
-                            variant="outlined"
-                            startIcon={<GetAppIcon />}
-                            sx={HeaderButton}
-                            onClick={handleExport}
-                        >
-                            Export Guide Template
-                        </Button>
-                    )}
-                    {!hideExportImport && (
-                        <>
-                            {hasPermission('export') && (
-                                <Button
-                                    variant="outlined"
-                                    startIcon={<GetAppIcon />}
-                                    sx={HeaderButton}
-                                    onClick={handleExport}
-                                >
-                                    EXPORT
-                                </Button>
-                            )}
-                            {hasPermission('import') && (
-                                <Button
-                                    variant="outlined"
-                                    startIcon={<CloudUploadIcon />}
-                                    sx={HeaderButton}
-                                    onClick={handleImportClick}
-                                >
-                                    IMPORT
-                                </Button>
-                            )}
-                            <TextField
-                                type="file"
-                                inputRef={inputFileRef}
-                                style={{ display: 'none' }}
-                                onChange={handleFileChange}
-                                inputProps={{
-                                    accept: ".xlsx, .xls"
-                                }}
-                            />
-                        </>
-                    )}
-                </Box>
+                {!showAssign ? (
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mb: 2 }}>
+                        {hasPermission('manage') && (
+                            <Button
+                                variant="outlined"
+                                startIcon={<AddCircleOutlineIcon />}
+                                sx={HeaderButton}
+                                onClick={onCreateOpen}
+                            >
+                                Create
+                            </Button>
+                        )}
+                        {(showGuideTemplate && hideExportImport) && (
+                            <Button
+                                variant="outlined"
+                                startIcon={<GetAppIcon />}
+                                sx={HeaderButton}
+                                onClick={handleExport}
+                            >
+                                Export Guide Template
+                            </Button>
+                        )}
+                        {!hideExportImport && (
+                            <>
+                                {hasPermission('export') && (
+                                    <Button
+                                        variant="outlined"
+                                        startIcon={<GetAppIcon />}
+                                        sx={HeaderButton}
+                                        onClick={handleExport}
+                                    >
+                                        EXPORT
+                                    </Button>
+                                )}
+                                {hasPermission('import') && (
+                                    <Button
+                                        variant="outlined"
+                                        startIcon={<CloudUploadIcon />}
+                                        sx={HeaderButton}
+                                        onClick={handleImportClick}
+                                    >
+                                        IMPORT
+                                    </Button>
+                                )}
+                                <TextField
+                                    type="file"
+                                    inputRef={inputFileRef}
+                                    style={{ display: 'none' }}
+                                    onChange={handleFileChange}
+                                    inputProps={{
+                                        accept: ".xlsx, .xls"
+                                    }}
+                                />
+                            </>
+                        )}
+                    </Box>
+                )
+                    :
+                    (
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, mb: 2 }}>
+                            <Button
+                                variant="outlined"
+                                startIcon={<AssignmentReturnIcon />}
+                                sx={HeaderButton}
+                                onClick={onAssignOpen}
+                            >
+                                Assign
+                            </Button>
+                        </Box>
+                    )
+                }
             </Box>
             {modal}
         </>

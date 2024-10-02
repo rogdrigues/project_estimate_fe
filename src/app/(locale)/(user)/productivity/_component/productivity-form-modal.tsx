@@ -23,7 +23,6 @@ interface IProps {
 
 export const ProductivityFormModal = (props: IProps) => {
     const router = useRouter();
-    const { data: session } = useSession();
     const { open, setOpen, technologies, productivityData } = props;
     const { triggerToast } = useToast();
     const { handleSubmit, reset, control } = useForm({
@@ -118,7 +117,6 @@ export const ProductivityFormModal = (props: IProps) => {
                                     variant="outlined"
                                     error={!!error}
                                     helperText={error ? error.message : ''}
-                                    InputLabelProps={{ style: { fontSize: '14px' } }}
                                     sx={{
                                         marginBottom: '16px',
                                     }}

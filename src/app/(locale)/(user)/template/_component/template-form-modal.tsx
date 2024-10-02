@@ -134,7 +134,6 @@ export const TemplateFormModal = (props: IProps) => {
                                     variant="outlined"
                                     error={!!error}
                                     helperText={error ? error.message : ''}
-                                    InputLabelProps={{ style: { fontSize: '14px' } }}
                                     sx={{ marginBottom: '16px' }}
                                     size="small"
                                 />
@@ -153,7 +152,6 @@ export const TemplateFormModal = (props: IProps) => {
                                     rows={3}
                                     margin="normal"
                                     variant="outlined"
-                                    InputLabelProps={{ style: { fontSize: '14px' } }}
                                     sx={{ marginBottom: '16px' }}
                                     size="small"
                                 />
@@ -198,7 +196,6 @@ export const TemplateFormModal = (props: IProps) => {
                                     fullWidth
                                     margin="normal"
                                     variant="outlined"
-                                    InputLabelProps={{ style: { fontSize: '14px' } }}
                                     sx={{ marginBottom: '16px' }}
                                     size="small"
                                 />

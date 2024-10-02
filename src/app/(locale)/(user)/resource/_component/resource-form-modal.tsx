@@ -211,7 +211,6 @@ export const ResourceFormModal = (props: IProps) => {
                                     fullWidth
                                     margin="normal"
                                     variant="outlined"
-                                    InputLabelProps={{ style: { fontSize: '14px' } }}
                                     sx={{ marginBottom: '16px' }}
                                     size="small"
                                 />
