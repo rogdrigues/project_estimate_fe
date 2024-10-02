@@ -126,9 +126,10 @@ export default function TableComponent<T>(props: IProps<T>) {
                 restoreFunction={() => onRestore((dataView as any)?._id)}
                 deleteFunction={() => onDelete((dataView as any)?._id)}
             />
-            {children}
 
             {openReview && optionReview}
+
+            {children}
         </>
     );
 }

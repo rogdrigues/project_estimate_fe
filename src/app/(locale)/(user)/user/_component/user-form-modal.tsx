@@ -130,7 +130,6 @@ export const UserFormModal = (props: IProps) => {
                                     variant="outlined"
                                     error={!!error}
                                     helperText={error ? error.message : ''}
-                                    InputLabelProps={{ style: { fontSize: '14px' } }}
                                     sx={{
                                         marginBottom: '16px'
                                     }}
@@ -241,7 +240,6 @@ export const UserFormModal = (props: IProps) => {
                                     fullWidth
                                     margin="normal"
                                     variant="outlined"
-                                    InputLabelProps={{ style: { fontSize: '14px' } }}
                                     sx={{ marginBottom: '16px' }}
                                     size="small"
                                 />
@@ -258,7 +256,6 @@ export const UserFormModal = (props: IProps) => {
                                     fullWidth
                                     margin="normal"
                                     variant="outlined"
-                                    InputLabelProps={{ style: { fontSize: '14px' } }}
                                     sx={{ marginBottom: '16px' }}
                                     size="small"
                                 />

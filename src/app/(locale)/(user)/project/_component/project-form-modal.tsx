@@ -124,7 +124,6 @@ export const ProjectFormModal = (props: IProps) => {
                                     variant="outlined"
                                     error={!!error}
                                     inputProps={{ fontSize: '14px' }}
-                                    InputLabelProps={{ style: { fontSize: '14px' } }}
                                     helperText={error ? error.message : ''}
                                     sx={{ marginBottom: '16px' }}
                                     size="small"
@@ -145,7 +144,6 @@ export const ProjectFormModal = (props: IProps) => {
                                     margin="normal"
                                     variant="outlined"
                                     inputProps={{ fontSize: '14px' }}
-                                    InputLabelProps={{ style: { fontSize: '14px' } }}
                                     sx={{ marginBottom: '16px' }}
                                     size="small"
                                 />
@@ -163,7 +161,6 @@ export const ProjectFormModal = (props: IProps) => {
                                         label="Category"
                                         size='small'
                                         inputProps={{ fontSize: '14px' }}
-                                        InputLabelProps={{ style: { fontSize: '14px' } }}
                                         value={field?.value?._id || ""}
                                         onChange={(e: SelectChangeEvent) => {
                                             const selectedCategory = categories.find(category => category._id === e.target.value);
@@ -191,7 +188,6 @@ export const ProjectFormModal = (props: IProps) => {
                                         label="Opportunity"
                                         size='small'
                                         inputProps={{ fontSize: '14px' }}
-                                        InputLabelProps={{ style: { fontSize: '14px' } }}
                                         value={field?.value?._id || ""}
                                         onChange={(e: SelectChangeEvent) => {
                                             const selectedOpp = opportunities.find(opp => opp._id === e.target.value);
@@ -225,7 +221,6 @@ export const ProjectFormModal = (props: IProps) => {
                                         label="Template"
                                         size='small'
                                         inputProps={{ fontSize: '14px' }}
-                                        InputLabelProps={{ style: { fontSize: '14px' } }}
                                         value={field?.value?._id || ""}
                                         onChange={(e: SelectChangeEvent) => {
                                             const selectedTemplate = templates.find(template => template._id === e.target.value);
@@ -260,7 +255,6 @@ export const ProjectFormModal = (props: IProps) => {
                                         label="Reviewer"
                                         size='small'
                                         inputProps={{ fontSize: '14px' }}
-                                        InputLabelProps={{ style: { fontSize: '14px' } }}
                                         value={field?.value?._id || ""}
                                         onChange={(e: SelectChangeEvent) => {
                                             const selectedUser = reviewers.find(user => user._id === e.target.value);

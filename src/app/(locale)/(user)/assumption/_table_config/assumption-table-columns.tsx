@@ -9,7 +9,7 @@ export const columns: GridColDef[] = [
         headerName: 'ID',
         description: 'This column displays the ID of the assumption.',
         width: 70,
-        flex: 1
+        flex: 0
     },
     {
         field: 'title',
@@ -23,7 +23,7 @@ export const columns: GridColDef[] = [
         headerName: 'Content',
         description: 'This column displays the content of the assumption.',
         width: 175,
-        flex: 2
+        flex: 3
     },
     {
         field: 'category',
@@ -41,7 +41,7 @@ export const columns: GridColDef[] = [
         headerName: 'Sub Category',
         description: 'This column displays the sub category of the assumption.',
         width: 200,
-        flex: 2,
+        flex: 3,
         sortable: true,
         renderCell: (params: GridRenderCellParams) => {
             return params?.row?.category?.SubCategory || 'N/A';

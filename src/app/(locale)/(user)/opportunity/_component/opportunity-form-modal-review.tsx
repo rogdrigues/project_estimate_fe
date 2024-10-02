@@ -56,14 +56,12 @@ export const OpportunityReviewModal = (props: IProps) => {
         if (opportunity?._id) {
             getCommentForOpportunity(opportunity._id)
                 .then((data) => {
-                    console.log('Comments:', data);
                     setComments(data || []);
                 })
                 .catch((error) => console.error('Error fetching versions:', error.message));
 
             getOpportunityVersions(opportunity._id)
                 .then((data) => {
-                    console.log('Versions:', data);
                     setVersions(data || []);
                 })
                 .catch((error) => console.error('Error fetching versions:', error.message));

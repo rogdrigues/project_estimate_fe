@@ -164,7 +164,6 @@ export const OpportunityFormModal = (props: IProps) => {
                                         margin="normal"
                                         variant="outlined"
                                         inputProps={{ style: { fontSize: '14px' } }}
-                                        InputLabelProps={{ style: { fontSize: '14px' } }}
                                         size='small'
                                         error={!!error}
                                         helperText={error ? error.message : ''}
@@ -185,7 +184,6 @@ export const OpportunityFormModal = (props: IProps) => {
                                         margin="normal"
                                         variant="outlined"
                                         inputProps={{ style: { fontSize: '14px' } }}
-                                        InputLabelProps={{ style: { fontSize: '14px' } }}
                                         size='small'
                                         error={!!error}
                                         helperText={error ? error.message : ''}
@@ -204,7 +202,6 @@ export const OpportunityFormModal = (props: IProps) => {
                                         margin="normal"
                                         variant="outlined"
                                         inputProps={{ style: { fontSize: '14px' } }}
-                                        InputLabelProps={{ style: { fontSize: '14px' } }}
                                         size="small"
                                         disabled
                                         value={session?.user?.division?.name || ''} // Hiển thị tên Division
@@ -224,7 +221,6 @@ export const OpportunityFormModal = (props: IProps) => {
                                         margin="normal"
                                         variant="outlined"
                                         inputProps={{ style: { fontSize: '14px' } }}
-                                        InputLabelProps={{ style: { fontSize: '14px' } }}
                                         size="small"
                                         disabled
                                         value={session?.user?.department?.name || ''} // Hiển thị tên Department
@@ -274,7 +270,7 @@ export const OpportunityFormModal = (props: IProps) => {
                                         fullWidth
                                         required
                                         margin="normal"
-                                        InputLabelProps={{ shrink: true, style: { fontSize: '14px' } }}
+                                        InputLabelProps={{ shrink: true }}
                                         inputProps={{ style: { fontSize: '14px' } }}
                                         size="small"
                                         variant="outlined"
@@ -364,7 +360,6 @@ export const OpportunityFormModal = (props: IProps) => {
                                         fullWidth
                                         margin="normal"
                                         inputProps={{ style: { fontSize: '14px' } }}
-                                        InputLabelProps={{ style: { fontSize: '14px' } }}
                                         size='small'
                                         variant="outlined"
                                         sx={{ marginBottom: '16px' }}
@@ -385,7 +380,6 @@ export const OpportunityFormModal = (props: IProps) => {
                                         margin="normal"
                                         variant="outlined"
                                         inputProps={{ style: { fontSize: '14px' } }}
-                                        InputLabelProps={{ style: { fontSize: '14px' } }}
                                         size='small'
                                         error={!!error}
                                         helperText={error ? error.message : ''}

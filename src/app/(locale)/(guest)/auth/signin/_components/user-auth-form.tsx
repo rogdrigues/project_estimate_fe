@@ -36,7 +36,7 @@ const UserAuthForm = () => {
         });
 
         if (result?.error) {
-            triggerToast("There was an error signing in. Please try again.", false);
+            triggerToast(`There was an error while signing in: ${result.error}`, false);
         } else {
             triggerToast("Sign in successful", true);
             setTimeout(() => {

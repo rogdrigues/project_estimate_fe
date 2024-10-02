@@ -9,7 +9,7 @@ import WarningModal from '@/components/_table_form-config/modal-warning-table-co
 import moment from 'moment';
 import DownloadIcon from '@mui/icons-material/Download';
 import { downloadTemplate } from '@/services';
-
+import PageviewIcon from '@mui/icons-material/Pageview';
 interface IProps {
     anchorEl: null | HTMLElement;
     isMenuOpen: boolean;
@@ -44,6 +44,8 @@ const ObjectRowMenu = (props: IProps) => {
     const isPresaleRole = entity === 'presale_plan' && session?.user?.role?.roleName.startsWith('Presale');
     const isCreatorOfPresale = entity === 'presale_plan' && session?.user?.id === dataView?.createdBy?._id;
     const isWorkingTemplate = entity === 'template' && session?.user?.role?.roleName === 'Opportunity';
+    const isAccessProjectDetail = entity === 'projects' && session?.user?.role?.roleName === 'Opportunity';
+    const isProjectDetail = entity === 'project_detail' && session?.user?.role?.roleName === 'Opportunity';
 
     const timeLeft = moment().diff(moment(timeLeftForOpportunity), 'minutes');
     const isTimeExceeded = timeLeft > 60;
@@ -228,7 +230,21 @@ const ObjectRowMenu = (props: IProps) => {
                     </MenuItem>
                 )}
 
-                {!isPresaleRoleOpportunity && !isOpportunityLead && !isPresaleRole && (
+                {isProjectDetail && (
+                    <MenuItem
+                        onClick={() => {
+                            SetOpenUpdateModal(!openUpdateModal);
+                            handleMenuClose();
+                        }}
+                    >
+                        <ListItemIcon>
+                            <EditIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText>Edit</ListItemText>
+                    </MenuItem>
+                )}
+
+                {!isPresaleRoleOpportunity && !isOpportunityLead && !isPresaleRole && !isProjectDetail && (
                     <Box>
                         {!objectStatus && hasPermission(`manage_${entity}`) && (
                             <>
@@ -267,6 +283,21 @@ const ObjectRowMenu = (props: IProps) => {
                                         <DownloadIcon fontSize="small" />
                                     </ListItemIcon>
                                     <ListItemText>Download template file</ListItemText>
+                                </MenuItem>
+                            </>
+                        )}
+                        {!objectStatus && hasPermission(`manage_${entity}`) && isAccessProjectDetail && (
+                            <>
+                                <MenuItem
+                                    onClick={() => {
+                                        SetOpenReview && SetOpenReview(!openReviewModal);
+                                        handleMenuClose();
+                                    }}
+                                >
+                                    <ListItemIcon>
+                                        <PageviewIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText>View</ListItemText>
                                 </MenuItem>
                             </>
                         )}

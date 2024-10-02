@@ -13,7 +13,7 @@ const ProjectPage = async () => {
     const templates = await getAllTemplates(session?.access_token);
     const categories = await getAllCategories(session?.access_token);
     const reviewers = await getReviewers(session?.access_token);
-    console.log('reviewers', reviewers);
+
     return (
         <div>
             <ProjectHeader

@@ -224,7 +224,6 @@ export const updateOpportunityAfterRejection = async (opportunityId: string, upd
             body: updatedData,
         });
 
-        console.log('response', response);
         return response;
     } catch (error) {
         throw new Error('Error updating opportunity after rejection');

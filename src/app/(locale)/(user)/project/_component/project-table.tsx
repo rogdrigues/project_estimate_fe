@@ -5,6 +5,7 @@ import { Project, Opportunity, UserMaster, Category, Template } from '@/types';
 import { columns } from '@/app/(locale)/(user)/project/_table_config/project-table-columns';
 import { ProjectFormModal } from './project-form-modal';
 import { deleteProject, restoreProject } from '@/services';
+import ProjectDetailModal from './project-detail-modal';
 
 interface IProps {
     projects: Project[];
@@ -44,7 +45,13 @@ export default function ProjectTable(props: IProps) {
             currentPage="projects"
             openReview={openReview}
             setOpenReview={setOpenReview}
-            optionReview={null}
+            optionReview={
+                <ProjectDetailModal
+                    open={openReview}
+                    setOpen={setOpenReview}
+                    project={dataView}
+                />
+            }
         >
             <ProjectFormModal
                 open={openUpdate}
