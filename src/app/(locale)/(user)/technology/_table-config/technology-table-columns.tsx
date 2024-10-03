@@ -40,7 +40,7 @@ export const columns: GridColDef[] = [
         headerName: 'Standard',
         description: 'This column displays the standard of the technology.',
         width: 150,
-        flex: 1,
+        flex: 2,
         sortable: true,
     },
     {
