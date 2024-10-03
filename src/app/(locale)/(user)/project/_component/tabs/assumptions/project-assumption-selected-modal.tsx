@@ -45,6 +45,8 @@ const ProjectAssumptionsSelectedModal = (props: IProps) => {
         if (components.length > 0) {
             const selectedAssumptionIds = components.map((component) => component.originalAssumptionId);
             setSelectedAssumptions(selectedAssumptionIds);
+        } else {
+            setSelectedAssumptions([]);
         }
     }, [open, components, projectId]);
 

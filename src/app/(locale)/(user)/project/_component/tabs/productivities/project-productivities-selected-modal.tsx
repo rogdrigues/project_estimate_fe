@@ -29,6 +29,7 @@ const ProjectProductivitiesSelectedModal = (props: IProps) => {
         try {
             const response = await updateProjectComponents(projectId, { productivity: selectedProductivities });
             if (response.EC === 0) {
+                setSelectedProductivities([]);
                 fetchSelectedProductivities();
                 triggerToast('The list of productivities has been updated to the project successfully.', true);
                 setOpen(false);
@@ -44,6 +45,8 @@ const ProjectProductivitiesSelectedModal = (props: IProps) => {
         if (components.length > 0) {
             const selectedProductivityIds = components.map((component) => component.originalProductivityId);
             setSelectedProductivities(selectedProductivityIds);
+        } else {
+            setSelectedProductivities([]);
         }
     }, [open, components, projectId]);
 
