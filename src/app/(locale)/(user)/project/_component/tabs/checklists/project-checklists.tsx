@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import TableComponent from '@/components/_table_form-config/table-item-component';
 import { columns } from '@/app/(locale)/(user)/checklist/_table_config/checklist-table-columns';
 import ProjectChecklistsSelectedModal from '@/app/(locale)/(user)/project/_component/tabs/checklists/project-checklists-selected-modal';
+import { ChecklistFormModal } from '@/app/(locale)/(user)/checklist/_component/checklist-form-modal';
 
 interface IProps {
     projectId: string;
@@ -83,14 +84,20 @@ const ProjectChecklists = (props: IProps) => {
                     subClass: true,
                     category: true,
                     priority: true,
-                    status: true,
+                    status: false,
                     actions: true,
                 }}
-                hiddenColumnsOnMobile={['description']}
+                hiddenColumnsOnMobile={['description, status']}
                 currentPage="project_detail"
             >
-                {/* Doing this later */}
-                Quac
+                <ChecklistFormModal
+                    open={openUpdate}
+                    setOpen={setOpenUpdate}
+                    checklist={dataView}
+                    categories={categories}
+                    onProjectComponent={true}
+                    fetchSelectedChecklists={fetchSelectedChecklists}
+                />
             </TableComponent>
         </>
     );

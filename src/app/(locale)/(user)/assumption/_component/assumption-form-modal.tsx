@@ -12,17 +12,20 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { styleFormUser } from '@/styles';
+import { updateProjectAssumption } from '@/services';
 
 interface IProps {
     open: boolean;
     setOpen: (open: boolean) => void;
     categories: Category[];
     assumption?: Assumption | null;
+    onProjectComponent?: boolean;
+    fetchSelectedAssumptions?: () => void;
 }
 
 export const AssumptionFormModal = (props: IProps) => {
     const router = useRouter();
-    const { open, setOpen, categories, assumption } = props;
+    const { open, setOpen, categories, assumption, onProjectComponent = false, fetchSelectedAssumptions } = props;
     const { triggerToast } = useToast();
     const { handleSubmit, reset, control } = useForm({
         defaultValues: {
@@ -39,14 +42,23 @@ export const AssumptionFormModal = (props: IProps) => {
                 content: data.content,
                 category: data.category,
             };
+            let response;
 
-            const response = assumption
-                ? await updateAssumption(assumption._id, assumptionForm)
-                : await createAssumption(assumptionForm);
-
+            if (onProjectComponent) {
+                response = await updateProjectAssumption(assumption._id, assumptionForm)
+            } else {
+                response = assumption
+                    ? await updateAssumption(assumption._id, assumptionForm)
+                    : await createAssumption(assumptionForm);
+            }
             if (response.EC === 0) {
-                router.refresh();
-                triggerToast(assumption ? "Assumption updated successfully" : "Assumption created successfully", true);
+                if (onProjectComponent) {
+                    fetchSelectedAssumptions && fetchSelectedAssumptions();
+                    triggerToast(assumption ? "Project Assumption updated successfully" : "Project Assumption created successfully", true);
+                } else {
+                    router.refresh();
+                    triggerToast(assumption ? "Assumption updated successfully" : "Assumption created successfully", true);
+                }
                 setOpen(false);
                 reset();
             } else {

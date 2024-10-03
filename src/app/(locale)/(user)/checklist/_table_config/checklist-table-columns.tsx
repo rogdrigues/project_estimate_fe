@@ -22,6 +22,13 @@ export const columns: GridColDef[] = [
         }
     },
     {
+        field: 'name',
+        headerName: 'Name',
+        description: 'This column displays the name of the checklist.',
+        flex: 1,
+        minWidth: 150,
+    },
+    {
         field: 'subClass',
         headerName: 'SubClass',
         description: 'This column displays the sub class of the checklist.',
@@ -30,13 +37,6 @@ export const columns: GridColDef[] = [
         valueGetter: (params: any) => {
             return params || 'N/A';
         }
-    },
-    {
-        field: 'name',
-        headerName: 'Name',
-        description: 'This column displays the name of the checklist.',
-        flex: 1,
-        minWidth: 150,
     },
     {
         field: 'assessment',

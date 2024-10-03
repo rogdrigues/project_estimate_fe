@@ -107,6 +107,101 @@ export const getAllProjects = async (accessToken: string | undefined, includeDel
     }
 };
 
+//update project components after being selected
+export const updateProjectAssumption = async (projectAssumptionId: string, projectAssumptionData: ProjectAssumption) => {
+    try {
+        const accessToken = await getAccessToken();
+        const response = await customFetch<ProjectAssumption>(
+            {
+                url: `${baseURL}/update-assumption/${projectAssumptionId}`,
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken,
+                },
+                body: projectAssumptionData,
+            }
+        );
+        return response;
+    } catch (error) {
+        throw new Error('Error updating project assumption');
+    }
+};
+
+export const updateProjectChecklist = async (projectChecklistId: string, projectChecklistData: ProjectChecklist) => {
+    try {
+        const accessToken = await getAccessToken();
+        const response = await customFetch<ProjectChecklist>(
+            {
+                url: `${baseURL}/update-checklist/${projectChecklistId}`,
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken,
+                },
+                body: projectChecklistData,
+            }
+        );
+        return response;
+    } catch (error) {
+        throw new Error('Error updating checklist');
+    }
+};
+
+export const updateProjectProductivity = async (projectProductivityId: string, projectProductivityData: ProjectProductivity) => {
+    try {
+        const accessToken = await getAccessToken();
+        const response = await customFetch<ProjectProductivity>(
+            {
+                url: `${baseURL}/update-productivity/${projectProductivityId}`,
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken,
+                },
+                body: projectProductivityData,
+            }
+        );
+        return response;
+    } catch (error) {
+        throw new Error('Error updating productivity');
+    }
+};
+
+export const updateProjectResource = async (projectResourceId: string, projectResourceData: ProjectResource) => {
+    try {
+        const accessToken = await getAccessToken();
+        const response = await customFetch<ProjectResource>({
+            url: `${baseURL}/update-resource/${projectResourceId}`,
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + accessToken,
+            },
+            body: projectResourceData,
+        });
+        return response;
+    } catch (error) {
+        throw new Error('Error updating resource');
+    }
+};
+
+export const updateProjectTechnology = async (projectTechnologyId: string, projectTechnologyData: ProjectTechnology) => {
+    try {
+        const accessToken = await getAccessToken();
+        const response = await customFetch<ProjectTechnology>(
+            {
+                url: `${baseURL}/update-technology/${projectTechnologyId}`,
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken,
+                },
+                body: projectTechnologyData,
+            }
+        );
+        return response;
+    } catch (error) {
+        throw new Error('Error updating technology');
+    }
+};
+
+
 // Update project components
 export const updateProjectComponents = async (
     projectId: string,

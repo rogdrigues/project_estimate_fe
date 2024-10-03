@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import TableComponent from '@/components/_table_form-config/table-item-component';
 import { columns } from '@/app/(locale)/(user)/resource/_table-config/resource-table-columns';
 import ProjectResourcesSelectedModal from '@/app/(locale)/(user)/project/_component/tabs/resources/project-resources-selected-modal';
+import { ResourceFormModal } from '@/app/(locale)/(user)/resource/_component/resource-form-modal';
 
 interface IProps {
     projectId: string;
@@ -86,8 +87,13 @@ const ProjectResources = (props: IProps) => {
                 hiddenColumnsOnMobile={['location', 'status']}
                 currentPage="project_detail"
             >
-                {/* Doing this later */}
-                Quac
+                <ResourceFormModal
+                    open={openUpdate}
+                    setOpen={setOpenUpdate}
+                    resource={dataView}
+                    onProjectComponent={true}
+                    fetchSelectedResources={fetchSelectedResources}
+                />
             </TableComponent>
         </>
     );

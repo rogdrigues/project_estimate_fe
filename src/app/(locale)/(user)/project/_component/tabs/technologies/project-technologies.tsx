@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import TableComponent from '@/components/_table_form-config/table-item-component';
 import { columns } from '@/app/(locale)/(user)/technology/_table-config/technology-table-columns';
 import ProjectTechnologiesSelectedModal from '@/app/(locale)/(user)/project/_component/tabs/technologies/project-technologies-selected-modal';
+import { TechnologyFormModal } from '@/app/(locale)/(user)/technology/_component/technology-form-modal';
 
 interface IProps {
     projectId: string;
@@ -85,8 +86,13 @@ const ProjectTechnologies = (props: IProps) => {
                 hiddenColumnsOnMobile={['standard', 'status']}
                 currentPage="project_detail"
             >
-                {/* Doing this later */}
-                Quac
+                <TechnologyFormModal
+                    open={openUpdate}
+                    setOpen={setOpenUpdate}
+                    technology={dataView}
+                    onProjectComponent={true}
+                    fetchSelectedTechnologies={fetchSelectedTechnologies}
+                />
             </TableComponent>
         </>
     );

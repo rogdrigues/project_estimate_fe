@@ -6,8 +6,7 @@ import Fade from '@mui/material/Fade';
 import CloseIcon from '@mui/icons-material/Close';
 import { useForm, Controller } from 'react-hook-form';
 import { Technology } from '@/types';
-import { createTechnology, updateTechnology } from '@/services';
-import { useSession } from 'next-auth/react';
+import { createTechnology, updateProjectTechnology, updateTechnology } from '@/services';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -18,14 +17,15 @@ interface IProps {
     open: boolean;
     setOpen: (open: boolean) => void;
     technology?: Technology | null;
+    onProjectComponent?: boolean;
+    fetchSelectedTechnologies?: () => void;
 }
 
 const categories = ['Frontend', 'Backend', 'Database', 'DevOps', 'Language'];
 
 export const TechnologyFormModal = (props: IProps) => {
     const router = useRouter();
-    const { data: session } = useSession();
-    const { open, setOpen, technology } = props;
+    const { open, setOpen, technology, onProjectComponent = false, fetchSelectedTechnologies } = props;
     const { triggerToast } = useToast();
     const { handleSubmit, reset, control } = useForm({
         defaultValues: {
@@ -45,13 +45,23 @@ export const TechnologyFormModal = (props: IProps) => {
                 standard: data.standard,
             };
 
-            const response = technology
-                ? await updateTechnology(technology._id, technologyForm)
-                : await createTechnology(technologyForm);
+            let response;
 
+            if (onProjectComponent) {
+                response = await updateProjectTechnology(technology._id, technologyForm)
+            } else {
+                response = technology
+                    ? await updateTechnology(technology._id, technologyForm)
+                    : await createTechnology(technologyForm);
+            }
             if (response.EC === 0) {
-                router.refresh();
-                triggerToast(technology ? "Technology updated successfully" : "Technology created successfully", true);
+                if (onProjectComponent) {
+                    fetchSelectedTechnologies && fetchSelectedTechnologies();
+                    triggerToast(technology ? "Project Technology updated successfully" : "Project Technology created successfully", true);
+                } else {
+                    router.refresh();
+                    triggerToast(technology ? "Technology updated successfully" : "Technology created successfully", true);
+                }
                 setOpen(false);
                 reset();
             } else {
