@@ -13,6 +13,8 @@ import { Project } from '@/types';
 import { profileDialoge } from '@/styles';
 import ProjectGeneralInfo from './tabs/project-general-information';
 import ProjectAssumptions from './tabs/assumptions/project-assumptions';
+import ProjectTechnologies from './tabs/technologies/project-technologies';
+import ProjectProductivities from './tabs/productivities/project-productivities';
 
 interface IProps {
     open: boolean;
@@ -35,9 +37,9 @@ const ProjectDetailModal = (props: IProps) => {
             case 'Assumptions':
                 return <ProjectAssumptions projectId={project?._id} />;
             case 'Technologies':
-            //return <Technologies projectId={project?._id} />;
+                return <ProjectTechnologies projectId={project?._id} />;
             case 'Productivity':
-            //return <Productivity projectId={project?._id} />;
+                return <ProjectProductivities projectId={project?._id} />;
             case 'Resources':
             // return <Resources projectId={project?._id} />;
             case 'Checklists':

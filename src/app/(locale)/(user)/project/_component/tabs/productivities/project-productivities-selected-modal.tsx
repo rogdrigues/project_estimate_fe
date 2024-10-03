@@ -1,75 +1,73 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Assumption, Category, ProjectAssumption } from '@/types';
+import { Productivity, ProjectProductivity, Technology } from '@/types';
 import SaveIcon from '@mui/icons-material/Save';
 import { Button, Box, Typography, Modal, Divider } from '@mui/material';
 import { updateProjectComponents } from '@/services';
-import { columns } from '@/app/(locale)/(user)/assumption/_table_config/assumption-table-columns';
+import { columns } from '@/app/(locale)/(user)/productivity/_table_config/productivity-table-columns';
 import { useToast } from '@/context/ToastContext';
 import TableComponentWithCheckbox from '@/components/_table_form-config/table-checkbox-component';
 import { HeaderButton } from '@/styles';
 
 interface IProps {
-    fetchSelectedAssumptions: () => void;
+    fetchSelectedProductivities: () => void;
     projectId: string;
-    assumptions: Assumption[];
-    categories: Category[];
-    components: ProjectAssumption[];
+    productivities: Productivity[];
+    technologies: Technology[];
+    components: ProjectProductivity[];
     open: boolean;
     setOpen: (open: boolean) => void;
 }
 
-const ProjectAssumptionsSelectedModal = (props: IProps) => {
-    const { projectId, assumptions, categories, open, setOpen, components, fetchSelectedAssumptions } = props;
+const ProjectProductivitiesSelectedModal = (props: IProps) => {
+    const { projectId, productivities, technologies, open, setOpen, components, fetchSelectedProductivities } = props;
     const { triggerToast } = useToast();
-    const [selectedAssumptions, setSelectedAssumptions] = useState<ProjectAssumption[]>([]);
+    const [selectedProductivities, setSelectedProductivities] = useState<ProjectProductivity[]>([]);
 
     const handleSave = async () => {
-
         try {
-            const response = await updateProjectComponents(projectId, { assumptions: selectedAssumptions });
+            const response = await updateProjectComponents(projectId, { productivity: selectedProductivities });
             if (response.EC === 0) {
-                fetchSelectedAssumptions();
-                triggerToast('The list of assumptions has been updated to the project successfully.', true);
+                fetchSelectedProductivities();
+                triggerToast('The list of productivities has been updated to the project successfully.', true);
                 setOpen(false);
             } else {
-                triggerToast(`Failed to update assumptions: ${response.message}`, false);
+                triggerToast(`Failed to update productivities: ${response.message}`, false);
             }
         } catch (error) {
-            triggerToast('Failed to update assumptions.', false);
+            triggerToast('Failed to update productivities.', false);
         }
     };
 
     useEffect(() => {
         if (components.length > 0) {
-            const selectedAssumptionIds = components.map((component) => component.originalAssumptionId);
-            setSelectedAssumptions(selectedAssumptionIds);
+            const selectedProductivityIds = components.map((component) => component.originalProductivityId);
+            setSelectedProductivities(selectedProductivityIds);
         }
     }, [open, components, projectId]);
 
     const handleRowsSelected = (selectedRows: string[]) => {
-        setSelectedAssumptions(selectedRows);
+        setSelectedProductivities(selectedRows);
     };
 
     return (
         <Modal
             open={open}
             onClose={() => setOpen(false)}
-            aria-labelledby="project-assumptions-modal"
-            aria-describedby="project-assumptions-description"
+            aria-labelledby="project-productivities-modal"
+            aria-describedby="project-productivities-description"
         >
             <Box sx={{ width: '90%', height: '80%', margin: 'auto', marginTop: '5%', backgroundColor: 'white', padding: 4, borderRadius: 2, overflowY: 'auto' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 2 }}>
                     <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                        Project Assumptions
+                        Project Productivities
                     </Typography>
                 </Box>
 
-
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 2, mt: -2 }}>
                     <Typography variant="body2" sx={{ color: 'gray' }}>
-                        Select the assumptions that apply to this project. After making your selection, click [Save] button to update list of assumptions into the project.
+                        Select the productivities that apply to this project. After making your selection, click [Save] button to update the list of productivities into the project.
                     </Typography>
                     <Button
                         variant="outlined"
@@ -82,18 +80,19 @@ const ProjectAssumptionsSelectedModal = (props: IProps) => {
                     </Button>
                 </Box>
                 <Divider sx={{ mb: 2 }} />
-                <TableComponentWithCheckbox<ProjectAssumption>
-                    rows={assumptions}
+                <TableComponentWithCheckbox<ProjectProductivity>
+                    rows={productivities}
                     columns={columns}
                     initialVisibility={{
-                        title: true,
-                        content: true,
-                        category: true,
-                        subCategory: true,
+                        name: true,
+                        version: true,
+                        norm: true,
+                        unit: true,
+                        actions: true,
                     }}
-                    hiddenColumnsOnMobile={['subCategory']}
+                    hiddenColumnsOnMobile={['technology', 'norm']}
                     onRowsSelected={handleRowsSelected}
-                    selectionRows={selectedAssumptions}
+                    selectionRows={selectedProductivities}
                 />
 
             </Box>
@@ -101,4 +100,4 @@ const ProjectAssumptionsSelectedModal = (props: IProps) => {
     );
 }
 
-export default ProjectAssumptionsSelectedModal;
+export default ProjectProductivitiesSelectedModal;

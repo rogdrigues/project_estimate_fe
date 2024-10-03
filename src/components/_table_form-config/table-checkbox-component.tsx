@@ -37,10 +37,10 @@ export default function TableComponentWithCheckbox<T>(props: IProps<T>) {
     }, [selectionModel]);
 
     useEffect(() => {
-        if (selectionModel.length === 0) {
+        if (selectionModel.length === 0 && selectionRows.length > 0) {
             setSelectionModel(selectionRows);
         }
-    }, [selectionModel]);
+    }, [selectionRows]);
 
 
     const rowsWithIds = rows.length > 0
@@ -56,9 +56,8 @@ export default function TableComponentWithCheckbox<T>(props: IProps<T>) {
                 <DataGrid
                     autoHeight
                     rows={rowsWithIds}
-                    columns={columns.filter(col => col.field !== 'actions' && col.field !== 'status')}
+                    columns={columns.filter(col => col.field !== 'actions' && col.field !== 'status' && col.field !== 'id')}
                     checkboxSelection
-                    keepNonExistentRowsSelected
                     disableRowSelectionOnClick
                     rowSelectionModel={selectionModel}
                     onRowSelectionModelChange={(newSelectionModel: GridRowSelectionModel) => {
@@ -66,7 +65,7 @@ export default function TableComponentWithCheckbox<T>(props: IProps<T>) {
                     }}
                     initialState={{
                         pagination: {
-                            paginationModel: { page: 0, pageSize: 10 },
+                            paginationModel: { page: 0, pageSize: 5 },
                         },
                     }}
                     pageSizeOptions={[5, 10]}
