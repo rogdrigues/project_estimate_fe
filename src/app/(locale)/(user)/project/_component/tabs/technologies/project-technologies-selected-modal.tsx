@@ -44,6 +44,8 @@ const ProjectTechnologiesSelectedModal = (props: IProps) => {
         if (components.length > 0) {
             const selectedTechnologyIds = components.map((component) => component.originalTechId);
             setSelectedTechnologies(selectedTechnologyIds);
+        } else {
+            setSelectedTechnologies([]);
         }
     }, [open, components, projectId]);
 
