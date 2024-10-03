@@ -6,7 +6,7 @@ import Fade from '@mui/material/Fade';
 import CloseIcon from '@mui/icons-material/Close';
 import { useForm, Controller } from 'react-hook-form';
 import { Resource } from '@/types';
-import { createResource, updateResource } from '@/services';
+import { createResource, updateProjectResource, updateResource } from '@/services';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -19,11 +19,13 @@ interface IProps {
     open: boolean;
     setOpen: (open: boolean) => void;
     resource?: Resource | null;
+    onProjectComponent?: boolean;
+    fetchSelectedResources?: () => void;
 }
 
 export const ResourceFormModal = (props: IProps) => {
     const router = useRouter();
-    const { open, setOpen, resource } = props;
+    const { open, setOpen, resource, onProjectComponent = false, fetchSelectedResources } = props;
     const { triggerToast } = useToast();
     const { handleSubmit, reset, control } = useForm({
         defaultValues: {
@@ -45,13 +47,23 @@ export const ResourceFormModal = (props: IProps) => {
                 currency: data.currency,
             };
 
-            const response = resource
-                ? await updateResource(resource._id, resourceForm)
-                : await createResource(resourceForm);
+            let response;
 
+            if (onProjectComponent) {
+                response = await updateProjectResource(resource._id, resourceForm)
+            } else {
+                response = resource
+                    ? await updateResource(resource._id, resourceForm)
+                    : await createResource(resourceForm);
+            }
             if (response.EC === 0) {
-                router.refresh();
-                triggerToast(resource ? 'Resource updated successfully' : 'Resource created successfully', true);
+                if (onProjectComponent) {
+                    fetchSelectedResources && fetchSelectedResources();
+                    triggerToast(resource ? 'Project Resource updated successfully' : 'Project Resource created successfully', true);
+                } else {
+                    router.refresh();
+                    triggerToast(resource ? 'Resource updated successfully' : 'Resource created successfully', true);
+                }
                 setOpen(false);
                 reset();
             } else {

@@ -6,8 +6,7 @@ import Fade from '@mui/material/Fade';
 import CloseIcon from '@mui/icons-material/Close';
 import { useForm, Controller } from 'react-hook-form';
 import { Productivity, Technology } from '@/types';
-import { createProductivity, updateProductivity } from '@/services';
-import { useSession } from 'next-auth/react';
+import { createProductivity, updateProductivity, updateProjectProductivity } from '@/services';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -19,11 +18,13 @@ interface IProps {
     setOpen: (open: boolean) => void;
     technologies: Technology[];
     productivityData?: Productivity | null;
+    onProjectComponent?: boolean;
+    fetchSelectedProductivities?: () => void;
 }
 
 export const ProductivityFormModal = (props: IProps) => {
     const router = useRouter();
-    const { open, setOpen, technologies, productivityData } = props;
+    const { open, setOpen, technologies, productivityData, onProjectComponent = false, fetchSelectedProductivities } = props;
     const { triggerToast } = useToast();
     const { handleSubmit, reset, control } = useForm({
         defaultValues: {
@@ -43,13 +44,22 @@ export const ProductivityFormModal = (props: IProps) => {
                 unit: data.unit,
             };
 
-            const response = productivityData
-                ? await updateProductivity(productivityData._id, productivityForm)
-                : await createProductivity(productivityForm);
-
+            let response;
+            if (onProjectComponent) {
+                response = await updateProjectProductivity(productivityData._id, productivityForm)
+            } else {
+                response = productivityData
+                    ? await updateProductivity(productivityData._id, productivityForm)
+                    : await createProductivity(productivityForm);
+            }
             if (response.EC === 0) {
-                router.refresh();
-                triggerToast(productivityData ? "Productivity updated successfully" : "Productivity created successfully", true);
+                if (onProjectComponent) {
+                    fetchSelectedProductivities && fetchSelectedProductivities();
+                    triggerToast(productivityData ? "Project Productivity updated successfully" : "Project Productivity created successfully", true);
+                } else {
+                    router.refresh();
+                    triggerToast(productivityData ? "Productivity updated successfully" : "Productivity created successfully", true);
+                }
                 setOpen(false);
                 reset();
             } else {

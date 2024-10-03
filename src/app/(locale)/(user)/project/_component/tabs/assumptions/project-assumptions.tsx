@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import TableComponent from '@/components/_table_form-config/table-item-component';
 import { columns } from '@/app/(locale)/(user)/assumption/_table_config/assumption-table-columns';
 import ProjectAssumptionsSelectedModal from './project-assumption-selected-modal';
+import { AssumptionFormModal } from '@/app/(locale)/(user)/assumption/_component/assumption-form-modal';
 interface IProps {
     projectId: string;
 }
@@ -89,8 +90,14 @@ const ProjectAssumptions = (props: IProps) => {
                 hiddenColumnsOnMobile={['subCategory', 'status']}
                 currentPage="project_detail"
             >
-                {/* Doing this later */}
-                Quac
+                <AssumptionFormModal
+                    open={openUpdate}
+                    setOpen={setOpenUpdate}
+                    categories={categories}
+                    assumption={dataView}
+                    onProjectComponent={true}
+                    fetchSelectedAssumptions={fetchSelectedAssumptions}
+                />
             </TableComponent>
         </>
 

@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import TableComponent from '@/components/_table_form-config/table-item-component';
 import ProjectProductivitiesSelectedModal from './project-productivities-selected-modal';
 import { columns } from '@/app/(locale)/(user)/productivity/_table_config/productivity-table-columns';
+import { ProductivityFormModal } from '@/app/(locale)/(user)/productivity/_component/productivity-form-modal';
 
 interface IProps {
     projectId: string;
@@ -89,8 +90,14 @@ const ProjectProductivities = (props: IProps) => {
                 hiddenColumnsOnMobile={['norm']}
                 currentPage="project_detail"
             >
-                {/* Doing this later */}
-                Quac
+                <ProductivityFormModal
+                    open={openUpdate}
+                    setOpen={setOpenUpdate}
+                    productivityData={dataView}
+                    technologies={technologies}
+                    onProjectComponent={true}
+                    fetchSelectedProductivities={fetchSelectedProductivities}
+                />
             </TableComponent>
         </>
     );

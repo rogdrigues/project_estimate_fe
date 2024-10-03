@@ -6,8 +6,7 @@ import Fade from '@mui/material/Fade';
 import CloseIcon from '@mui/icons-material/Close';
 import { useForm, Controller } from 'react-hook-form';
 import { Category, Checklist } from '@/types';
-import { createChecklist, updateChecklist } from '@/services';
-import { useSession } from 'next-auth/react';
+import { createChecklist, updateChecklist, updateProjectChecklist } from '@/services';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -19,12 +18,13 @@ interface IProps {
     setOpen: (open: boolean) => void;
     categories: Category[];
     checklist?: Checklist | null;
+    onProjectComponent?: boolean;
+    fetchSelectedChecklists?: () => void;
 }
 
 export const ChecklistFormModal = (props: IProps) => {
     const router = useRouter();
-    const { data: session } = useSession();
-    const { open, setOpen, categories, checklist } = props;
+    const { open, setOpen, categories, checklist, onProjectComponent = false, fetchSelectedChecklists } = props;
     const { triggerToast } = useToast();
     const { handleSubmit, reset, control } = useForm({
         defaultValues: {
@@ -49,13 +49,24 @@ export const ChecklistFormModal = (props: IProps) => {
                 note: data.note || 'N/A',
                 assessment: data.assessment,
             };
-            const response = checklist
-                ? await updateChecklist(checklist._id, checklistForm)
-                : await createChecklist(checklistForm);
+            let response;
+
+            if (onProjectComponent) {
+                response = await updateProjectChecklist(checklist._id, checklistForm)
+            } else {
+                response = checklist
+                    ? await updateChecklist(checklist._id, checklistForm)
+                    : await createChecklist(checklistForm);
+            }
 
             if (response.EC === 0) {
-                router.refresh();
-                triggerToast(checklist ? 'Checklist updated successfully' : 'Checklist created successfully', true);
+                if (onProjectComponent) {
+                    fetchSelectedChecklists && fetchSelectedChecklists();
+                    triggerToast(checklist ? 'Project Checklist updated successfully' : 'Project Checklist created successfully', true);
+                } else {
+                    router.refresh();
+                    triggerToast(checklist ? 'Checklist updated successfully' : 'Checklist created successfully', true);
+                }
                 setOpen(false);
                 reset();
             } else {
