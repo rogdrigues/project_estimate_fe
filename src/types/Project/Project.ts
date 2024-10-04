@@ -1,11 +1,11 @@
 import { z } from 'zod';
-import { ProjectAssumptionSchema, ProjectChecklistSchema, ProjectResourceSchema, ProjectTechnologySchema, ProjectProductivitySchema, DivisionSchema, OpportunitySchema, UserMasterSchema, DepartmentSchema, CategorySchema, TemplateSchema } from './index';
+import { ProjectAssumptionSchema, ProjectChecklistSchema, ProjectResourceSchema, ProjectTechnologySchema, ProjectProductivitySchema, DivisionSchema, OpportunitySchema, UserMasterSchema, DepartmentSchema, CategorySchema, TemplateSchema } from '../index';
 
 export const ProjectSchema: any = z.object({
     _id: z.string().optional(),
     name: z.string(),
     description: z.string().optional(),
-    status: z.enum(['Pending', 'In Progress', 'Completed', 'Archive']),
+    status: z.enum(['Pending', 'In Progress', 'Completed', 'Archive', 'Rejected']),
     category: CategorySchema.optional(),
     department: DepartmentSchema.optional(),
     division: DivisionSchema.optional(),

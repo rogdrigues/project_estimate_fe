@@ -1,5 +1,5 @@
 import { customFetch } from '@/lib';
-import { Project, ProjectResource, ProjectChecklist, ProjectAssumption, ProjectTechnology, ProjectProductivity, UserMaster } from '@/types';
+import { Project, ProjectResource, ProjectChecklist, ProjectAssumption, ProjectTechnology, ProjectProductivity, UserMaster, ProjectComment } from '@/types';
 import { getAccessToken } from '@/utils';
 
 const baseURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/project`;
@@ -104,6 +104,30 @@ export const getAllProjects = async (accessToken: string | undefined, includeDel
         return response.data;
     } catch (error) {
         throw new Error('Error fetching projects');
+    }
+};
+
+
+export const getProjectById = async (projectId: string) => {
+    try {
+        const accessToken = await getAccessToken();
+
+        const response = await customFetch<Project>(
+            {
+                url: `${baseURL}/get-project/${projectId}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + accessToken,
+                },
+                method: 'GET',
+                nextOptions: {
+                    cache: 'no-store',
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        throw new Error('Error fetching category');
     }
 };
 
@@ -242,5 +266,104 @@ export const getProjectComponents = async (projectId: string, componentType: str
         return response.data;
     } catch (error) {
         throw new Error(`Error fetching ${componentType}`);
+    }
+};
+
+// Project comment services
+export const addProjectComment = async (projectId: string, commentData: Partial<ProjectComment>) => {
+    try {
+        const accessToken = await getAccessToken();
+        const response = await customFetch<ProjectComment>({
+            url: `${baseURL}/comments/add/${projectId}`,
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + accessToken,
+            },
+            body: commentData,
+        });
+        return response;
+    } catch (error) {
+        throw new Error('Error adding project comment');
+    }
+};
+
+export const updateProjectComment = async (commentId: string, commentData: Partial<ProjectComment>) => {
+    try {
+        const accessToken = await getAccessToken();
+        const response = await customFetch<ProjectComment>({
+            url: `${baseURL}/comments/update/${commentId}`,
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + accessToken,
+            },
+            body: commentData,
+        });
+        return response;
+    } catch (error) {
+        throw new Error('Error updating project comment');
+    }
+};
+
+export const deleteProjectComment = async (commentId: string) => {
+    try {
+        const accessToken = await getAccessToken();
+        const response = await customFetch<ProjectComment>({
+            url: `${baseURL}/comments/delete/${commentId}`,
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + accessToken,
+            },
+        });
+        return response;
+    } catch (error) {
+        throw new Error('Error deleting project comment');
+    }
+};
+
+export const getCommentsByProject = async (projectId: string) => {
+    try {
+        const accessToken = await getAccessToken();
+        const response = await customFetch<ProjectComment[]>({
+            url: `${baseURL}/comments/list/${projectId}`,
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + accessToken,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error('Error fetching project comments');
+    }
+};
+
+export const startReviewProcess = async (projectId: string) => {
+    try {
+        const accessToken = await getAccessToken();
+        const response = await customFetch({
+            url: `${baseURL}/comments/start-review/${projectId}`,
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + accessToken,
+            },
+        });
+        return response;
+    } catch (error) {
+        throw new Error('Error starting review process');
+    }
+};
+
+export const requestReview = async (projectId: string) => {
+    try {
+        const accessToken = await getAccessToken();
+        const response = await customFetch({
+            url: `${baseURL}/comments/request-review/${projectId}`,
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + accessToken,
+            },
+        });
+        return response;
+    } catch (error) {
+        throw new Error('Error requesting review');
     }
 };

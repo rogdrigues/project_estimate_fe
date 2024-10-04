@@ -109,6 +109,11 @@ export const columns: GridColDef[] = [
                     color = '#6c757d';
                     label = 'Archived';
                     break;
+                case 'Rejected':
+                    icon = <BlockIcon fontSize="small" style={{ marginRight: '4px', color: '#dc3545' }} />;
+                    color = '#dc3545';
+                    label = 'Rejected';
+                    break;
                 default:
                     icon = <BlockIcon fontSize="small" style={{ marginRight: '4px', color: '#6c757d' }} />;
                     color = '#6c757d';
