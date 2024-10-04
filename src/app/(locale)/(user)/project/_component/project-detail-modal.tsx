@@ -17,6 +17,7 @@ import ProjectTechnologies from './tabs/technologies/project-technologies';
 import ProjectProductivities from './tabs/productivities/project-productivities';
 import ProjectChecklists from './tabs/checklists/project-checklists';
 import ProjectResources from './tabs/resources/project-resources';
+import ProjectReview from './tabs/project-detail-review';
 
 interface IProps {
     open: boolean;
@@ -49,7 +50,7 @@ const ProjectDetailModal = (props: IProps) => {
             case 'Template':
             //return <Template projectId={project?._id} />;
             case 'Reviews':
-            //return <Reviews projectId={project?._id} />;
+                return <ProjectReview />;
             default:
                 return <Typography>Select a section to view details</Typography>;
         }

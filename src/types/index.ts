@@ -14,5 +14,6 @@ export * from './Opportunity';
 export * from './OpportunityVersion';
 export * from './PresalePlan';
 export * from './Template'
-export * from './Project';
-export * from './ProjectComponents';
+export * from './Project/Project';
+export * from './Project/ProjectComponents';
+export * from './Project/ProjectComment';
