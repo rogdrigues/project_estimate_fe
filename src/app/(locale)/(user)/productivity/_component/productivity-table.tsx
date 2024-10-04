@@ -29,6 +29,7 @@ export default function ProductivityTable(props: IProps) {
             dataView={dataView}
             setDataView={setDataView}
             initialVisibility={{
+                _id: false,
                 productivity: true,
                 technology: true,
                 norm: true,

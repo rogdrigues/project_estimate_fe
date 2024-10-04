@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Box, List, ListItem, ListItemText, ListItemIcon, Typography, Divider } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import AssignmentIcon from '@mui/icons-material/Assignment';
@@ -18,20 +18,36 @@ import ProjectProductivities from './tabs/productivities/project-productivities'
 import ProjectChecklists from './tabs/checklists/project-checklists';
 import ProjectResources from './tabs/resources/project-resources';
 import ProjectReview from './tabs/project-detail-review';
+import { getProjectById } from '@/services';
 
 interface IProps {
     open: boolean;
     setOpen: (open: boolean) => void;
-    project: Project | null;
+    projectId: string;
 }
 
 const ProjectDetailModal = (props: IProps) => {
-    const { open, setOpen, project } = props;
+    const { open, setOpen, projectId } = props;
     const [selectedSection, setSelectedSection] = useState('General Information');
-
+    const [project, setProject] = useState<Project>();
     const handleClose = () => {
         setOpen(false);
     };
+
+    const fetchProject = async () => {
+        try {
+            const fetchedProject: Project = await getProjectById(projectId);
+            setProject(fetchedProject?.result);
+        } catch (error) {
+            console.error('Error fetching project:', error);
+        }
+    }
+
+    useEffect(() => {
+        if (open) {
+            fetchProject();
+        }
+    }, [open]);
 
     const renderContent = () => {
         switch (selectedSection) {
@@ -48,9 +64,9 @@ const ProjectDetailModal = (props: IProps) => {
             case 'Checklists':
                 return <ProjectChecklists projectId={project?._id} />;
             case 'Template':
-            //return <Template projectId={project?._id} />;
+                return <Typography>Select a section to view details</Typography>;
             case 'Reviews':
-                return <ProjectReview />;
+                return <ProjectReview project={project} fetchProject={fetchProject} />;
             default:
                 return <Typography>Select a section to view details</Typography>;
         }

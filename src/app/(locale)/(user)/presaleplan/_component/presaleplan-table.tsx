@@ -32,6 +32,7 @@ export default function PresalePlanTable(props: IProps) {
             dataView={dataView}
             setDataView={setDataView}
             initialVisibility={{
+                _id: false,
                 name: true,
                 department: true,
                 division: true,

@@ -76,6 +76,7 @@ const ProjectTechnologies = (props: IProps) => {
                 dataView={dataView}
                 setDataView={setDataView}
                 initialVisibility={{
+                    _id: false,
                     name: true,
                     version: true,
                     category: true,

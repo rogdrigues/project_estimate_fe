@@ -29,6 +29,7 @@ export default function AssumptionTable(props: IProps) {
             dataView={dataView}
             setDataView={setDataView}
             initialVisibility={{
+                _id: false,
                 title: true,
                 content: true,
                 category: true,

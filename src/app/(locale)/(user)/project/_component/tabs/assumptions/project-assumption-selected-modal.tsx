@@ -88,6 +88,7 @@ const ProjectAssumptionsSelectedModal = (props: IProps) => {
                     rows={assumptions}
                     columns={columns}
                     initialVisibility={{
+                        _id: false,
                         title: true,
                         content: true,
                         category: true,

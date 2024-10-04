@@ -40,6 +40,9 @@ export default function TableComponent<T>(props: IProps<T>) {
         setColumnVisibilityModel((prevModel) => {
             const newModel = { ...prevModel };
             hiddenColumnsOnMobile.forEach((col) => {
+                if (col === '_id') {
+                    newModel[col] = false;
+                }
                 newModel[col] = !isMobile;
             });
             return newModel;

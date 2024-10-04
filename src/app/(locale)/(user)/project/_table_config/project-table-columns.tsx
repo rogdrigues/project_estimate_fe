@@ -6,6 +6,10 @@ import moment from 'moment';
 
 export const columns: GridColDef[] = [
     {
+        field: '_id',
+        headerName: 'ID',
+    },
+    {
         field: 'id',
         headerName: 'ID',
         description: 'This column displays the ID of the Project.',
@@ -113,6 +117,11 @@ export const columns: GridColDef[] = [
                     icon = <BlockIcon fontSize="small" style={{ marginRight: '4px', color: '#dc3545' }} />;
                     color = '#dc3545';
                     label = 'Rejected';
+                    break;
+                case 'In Review':
+                    icon = <HourglassEmptyIcon fontSize="small" style={{ marginRight: '4px', color: '#17a2b8' }} />;
+                    color = '#17a2b8';
+                    label = 'In Review';
                     break;
                 default:
                     icon = <BlockIcon fontSize="small" style={{ marginRight: '4px', color: '#6c757d' }} />;

@@ -33,6 +33,7 @@ export default function ProjectTable(props: IProps) {
             dataView={dataView}
             setDataView={setDataView}
             initialVisibility={{
+                _id: false,
                 name: true,
                 department: true,
                 division: true,
@@ -49,7 +50,7 @@ export default function ProjectTable(props: IProps) {
                 <ProjectDetailModal
                     open={openReview}
                     setOpen={setOpenReview}
-                    project={dataView}
+                    projectId={dataView?._id}
                 />
             }
         >
