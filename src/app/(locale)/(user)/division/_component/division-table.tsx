@@ -29,6 +29,7 @@ export default function DivisionTable(props: IProps) {
                 dataView={dataView}
                 setDataView={setDataView}
                 initialVisibility={{
+                    _id: false,
                     name: true,
                     description: true,
                     division: true,

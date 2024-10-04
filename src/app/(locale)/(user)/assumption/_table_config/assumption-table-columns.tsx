@@ -5,6 +5,10 @@ import { GridRenderCellParams } from '@mui/x-data-grid';
 
 export const columns: GridColDef[] = [
     {
+        field: '_id',
+        headerName: 'ID',
+    },
+    {
         field: 'id',
         headerName: 'ID',
         description: 'This column displays the ID of the assumption.',

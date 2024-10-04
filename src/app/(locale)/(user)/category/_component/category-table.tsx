@@ -28,6 +28,7 @@ export default function CategoryTable(props: IProps) {
             dataView={dataView}
             setDataView={setDataView}
             initialVisibility={{
+                _id: false,
                 CategoryName: true,
                 SubCategory: true,
                 status: true,

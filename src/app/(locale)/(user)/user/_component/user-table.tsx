@@ -32,6 +32,7 @@ export default function UserTable(props: IProps) {
             dataView={dataView}
             setDataView={setDataView}
             initialVisibility={{
+                _id: false,
                 email: true,
                 role: true,
                 division: true,

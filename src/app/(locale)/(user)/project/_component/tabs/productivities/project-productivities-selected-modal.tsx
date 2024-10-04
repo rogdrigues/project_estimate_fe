@@ -87,6 +87,7 @@ const ProjectProductivitiesSelectedModal = (props: IProps) => {
                     rows={productivities}
                     columns={columns}
                     initialVisibility={{
+                        _id: false,
                         name: true,
                         version: true,
                         norm: true,

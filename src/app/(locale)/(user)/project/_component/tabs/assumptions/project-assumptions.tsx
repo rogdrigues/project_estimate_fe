@@ -81,6 +81,7 @@ const ProjectAssumptions = (props: IProps) => {
                 dataView={dataView}
                 setDataView={setDataView}
                 initialVisibility={{
+                    _id: false,
                     title: true,
                     content: true,
                     category: true,

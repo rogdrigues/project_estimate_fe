@@ -33,6 +33,7 @@ export default function OpportunityTable(props: IProps) {
             dataView={dataView}
             setDataView={setDataView}
             initialVisibility={{
+                _id: false,
                 name: true,
                 customerName: true,
                 division: true,

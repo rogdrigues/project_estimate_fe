@@ -80,6 +80,7 @@ const ProjectChecklists = (props: IProps) => {
                 dataView={dataView}
                 setDataView={setDataView}
                 initialVisibility={{
+                    _id: false,
                     name: true,
                     subClass: true,
                     category: true,

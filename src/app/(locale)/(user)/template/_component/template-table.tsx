@@ -29,6 +29,7 @@ export default function TemplateTable(props: IProps) {
             dataView={dataView}
             setDataView={setDataView}
             initialVisibility={{
+                _id: false,
                 name: true,
                 description: true,
                 filePath: true,

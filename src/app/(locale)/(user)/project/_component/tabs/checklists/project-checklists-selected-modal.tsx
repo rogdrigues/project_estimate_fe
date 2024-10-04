@@ -85,6 +85,7 @@ const ProjectChecklistsSelectedModal = (props: IProps) => {
                     rows={checklists}
                     columns={columns}
                     initialVisibility={{
+                        _id: false,
                         name: true,
                         subClass: true,
                         category: true,

@@ -28,6 +28,7 @@ export default function ResourceTable(props: IProps) {
             dataView={dataView}
             setDataView={setDataView}
             initialVisibility={{
+                _id: false,
                 name: true,
                 unitPrice: true,
                 location: true,

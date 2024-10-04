@@ -3,38 +3,28 @@ import { useState, useEffect } from 'react';
 import { CommentInput } from '@/components/_table_form-config/comment-input-component';
 import moment from 'moment';
 import { Project } from '@/types';
-import { getCommentsByProject, addProjectComment, startReviewProcess, requestReview, getProjectById } from '@/services';
+import { getCommentsByProject, addProjectComment, startReviewProcess, requestReview } from '@/services';
 import { useSession } from 'next-auth/react';
 import { useToast } from '@/context/ToastContext';
 
 interface IProps {
-    projectId: string;
+    project: Project;
+    fetchProject: () => Promise<void>;
 }
 
 export const ProjectReview = (props: IProps) => {
-    const { projectId } = props;
+    const { project, fetchProject } = props;
     const { data: session } = useSession();
     const [comments, setComments] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
-    const [project, setProject] = useState<Project | null>(null);
     const { triggerToast } = useToast();
-    const fetchProject = async () => {
-        try {
-            const fetchedProject = await getProjectById(projectId);
-            setProject(fetchedProject?.result || null);
-        } catch (error) {
-            console.error('Error fetching project:', error);
-        }
-    }
 
     useEffect(() => {
         const fetchComments = async () => {
-            if (project && project._id) {
+            if (project) {
                 try {
-                    await fetchProject();
-
                     const fetchedComments = await getCommentsByProject(project._id);
-                    setComments(fetchedComments || []);
+                    setComments(fetchedComments?.result || []);
                 } catch (error) {
                     console.error('Error fetching comments:', error);
                 }
@@ -133,7 +123,7 @@ export const ProjectReview = (props: IProps) => {
                 <Avatar src={project?.reviewer?.profile?.avatar} sx={{ width: 56, height: 56, mr: 2 }} />
                 <Box>
                     <Typography variant="h6">{project?.reviewer?.username || "ReviewerName"}</Typography>
-                    <Typography variant="body2" color="textSecondary">{project?.role?.roleName || "Role name assigned"}</Typography>
+                    <Typography variant="body2" color="textSecondary">{project?.reviewer?.role?.roleName || "Role name assigned"}</Typography>
                 </Box>
             </Box>
 

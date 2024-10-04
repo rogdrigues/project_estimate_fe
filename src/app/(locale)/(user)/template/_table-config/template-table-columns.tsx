@@ -6,6 +6,10 @@ import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 
 export const columns: GridColDef[] = [
     {
+        field: '_id',
+        headerName: 'ID',
+    },
+    {
         field: 'id',
         headerName: 'ID',
         description: 'This column displays the ID of the Template.',

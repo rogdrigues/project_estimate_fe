@@ -23,6 +23,9 @@ export default function TableComponentWithCheckbox<T>(props: IProps<T>) {
         setColumnVisibilityModel((prevModel) => {
             const newModel = { ...prevModel };
             hiddenColumnsOnMobile.forEach((col) => {
+                if (col === '_id') {
+                    newModel[col] = false;
+                }
                 newModel[col] = !isMobile;
             });
             return newModel;
@@ -42,21 +45,22 @@ export default function TableComponentWithCheckbox<T>(props: IProps<T>) {
         }
     }, [selectionRows]);
 
-
-    const rowsWithIds = rows.length > 0
-        ? rows.map((row) => ({
+    const rowWithIds = rows.length > 0
+        ? rows.map((row, index) => ({
             ...row,
-            id: (row as any)._id,
+            id: index + 1,
         }))
         : [];
+
 
     return (
         <Box sx={{ flex: 1, position: 'relative' }}>
             <Box sx={{ inset: 0, position: 'absolute' }}>
                 <DataGrid
                     autoHeight
-                    rows={rowsWithIds}
-                    columns={columns.filter(col => col.field !== 'actions' && col.field !== 'status' && col.field !== 'id')}
+                    rows={rowWithIds}
+                    getRowId={(row: any) => row._id}
+                    columns={columns.filter(col => col.field !== 'actions' && col.field !== 'status')}
                     checkboxSelection
                     disableRowSelectionOnClick
                     rowSelectionModel={selectionModel}
