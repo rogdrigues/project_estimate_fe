@@ -3,24 +3,30 @@ import SendIcon from '@mui/icons-material/Send';
 import RecommendIcon from '@mui/icons-material/Recommend';
 import DoNotDisturbOffIcon from '@mui/icons-material/DoNotDisturbOff';
 import { useState } from 'react';
-import { PresalePlanComment } from '@/types';
-import { createPresalePlanComment, updateApprovalStatus } from '@/services';
+import { PresalePlanComment, ProjectComment } from '@/types';
+import { createPresalePlanComment, updateApprovalStatus, addProjectComment } from '@/services';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/context/ToastContext';
+import ChatIcon from '@mui/icons-material/Chat';
+import { useSession } from 'next-auth/react';
 
 interface IProps {
     dataView: any;
     onCommentSubmit?: (newComment: PresalePlanComment) => void;
+    onProjectSendComment?: (newComment: ProjectComment) => void;
     currentPage: string;
     setOpen?: (value: boolean) => void;
+    inReviewProject?: boolean;
+    fetchProjectData?: () => void;
 }
 export const CommentInput = (props: IProps) => {
-    const { dataView, onCommentSubmit, currentPage, setOpen } = props;
+    const { dataView, onCommentSubmit, onProjectSendComment, currentPage, setOpen, inReviewProject = false, fetchProjectData } = props;
     const [comment, setComment] = useState('');
-    const [status, setStatus] = useState<'approve' | 'reject'>('approve');
+    const [status, setStatus] = useState<'approve' | 'reject' | 'chat'>(inReviewProject ? 'chat' : 'approve');
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const router = useRouter();
     const { triggerToast } = useToast();
+    const { data: session } = useSession();
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -30,7 +36,7 @@ export const CommentInput = (props: IProps) => {
         setAnchorEl(null);
     };
 
-    const handleStatusChange = (newStatus: 'approve' | 'reject') => {
+    const handleStatusChange = (newStatus: 'approve' | 'reject' | 'chat') => {
         setStatus(newStatus);
         handleClose();
     };
@@ -58,6 +64,33 @@ export const CommentInput = (props: IProps) => {
                     setComment('');
                 } catch (error) {
                     console.error('Error submitting comment:', error);
+                }
+            } else if (currentPage === 'project_review' && inReviewProject) {
+                try {
+                    const newComment = {
+                        comment,
+                        project: dataView,
+                        action: status === 'chat' ? 'Chat' : status === 'approve' ? 'Approval' : 'Rejected',
+                        ...(status !== 'chat' && { decision: status === 'approve' ? 'Approved' : 'Rejected' }),
+                    };
+                    const response = await addProjectComment(dataView._id, newComment);
+                    if (response?.EC === 0) {
+                        onProjectSendComment && onProjectSendComment(response.data);
+                        if (status !== 'chat') {
+                            if (status === 'approve') {
+                                triggerToast('Project has been approved successfully', true);
+                            } else {
+                                triggerToast('Project has been rejected successfully', true);
+                            }
+                            fetchProjectData && fetchProjectData();
+                        }
+                    } else {
+                        triggerToast("Can't send your comment, please check again.", false);
+                    }
+                    setComment('');
+                } catch (error) {
+                    console.error('Error adding comment:', error);
+                    triggerToast('Error adding comment', false);
                 }
             } else {
                 try {
@@ -115,14 +148,41 @@ export const CommentInput = (props: IProps) => {
                     horizontal: 'left',
                 }}
             >
-                <MenuItem onClick={() => handleStatusChange('approve')}>
-                    <RecommendIcon sx={{ color: 'gray', mr: 1 }} />
-                    Approve
-                </MenuItem>
-                <MenuItem onClick={() => handleStatusChange('reject')}>
-                    <DoNotDisturbOffIcon sx={{ color: 'gray', mr: 1 }} />
-                    Reject
-                </MenuItem>
+                {currentPage === 'project_review' ? (
+                    session?.user?.role.permissions.includes('project_review') ? (
+                        <>
+                            <MenuItem onClick={() => handleStatusChange('chat')}>
+                                <ChatIcon sx={{ color: 'gray', mr: 1 }} />
+                                Chat
+                            </MenuItem>
+                            <MenuItem onClick={() => handleStatusChange('approve')}>
+                                <RecommendIcon sx={{ color: 'gray', mr: 1 }} />
+                                Approve
+                            </MenuItem>
+                            <MenuItem onClick={() => handleStatusChange('reject')}>
+                                <DoNotDisturbOffIcon sx={{ color: 'gray', mr: 1 }} />
+                                Reject
+                            </MenuItem>
+                        </>
+                    ) : (
+                        <MenuItem onClick={() => handleStatusChange('chat')}>
+                            <ChatIcon sx={{ color: 'gray', mr: 1 }} />
+                            Chat
+                        </MenuItem>
+                    )
+                ) : (
+                    <>
+                        <MenuItem onClick={() => handleStatusChange('approve')}>
+                            <RecommendIcon sx={{ color: 'gray', mr: 1 }} />
+                            Approve
+                        </MenuItem>
+                        <MenuItem onClick={() => handleStatusChange('reject')}>
+                            <DoNotDisturbOffIcon sx={{ color: 'gray', mr: 1 }} />
+                            Reject
+                        </MenuItem>
+                    </>
+                )}
+
             </Menu>
 
             {/* Display selected status */}
@@ -131,9 +191,13 @@ export const CommentInput = (props: IProps) => {
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <RecommendIcon sx={{ color: 'green', mr: 1 }} />
                     </Box>
-                ) : (
+                ) : status === 'reject' ? (
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <DoNotDisturbOffIcon sx={{ color: 'red', mr: 1 }} />
+                    </Box>
+                ) : (
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <ChatIcon sx={{ color: 'blue', mr: 1 }} />
                     </Box>
                 )}
             </IconButton>

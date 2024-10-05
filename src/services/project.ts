@@ -92,10 +92,10 @@ export const restoreProject = async (projectId: string) => {
     }
 };
 
-export const getAllProjects = async (accessToken: string | undefined, includeDeleted: boolean = false) => {
+export const getAllProjects = async (accessToken: string | undefined, includeDeleted: boolean = false, applyReviewer: boolean = false) => {
     try {
         const response = await customFetch<Project[]>({
-            url: `${baseURL}/list-all-project?includeDeleted=${includeDeleted}`,
+            url: `${baseURL}/list-all-project?includeDeleted=${includeDeleted}&applyReviewer=${applyReviewer}`,
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + accessToken,
