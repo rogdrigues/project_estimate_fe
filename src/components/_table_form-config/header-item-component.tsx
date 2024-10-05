@@ -162,16 +162,18 @@ const HeaderComponent = (props: IHeaderProps) => {
                 )
                     :
                     (
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, mb: 2 }}>
-                            <Button
-                                variant="outlined"
-                                startIcon={<AssignmentReturnIcon />}
-                                sx={HeaderButton}
-                                onClick={onAssignOpen}
-                            >
-                                Assign
-                            </Button>
-                        </Box>
+                        !userPermissions.includes('project_review') && (
+                            <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 2, mb: 2 }}>
+                                <Button
+                                    variant="outlined"
+                                    startIcon={<AssignmentReturnIcon />}
+                                    sx={HeaderButton}
+                                    onClick={onAssignOpen}
+                                >
+                                    Assign
+                                </Button>
+                            </Box>
+                        )
                     )
                 }
             </Box>

@@ -29,6 +29,7 @@ const menuItems = [
     { name: 'User', icon: <PeopleIcon />, path: '/user', tag: ['manage_users'] },
     { name: 'Category', icon: <CategoryIcon />, path: '/category', tag: ['manage_categories', 'view_categories'] },
     { name: 'Project', icon: <WorkIcon />, path: '/project', tag: ['manage_projects', 'view_projects'] },
+    { name: 'Project Review', icon: <WorkIcon />, path: '/project_review', tag: ['project_review'] },
     { name: 'Assumption', icon: <AssignmentIcon />, path: '/assumption', tag: ['manage_assumptions', 'view_assumptions'] },
     { name: 'Checklist', icon: <CheckBoxIcon />, path: '/checklist', tag: ['manage_checklists', 'view_checklists'] },
     { name: 'Technology', icon: <DevicesIcon />, path: '/technology', tag: ['manage_technology', 'view_technology'] },
@@ -44,8 +45,12 @@ const Sidebar = () => {
     const { data: session } = useSession();
     const userPermissions = session?.user?.role?.permissions || [];
 
-    const hasPermission = (tags: string[]) => tags.some(tag => userPermissions.includes(tag));
-
+    const hasPermission = (tags: string[], exceptionTag?: string) => {
+        if (exceptionTag && userPermissions.includes(exceptionTag)) {
+            return false;
+        }
+        return tags.some(tag => userPermissions.includes(tag));
+    };
     return (
         <Drawer
             sx={{
@@ -65,8 +70,18 @@ const Sidebar = () => {
             anchor="left"
         >
             <List>
-                {menuItems.map((item) => (
-                    hasPermission(item.tag) && (
+                {menuItems.map((item) => {
+                    if (item.name === 'Project') {
+                        return hasPermission(item.tag, 'project_review') && (
+                            <Link href={item.path} key={item.name} passHref legacyBehavior>
+                                <ListItem button component="a">
+                                    <ListItemIcon>{item.icon}</ListItemIcon>
+                                    <ListItemText primary={item.name} />
+                                </ListItem>
+                            </Link>
+                        )
+                    }
+                    return hasPermission(item.tag) && (
                         <Link href={item.path} key={item.name} passHref legacyBehavior>
                             <ListItem button component="a">
                                 <ListItemIcon>{item.icon}</ListItemIcon>
@@ -74,7 +89,7 @@ const Sidebar = () => {
                             </ListItem>
                         </Link>
                     )
-                ))}
+                })}
             </List>
         </Drawer>
     );

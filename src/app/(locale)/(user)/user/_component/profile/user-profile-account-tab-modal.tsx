@@ -49,8 +49,10 @@ export const AvatarModal = (props: IProps) => {
                 if (response.EC === 0) {
                     await update({ avatar: response.data.result.avatar });
                     triggerToast("Update avatar successfully", true);
+                    previewMode && setPreviewMode(false);
                 } else {
                     triggerToast(`Update avatar failed: ${response.message}`, false);
+                    previewMode && setPreviewMode(false);
                 }
                 handleClose();
             } catch (error: any) {

@@ -24,10 +24,11 @@ interface IProps {
     open: boolean;
     setOpen: (open: boolean) => void;
     projectId: string;
+    inReviewer?: boolean;
 }
 
 const ProjectDetailModal = (props: IProps) => {
-    const { open, setOpen, projectId } = props;
+    const { open, setOpen, projectId, inReviewer } = props;
     const [selectedSection, setSelectedSection] = useState('General Information');
     const [project, setProject] = useState<Project>();
     const handleClose = () => {

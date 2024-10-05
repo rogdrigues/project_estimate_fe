@@ -58,6 +58,17 @@ export const columns: GridColDef[] = [
         },
     },
     {
+        field: 'lead',
+        headerName: 'Lead',
+        description: 'This column displays the lead of the Project.',
+        width: 150,
+        sortable: true,
+        flex: 1,
+        valueGetter: (params: any) => {
+            return params?.username || "N/A";
+        },
+    },
+    {
         field: 'createdAt',
         headerName: 'Created At',
         description: 'This column displays the date and time the Project was created.',
@@ -66,6 +77,17 @@ export const columns: GridColDef[] = [
         flex: 1,
         valueGetter: (params: any) => {
             return params ? moment(params).format('YYYY-MM-DD') : 'N/A';
+        },
+    },
+    {
+        field: 'reviewer',
+        headerName: 'Reviewer',
+        description: 'This column displays the reviewer of the Project.',
+        width: 150,
+        sortable: true,
+        flex: 1,
+        valueGetter: (params: any) => {
+            return params?.username || "N/A";
         },
     },
     {

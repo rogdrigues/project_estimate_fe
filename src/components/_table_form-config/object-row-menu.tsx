@@ -45,6 +45,7 @@ const ObjectRowMenu = (props: IProps) => {
     const isCreatorOfPresale = entity === 'presale_plan' && session?.user?.id === dataView?.createdBy?._id;
     const isWorkingTemplate = entity === 'template' && session?.user?.role?.roleName === 'Opportunity';
     const isAccessProjectDetail = entity === 'projects' && session?.user?.role?.roleName === 'Opportunity';
+    const isAccessProjectReview = entity === 'review';
     const isProjectDetail = entity === 'project_detail' && session?.user?.role?.roleName === 'Opportunity';
 
     const timeLeft = moment().diff(moment(timeLeftForOpportunity), 'minutes');
@@ -298,6 +299,21 @@ const ObjectRowMenu = (props: IProps) => {
                                         <PageviewIcon fontSize="small" />
                                     </ListItemIcon>
                                     <ListItemText>View</ListItemText>
+                                </MenuItem>
+                            </>
+                        )}
+                        {!objectStatus && hasPermission(`project_${entity}`) && isAccessProjectReview && (
+                            <>
+                                <MenuItem
+                                    onClick={() => {
+                                        SetOpenReview && SetOpenReview(!openReviewModal);
+                                        handleMenuClose();
+                                    }}
+                                >
+                                    <ListItemIcon>
+                                        <PageviewIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText>Review</ListItemText>
                                 </MenuItem>
                             </>
                         )}
