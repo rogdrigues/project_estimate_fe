@@ -11,10 +11,11 @@ import { TechnologyFormModal } from '@/app/(locale)/(user)/technology/_component
 
 interface IProps {
     projectId: string;
+    status: string;
 }
 
 const ProjectTechnologies = (props: IProps) => {
-    const { projectId } = props;
+    const { projectId, status } = props;
     const [technologies, setTechnologies] = useState<ProjectTechnology[]>([]);
     const [originalTechnologies, setOriginalTechnologies] = useState<Technology[]>([]);
     const [open, setOpen] = useState(false);
@@ -54,6 +55,7 @@ const ProjectTechnologies = (props: IProps) => {
                 hideExportImport={true}
                 currentPage="project_detail"
                 showAssign={true}
+                projectStatus={status}
                 modal={
                     <ProjectTechnologiesSelectedModal
                         fetchSelectedTechnologies={fetchSelectedTechnologies}
@@ -81,10 +83,10 @@ const ProjectTechnologies = (props: IProps) => {
                     version: true,
                     category: true,
                     standard: true,
-                    status: true,
+                    status: false,
                     actions: true,
                 }}
-                hiddenColumnsOnMobile={['standard', 'status']}
+                hiddenColumnsOnMobile={['status']}
                 currentPage="project_detail"
             >
                 <TechnologyFormModal

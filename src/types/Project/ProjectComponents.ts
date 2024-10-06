@@ -1,11 +1,5 @@
 import { z } from 'zod';
-import { CategorySchema } from './Category';
-import { ChecklistSchema } from './Checklist';
-import { ProductivitySchema } from './Productivity';
-import { TechnologySchema } from './Technology';
-import { ProjectSchema } from './Project';
-import { ResourceSchema } from './Resource';
-import { AssumptionSchema } from './Assumption';
+import { CategorySchema, ProjectSchema, TechnologySchema, ResourceSchema, ProductivitySchema, AssumptionSchema, ChecklistSchema } from '../index';
 
 export const ProjectAssumptionSchema: any = z.object({
     _id: z.string().optional(),
@@ -55,6 +49,7 @@ export const ProjectResourceSchema: any = z.object({
     level: z.enum(['Junior', 'Mid', 'Senior']).optional(),
     currency: z.string().optional(),
     conversionRate: z.number().optional(),
+    quantity: z.number().optional().default(1),
     originalResourceId: ResourceSchema.optional(),
 });
 

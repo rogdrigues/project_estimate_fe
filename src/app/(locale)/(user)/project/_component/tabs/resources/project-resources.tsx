@@ -11,10 +11,11 @@ import { ResourceFormModal } from '@/app/(locale)/(user)/resource/_component/res
 
 interface IProps {
     projectId: string;
+    status: string;
 }
 
 const ProjectResources = (props: IProps) => {
-    const { projectId } = props;
+    const { projectId, status } = props;
     const [resources, setResources] = useState<ProjectResource[]>([]);
     const [originalResources, setOriginalResources] = useState<Resource[]>([]);
     const [open, setOpen] = useState(false);
@@ -54,6 +55,7 @@ const ProjectResources = (props: IProps) => {
                 hideExportImport={true}
                 currentPage="project_detail"
                 showAssign={true}
+                projectStatus={status}
                 modal={
                     <ProjectResourcesSelectedModal
                         fetchSelectedResources={fetchSelectedResources}
@@ -82,10 +84,10 @@ const ProjectResources = (props: IProps) => {
                     location: true,
                     level: true,
                     currency: true,
-                    status: true,
+                    status: false,
                     actions: true,
                 }}
-                hiddenColumnsOnMobile={['location', 'status']}
+                hiddenColumnsOnMobile={['status']}
                 currentPage="project_detail"
             >
                 <ResourceFormModal
@@ -94,6 +96,7 @@ const ProjectResources = (props: IProps) => {
                     resource={dataView}
                     onProjectComponent={true}
                     fetchSelectedResources={fetchSelectedResources}
+                    onProjectDetail={true}
                 />
             </TableComponent>
         </>

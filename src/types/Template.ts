@@ -39,7 +39,7 @@ const ProjectDataSchema = z.object({
     status: z.string().optional(),
     division: z.string().optional(),
     process: z.string().optional(),
-    lastModifier: z.string().optional(),
+    lastModifier: z.date().optional(),
 });
 
 const VersionSchema = z.object({

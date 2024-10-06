@@ -54,6 +54,14 @@ export const columns: GridColDef[] = [
         sortable: true
     },
     {
+        field: 'quantity',
+        headerName: 'Quantity',
+        description: 'This column displays the quantity of the resource.',
+        width: 150,
+        flex: 1,
+        sortable: true
+    },
+    {
         field: 'status',
         headerName: 'Status',
         description: 'This column displays the status of the division.',

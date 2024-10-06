@@ -21,11 +21,12 @@ interface IProps {
     resource?: Resource | null;
     onProjectComponent?: boolean;
     fetchSelectedResources?: () => void;
+    onProjectDetail?: boolean;
 }
 
 export const ResourceFormModal = (props: IProps) => {
     const router = useRouter();
-    const { open, setOpen, resource, onProjectComponent = false, fetchSelectedResources } = props;
+    const { open, setOpen, resource, onProjectComponent = false, fetchSelectedResources, onProjectDetail = false } = props;
     const { triggerToast } = useToast();
     const { handleSubmit, reset, control } = useForm({
         defaultValues: {
@@ -34,6 +35,7 @@ export const ResourceFormModal = (props: IProps) => {
             location: '',
             level: '',
             currency: '',
+            quantity: '',
         },
     });
 
@@ -50,7 +52,7 @@ export const ResourceFormModal = (props: IProps) => {
             let response;
 
             if (onProjectComponent) {
-                response = await updateProjectResource(resource._id, resourceForm)
+                response = await updateProjectResource(resource._id, { ...resourceForm, quantity: data.quantity });
             } else {
                 response = resource
                     ? await updateResource(resource._id, resourceForm)
@@ -89,6 +91,7 @@ export const ResourceFormModal = (props: IProps) => {
                 location: '',
                 level: '',
                 currency: '',
+                quantity: '',
             });
         }
     }, [resource, reset]);
@@ -159,6 +162,30 @@ export const ResourceFormModal = (props: IProps) => {
                                 />
                             )}
                         />
+
+                        {onProjectDetail && (
+                            <Controller
+                                name="quantity"
+                                control={control}
+                                defaultValue={resource?.quantity || 1}
+                                rules={{ pattern: /^\d+$/ }}
+                                render={({ field, fieldState: { error } }) => (
+                                    <TextField
+                                        {...field}
+                                        label="Quantity"
+                                        fullWidth
+                                        margin="normal"
+                                        variant="outlined"
+                                        error={!!error}
+                                        helperText={error ? error.message : ''}
+                                        sx={{ marginBottom: '16px' }}
+                                        size="small"
+                                        type="number"
+                                    />
+                                )}
+                            />
+                        )
+                        }
 
                         <FormControl fullWidth margin="normal" sx={{ marginBottom: '16px' }}>
                             <InputLabel id="resource-location" style={{ fontSize: '14px', top: '-5px' }}>Location</InputLabel>

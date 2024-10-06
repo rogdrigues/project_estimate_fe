@@ -56,15 +56,15 @@ const ProjectDetailModal = (props: IProps) => {
             case 'General Information':
                 return <ProjectGeneralInfo project={project} />;
             case 'Assumptions':
-                return <ProjectAssumptions projectId={project?._id} />;
+                return <ProjectAssumptions projectId={project?._id} status={project?.status} />;
             case 'Technologies':
-                return <ProjectTechnologies projectId={project?._id} />;
+                return <ProjectTechnologies projectId={project?._id} status={project?.status} />;
             case 'Productivity':
-                return <ProjectProductivities projectId={project?._id} />;
+                return <ProjectProductivities projectId={project?._id} status={project?.status} />;
             case 'Resources':
-                return <ProjectResources projectId={project?._id} />;
+                return <ProjectResources projectId={project?._id} status={project?.status} />;
             case 'Checklists':
-                return <ProjectChecklists projectId={project?._id} />;
+                return <ProjectChecklists projectId={project?._id} status={project?.status} />;
             case 'Template':
                 return <ProjectTemplate project={project} />;
             case 'Reviews':

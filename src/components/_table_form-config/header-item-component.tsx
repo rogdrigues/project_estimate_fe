@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { HeaderButton } from '@/styles';
 import { useSession } from 'next-auth/react';
 import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
+import { Project } from '@/types';
 interface IHeaderProps {
     title: string;
     onExport?: () => Promise<any>;
@@ -20,10 +21,11 @@ interface IHeaderProps {
     currentPage: string;
     onAssignOpen?: () => void;
     showAssign?: boolean;
+    projectStatus?: string;
 }
 
 const HeaderComponent = (props: IHeaderProps) => {
-    const { title, onExport, onImport, onCreateOpen, modal, hideExportImport = false, currentPage, showGuideTemplate = false, onAssignOpen, showAssign = false } = props;
+    const { title, onExport, onImport, onCreateOpen, modal, hideExportImport = false, currentPage, showGuideTemplate = false, onAssignOpen, showAssign = false, projectStatus = false } = props;
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const inputFileRef = useRef<HTMLInputElement | null>(null);
     const { triggerToast } = useToast();
@@ -31,7 +33,6 @@ const HeaderComponent = (props: IHeaderProps) => {
     const { data: session } = useSession(); // Get session data
 
     const userPermissions = session?.user?.role?.permissions || [];
-
     const hasPermission = (action: string) => {
         return userPermissions.includes(`${action}_${currentPage}`);
     };
@@ -169,6 +170,7 @@ const HeaderComponent = (props: IHeaderProps) => {
                                     startIcon={<AssignmentReturnIcon />}
                                     sx={HeaderButton}
                                     onClick={onAssignOpen}
+                                    disabled={projectStatus === 'Completed' ? true : false}
                                 >
                                     Assign
                                 </Button>

@@ -12,10 +12,11 @@ import { ProductivityFormModal } from '@/app/(locale)/(user)/productivity/_compo
 
 interface IProps {
     projectId: string;
+    status: string;
 }
 
 const ProjectProductivities = (props: IProps) => {
-    const { projectId } = props;
+    const { projectId, status } = props;
     const [productivities, setProductivities] = useState<ProjectProductivity[]>([]);
     const [originalProductivities, setOriginalProductivities] = useState<Productivity[]>([]);
     const [technologies, setTechnologies] = useState<Technology[]>([]);
@@ -59,6 +60,7 @@ const ProjectProductivities = (props: IProps) => {
                 hideExportImport={true}
                 currentPage="project_detail"
                 showAssign={true}
+                projectStatus={status}
                 modal={
                     <ProjectProductivitiesSelectedModal
                         fetchSelectedProductivities={fetchSelectedProductivities}
@@ -87,8 +89,9 @@ const ProjectProductivities = (props: IProps) => {
                     version: true,
                     norm: true,
                     unit: true,
+                    status: false,
                 }}
-                hiddenColumnsOnMobile={['norm']}
+                hiddenColumnsOnMobile={['status']}
                 currentPage="project_detail"
             >
                 <ProductivityFormModal

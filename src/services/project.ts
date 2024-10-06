@@ -387,3 +387,53 @@ export const getTemplateData = async (projectId: string, templateId: string) => 
         throw new Error('Error fetching template data');
     }
 };
+
+//Excel handling
+
+export const exportProjectTemplateData = async (projectId: string) => {
+    try {
+        const accessToken = await getAccessToken();
+
+        const response = await fetch(`${baseURL}/projects/${projectId}/generate-excel`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Error exporting project template data');
+        }
+
+        const contentDisposition = response.headers.get('content-disposition');
+        let fileName = 'exported_project_template.xlsx';
+
+        if (contentDisposition) {
+            const match = contentDisposition.match(/filename="?(.+)"?/);
+            if (match && match[1]) {
+                fileName = match[1];
+            }
+        }
+
+        const blob = await response.blob();
+        const urlBlob = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = urlBlob;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        return {
+            EC: 0,
+            message: 'Project template data exported successfully',
+        };
+    } catch (error) {
+        return {
+            EC: 1,
+            message: 'Error exporting project template data',
+            data: error,
+        };
+    }
+};
