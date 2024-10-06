@@ -43,6 +43,12 @@ export default function TableComponent<T>(props: IProps<T>) {
                 if (col === '_id') {
                     newModel[col] = false;
                 }
+                if (currentPage === 'resources' && col === 'quantity') {
+                    newModel[col] = false;
+                }
+                if (currentPage === 'project_detail' && col === 'status') {
+                    newModel[col] = false;
+                }
                 newModel[col] = !isMobile;
             });
             return newModel;

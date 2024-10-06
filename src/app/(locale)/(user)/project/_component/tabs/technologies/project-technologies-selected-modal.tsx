@@ -91,10 +91,12 @@ const ProjectTechnologiesSelectedModal = (props: IProps) => {
                         version: true,
                         category: true,
                         standard: true,
+                        status: false,
                     }}
-                    hiddenColumnsOnMobile={['category']}
+                    hiddenColumnsOnMobile={['status']}
                     onRowsSelected={handleRowsSelected}
                     selectionRows={selectedTechnologies}
+
                 />
 
             </Box>

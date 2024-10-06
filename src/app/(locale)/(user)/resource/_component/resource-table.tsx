@@ -34,6 +34,7 @@ export default function ResourceTable(props: IProps) {
                 location: true,
                 level: true,
                 currency: true,
+                quantity: false,
                 status: true,
                 actions: true,
             }}

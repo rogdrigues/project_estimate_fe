@@ -71,7 +71,8 @@ const ObjectFormDialog = (props: IProps) => {
                 <Button onClick={onClose} variant="outlined" color="secondary" sx={{ marginRight: '8px' }}>
                     Cancel
                 </Button>
-                <Button onClick={onConfirm} type="submit" variant="contained" color="primary" sx={{ backgroundColor: '#7367F0' }}>
+                <Button disabled={Object?.status === 'Completed' ? true : false}
+                    onClick={onConfirm} type="submit" variant="contained" color="primary" sx={{ backgroundColor: '#7367F0' }}>
                     Confirm
                 </Button>
             </DialogActions>

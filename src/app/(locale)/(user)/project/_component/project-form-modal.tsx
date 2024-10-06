@@ -127,6 +127,7 @@ export const ProjectFormModal = (props: IProps) => {
                                     helperText={error ? error.message : ''}
                                     sx={{ marginBottom: '16px' }}
                                     size="small"
+                                    disabled={project?.status === 'Completed' ? true : false}
                                 />
                             )}
                         />
@@ -146,6 +147,7 @@ export const ProjectFormModal = (props: IProps) => {
                                     inputProps={{ fontSize: '14px' }}
                                     sx={{ marginBottom: '16px' }}
                                     size="small"
+                                    disabled={project?.status === 'Completed' ? true : false}
                                 />
                             )}
                         />
@@ -162,6 +164,7 @@ export const ProjectFormModal = (props: IProps) => {
                                         size='small'
                                         inputProps={{ fontSize: '14px' }}
                                         value={field?.value?._id || ""}
+                                        disabled={project?.status === 'Completed' ? true : false}
                                         onChange={(e: SelectChangeEvent) => {
                                             const selectedCategory = categories.find(category => category._id === e.target.value);
                                             field.onChange(selectedCategory);
@@ -189,6 +192,7 @@ export const ProjectFormModal = (props: IProps) => {
                                         size='small'
                                         inputProps={{ fontSize: '14px' }}
                                         value={field?.value?._id || ""}
+                                        disabled={project?.status === 'Completed' ? true : false}
                                         onChange={(e: SelectChangeEvent) => {
                                             const selectedOpp = opportunities.find(opp => opp._id === e.target.value);
                                             field.onChange(selectedOpp);
@@ -222,6 +226,7 @@ export const ProjectFormModal = (props: IProps) => {
                                         size='small'
                                         inputProps={{ fontSize: '14px' }}
                                         value={field?.value?._id || ""}
+                                        disabled={project?.status === 'Completed' ? true : false}
                                         onChange={(e: SelectChangeEvent) => {
                                             const selectedTemplate = templates.find(template => template._id === e.target.value);
                                             field.onChange(selectedTemplate);
@@ -256,6 +261,7 @@ export const ProjectFormModal = (props: IProps) => {
                                         size='small'
                                         inputProps={{ fontSize: '14px' }}
                                         value={field?.value?._id || ""}
+                                        disabled={project?.status === 'Completed' ? true : false}
                                         onChange={(e: SelectChangeEvent) => {
                                             const selectedUser = reviewers.find(user => user._id === e.target.value);
                                             field.onChange(selectedUser);
@@ -281,7 +287,8 @@ export const ProjectFormModal = (props: IProps) => {
                             <Button onClick={handleClose} variant="outlined" color="secondary" sx={{ marginRight: '8px' }}>
                                 Cancel
                             </Button>
-                            <Button type="submit" variant="contained" color="primary" sx={{ backgroundColor: '#7367F0' }}>
+                            <Button disabled={project?.status === 'Completed' ? true : false}
+                                type="submit" variant="contained" color="primary" sx={{ backgroundColor: '#7367F0' }}>
                                 Submit
                             </Button>
                         </Box>

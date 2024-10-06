@@ -10,10 +10,11 @@ import ProjectAssumptionsSelectedModal from './project-assumption-selected-modal
 import { AssumptionFormModal } from '@/app/(locale)/(user)/assumption/_component/assumption-form-modal';
 interface IProps {
     projectId: string;
+    status: string;
 }
 
 const ProjectAssumptions = (props: IProps) => {
-    const { projectId } = props;
+    const { projectId, status } = props;
     const [assumptions, setAssumptions] = useState<ProjectAssumption[]>([]);
     const [originalAssumptions, setOriginalAssumptions] = useState<Assumption[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
@@ -58,6 +59,7 @@ const ProjectAssumptions = (props: IProps) => {
                 hideExportImport={true}
                 currentPage="project_detail"
                 showAssign={true}
+                projectStatus={status}
                 modal={
                     <ProjectAssumptionsSelectedModal
                         fetchSelectedAssumptions={fetchSelectedAssumptions}
@@ -86,9 +88,9 @@ const ProjectAssumptions = (props: IProps) => {
                     content: true,
                     category: true,
                     subCategory: true,
-                    status: true,
+                    status: false,
                 }}
-                hiddenColumnsOnMobile={['subCategory', 'status']}
+                hiddenColumnsOnMobile={['status']}
                 currentPage="project_detail"
             >
                 <AssumptionFormModal

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Checklist, ProjectChecklist, Category } from '@/types';
 import HeaderComponent from '@/components/_table_form-config/header-item-component';
-import { getProjectComponents, getAllChecklists, getAllCategories } from '@/services'; // API gọi category
+import { getProjectComponents, getAllChecklists, getAllCategories } from '@/services';
 import { useSession } from 'next-auth/react';
 import TableComponent from '@/components/_table_form-config/table-item-component';
 import { columns } from '@/app/(locale)/(user)/checklist/_table_config/checklist-table-columns';
@@ -11,13 +11,14 @@ import { ChecklistFormModal } from '@/app/(locale)/(user)/checklist/_component/c
 
 interface IProps {
     projectId: string;
+    status: string;
 }
 
 const ProjectChecklists = (props: IProps) => {
-    const { projectId } = props;
+    const { projectId, status } = props;
     const [checklists, setChecklists] = useState<ProjectChecklist[]>([]);
     const [originalChecklists, setOriginalChecklists] = useState<Checklist[]>([]);
-    const [categories, setCategories] = useState<Category[]>([]); // Thêm state cho categories
+    const [categories, setCategories] = useState<Category[]>([]);
     const [open, setOpen] = useState(false);
     const { data: session } = useSession();
     const [openUpdate, setOpenUpdate] = useState(false);
@@ -58,6 +59,7 @@ const ProjectChecklists = (props: IProps) => {
                 hideExportImport={true}
                 currentPage="project_detail"
                 showAssign={true}
+                projectStatus={status}
                 modal={
                     <ProjectChecklistsSelectedModal
                         fetchSelectedChecklists={fetchSelectedChecklists}
@@ -88,7 +90,7 @@ const ProjectChecklists = (props: IProps) => {
                     status: false,
                     actions: true,
                 }}
-                hiddenColumnsOnMobile={['description, status']}
+                hiddenColumnsOnMobile={['status']}
                 currentPage="project_detail"
             >
                 <ChecklistFormModal

@@ -4,8 +4,9 @@ import { DataGrid } from '@mui/x-data-grid';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { columns } from './_table_config/project-template-table-columns';
 import { Project, TemplateData } from '@/types';
-import { getTemplateData } from '@/services';
+import { exportProjectTemplateData, getTemplateData } from '@/services';
 import { HeaderButton } from '@/styles';
+import { useToast } from '@/context/ToastContext';
 
 interface IProps {
     project: Project;
@@ -15,7 +16,7 @@ const ProjectTemplate = (props: IProps) => {
     const { project } = props;
     const [templateData, setTemplateData] = useState<TemplateData | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
-
+    const { triggerToast } = useToast();
     useEffect(() => {
         const fetchTemplateData = async () => {
             if (!project?.template?._id || !project?._id) return;
@@ -24,7 +25,7 @@ const ProjectTemplate = (props: IProps) => {
                 const data = await getTemplateData(project._id, project.template._id);
                 setTemplateData(data);
             } catch (error) {
-                console.error('Failed to fetch template data:', error);
+                triggerToast(`Failed to fetch template data: ${error}`, false);
             } finally {
                 setLoading(false);
             }
@@ -33,8 +34,13 @@ const ProjectTemplate = (props: IProps) => {
         fetchTemplateData();
     }, [project]);
 
-    const handleExport = () => {
-        console.log("Exporting Template File");
+    const handleExport = async () => {
+        const response = await exportProjectTemplateData(project._id);
+        if (response.EC === 0) {
+            triggerToast('File exported successfully', true);
+        } else {
+            triggerToast(`An error occurred while exporting the file: ${response.message}`, false);
+        }
     };
 
     return (
