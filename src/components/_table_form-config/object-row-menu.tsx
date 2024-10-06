@@ -10,6 +10,8 @@ import moment from 'moment';
 import DownloadIcon from '@mui/icons-material/Download';
 import { downloadTemplate } from '@/services';
 import PageviewIcon from '@mui/icons-material/Pageview';
+import SwipeVerticalIcon from '@mui/icons-material/SwipeVertical';
+
 interface IProps {
     anchorEl: null | HTMLElement;
     isMenuOpen: boolean;
@@ -314,6 +316,15 @@ const ObjectRowMenu = (props: IProps) => {
                                         <PageviewIcon fontSize="small" />
                                     </ListItemIcon>
                                     <ListItemText>Review</ListItemText>
+                                </MenuItem>
+                                <MenuItem
+                                    disabled={true}
+                                    onClick={() => { }}
+                                >
+                                    <ListItemIcon>
+                                        <SwipeVerticalIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText>Reused Project</ListItemText>
                                 </MenuItem>
                             </>
                         )}
