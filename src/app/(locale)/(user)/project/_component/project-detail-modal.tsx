@@ -19,6 +19,7 @@ import ProjectChecklists from './tabs/checklists/project-checklists';
 import ProjectResources from './tabs/resources/project-resources';
 import ProjectReview from './tabs/project-detail-review';
 import { getProjectById } from '@/services';
+import ProjectTemplate from './tabs/templates/project-template';
 
 interface IProps {
     open: boolean;
@@ -65,7 +66,7 @@ const ProjectDetailModal = (props: IProps) => {
             case 'Checklists':
                 return <ProjectChecklists projectId={project?._id} />;
             case 'Template':
-                return <Typography>Select a section to view details</Typography>;
+                return <ProjectTemplate project={project} />;
             case 'Reviews':
                 return <ProjectReview project={project} fetchProject={fetchProject} />;
             default:

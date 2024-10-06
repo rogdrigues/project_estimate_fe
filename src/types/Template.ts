@@ -1,5 +1,7 @@
 import { z } from 'zod';
 import { CategorySchema } from './Category';
+import { UserMasterSchema } from './UserMaster';
+import { ProjectSchema } from './Project/Project';
 
 export const TemplateSchema: any = z.object({
     _id: z.string().optional(),
@@ -29,3 +31,38 @@ export const UpdateTemplateSchema = TemplateSchema.partial();
 
 export type CreateTemplate = z.infer<typeof CreateTemplateSchema>;
 export type UpdateTemplate = z.infer<typeof UpdateTemplateSchema>;
+
+
+const ProjectDataSchema = z.object({
+    projectName: z.string().optional(),
+    customer: z.string().optional(),
+    status: z.string().optional(),
+    division: z.string().optional(),
+    process: z.string().optional(),
+    lastModifier: z.string().optional(),
+});
+
+const VersionSchema = z.object({
+    versionNumber: z.number().optional(),
+    versionDate: z.date().optional(),
+    createdBy: UserMasterSchema.optional(),
+});
+
+const ChangesLogSchema = z.object({
+    dateChanged: z.date().optional(),
+    versionDate: z.date().optional(),
+    versionNumber: z.number().optional(),
+    action: z.enum(['A', 'M', 'D']),
+    changes: z.string().optional(),
+});
+
+export const TemplateDataSchema = z.object({
+    templateId: TemplateSchema.optional(),
+    projectId: ProjectSchema.optional(),
+    projectData: ProjectDataSchema.optional(),
+    version: VersionSchema.optional(),
+    changesLog: z.array(ChangesLogSchema).optional(),
+    createdAt: z.date().optional(),
+    updatedAt: z.date().optional(),
+});
+export type TemplateData = z.infer<typeof TemplateDataSchema>;

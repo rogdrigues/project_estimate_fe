@@ -1,5 +1,5 @@
 import { useState, MouseEvent, useEffect, ReactNode } from 'react';
-import { DataGrid, GridColumnVisibilityModel } from '@mui/x-data-grid';
+import { DataGrid, GridColumnVisibilityModel, GridToolbar } from '@mui/x-data-grid';
 import { Box } from '@mui/system';
 import IconButton from '@mui/material/IconButton';
 import { GridRenderCellParams } from '@mui/x-data-grid';
@@ -68,6 +68,7 @@ export default function TableComponent<T>(props: IProps<T>) {
             <Box sx={{ flex: 1, position: 'relative' }}>
                 <Box sx={{ inset: 0, position: 'absolute' }}>
                     <DataGrid
+                        slots={(currentPage !== 'opportunity' && currentPage !== 'presale_plan' && currentPage !== "review") ? { toolbar: GridToolbar } : {}}
                         autoHeight
                         rows={rowsWithIds}
                         onRowClick={(params) => setDataView(params.row)}

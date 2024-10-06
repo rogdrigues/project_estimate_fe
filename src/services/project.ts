@@ -1,5 +1,5 @@
 import { customFetch } from '@/lib';
-import { Project, ProjectResource, ProjectChecklist, ProjectAssumption, ProjectTechnology, ProjectProductivity, UserMaster, ProjectComment } from '@/types';
+import { Project, ProjectResource, ProjectChecklist, ProjectAssumption, ProjectTechnology, ProjectProductivity, UserMaster, ProjectComment, TemplateData } from '@/types';
 import { getAccessToken } from '@/utils';
 
 const baseURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/project`;
@@ -365,5 +365,25 @@ export const requestReview = async (projectId: string) => {
         return response;
     } catch (error) {
         throw new Error('Error requesting review');
+    }
+};
+
+export const getTemplateData = async (projectId: string, templateId: string) => {
+    try {
+        const accessToken = await getAccessToken();
+        const response = await customFetch<TemplateData>({
+            url: `${baseURL}/template-data?projectId=${projectId}&templateId=${templateId}`,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            },
+            method: 'GET',
+            nextOptions: {
+                cache: 'no-store',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error('Error fetching template data');
     }
 };
