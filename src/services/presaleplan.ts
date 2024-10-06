@@ -4,7 +4,6 @@ import { getAccessToken } from '@/utils';
 
 const baseURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/presale`;
 
-// Fetch all Presale Plans
 export const getAllPresalePlans = async (accessToken: string | undefined, includeDeleted: boolean = false) => {
     try {
         const response = await customFetch<PresalePlan[]>({
@@ -21,7 +20,6 @@ export const getAllPresalePlans = async (accessToken: string | undefined, includ
     }
 };
 
-// Fetch Presale Plan by ID
 export const getPresalePlanById = async (presalePlanId: string) => {
     try {
         const accessToken = await getAccessToken();
@@ -39,7 +37,6 @@ export const getPresalePlanById = async (presalePlanId: string) => {
     }
 };
 
-// Create Presale Plan
 export const createPresalePlan = async (presalePlanData: PresalePlan) => {
     try {
         const accessToken = await getAccessToken();
@@ -55,7 +52,6 @@ export const createPresalePlan = async (presalePlanData: PresalePlan) => {
     }
 };
 
-// Update Presale Plan
 export const updatePresalePlan = async (presalePlanId: string, presalePlanData: PresalePlan) => {
     try {
         const accessToken = await getAccessToken();
@@ -71,7 +67,6 @@ export const updatePresalePlan = async (presalePlanId: string, presalePlanData: 
     }
 };
 
-// Delete Presale Plan
 export const deletePresalePlan = async (presalePlanId: string) => {
     try {
         const accessToken = await getAccessToken();
@@ -86,7 +81,6 @@ export const deletePresalePlan = async (presalePlanId: string) => {
     }
 };
 
-// Restore Presale Plan
 export const restorePresalePlan = async (presalePlanId: string) => {
     try {
         const accessToken = await getAccessToken();
@@ -100,8 +94,6 @@ export const restorePresalePlan = async (presalePlanId: string) => {
         throw new Error('Error restoring presale plan');
     }
 };
-
-/////////////////////////////////////////////////////////////////////////////////////////
 
 // Create Presale Plan Comment
 export const createPresalePlanComment = async (commentData: Partial<PresalePlanComment>) => {
@@ -166,7 +158,6 @@ export const rejectPresalePlan = async (presalePlanId: string, reason: string) =
     }
 };
 
-///////////////////////////////////////////////////////////////////////////
 
 // Create Presale Plan Version
 export const createPresalePlanVersion = async (versionData: Partial<PresalePlanVersion>) => {

@@ -72,7 +72,6 @@ export const ProjectFormModal = (props: IProps) => {
 
     React.useEffect(() => {
         if (project) {
-            console.log(project);
             reset(project);
         } else {
             reset({
