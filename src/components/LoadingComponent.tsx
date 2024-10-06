@@ -1,8 +1,13 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import Image from 'next/image'; // Import Image component from Next.js
+import Image from 'next/image';
 
-const Dashboard = () => {
+interface IProps {
+    text?: string;
+}
+
+const LoadingComponent = (props: IProps) => {
+    const { text } = props;
     return (
         <Box
             sx={{
@@ -21,10 +26,10 @@ const Dashboard = () => {
                 height={200}
             />
             <Typography variant="body1" sx={{ color: 'gray', mb: 2 }}>
-                The dashboard feature is currently under development and will be updated soon.
+                {text || 'The feature is currently under development and will be updated soon.'}
             </Typography>
         </Box>
     );
 }
 
-export default Dashboard;
+export default LoadingComponent;

@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { UserMaster } from '@/types';
 import { getUser } from '@/services';
 import { profileDialoge } from '@/styles';
+import LoadingComponent from '@/components/LoadingComponent';
 
 interface IProps {
     open: boolean;
@@ -44,7 +45,7 @@ const UserProfileModal = (props: IProps) => {
     const renderContent = () => {
         switch (selectedSection) {
             case 'My Account':
-                return user ? <AccountProfileInfo user={user} /> : <Typography>Loading...</Typography>;
+                return user ? <AccountProfileInfo user={user} /> : <LoadingComponent text={"Loading user data..."} />;
             default:
                 return null;
         }
