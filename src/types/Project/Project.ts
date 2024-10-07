@@ -23,3 +23,15 @@ export const ProjectSchema: any = z.object({
 });
 
 export type Project = z.infer<typeof ProjectSchema>;
+
+export const reusedProjectSchema = z.object({
+    name: z.string(),
+    description: z.string().optional(),
+    category: CategorySchema.optional(),
+    opportunity: OpportunitySchema.required(),
+    template: TemplateSchema.optional(),
+    reviewer: UserMasterSchema.optional(),
+    reusedComponents: z.array(z.string()).optional(),
+});
+
+export type ReusedProject = z.infer<typeof reusedProjectSchema>;

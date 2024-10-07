@@ -23,12 +23,17 @@ interface IProps {
     SetOpenReview?: (value: boolean) => void;
     openReviewModal?: boolean;
     dataView?: any;
+    openReusedModal?: boolean;
+    setOpenReusedModal?: (value: boolean) => void;
 }
 
 const ObjectRowMenu = (props: IProps) => {
     const {
-        anchorEl, isMenuOpen, handleMenuClose, SetOpenUpdateModal, SetOpenDialog, openUpdateModal,
-        entity, SetOpenReview, openReviewModal, dataView } = props;
+        anchorEl, isMenuOpen, handleMenuClose,
+        SetOpenUpdateModal, SetOpenDialog, openUpdateModal,
+        entity, SetOpenReview, openReviewModal,
+        dataView, openReusedModal, setOpenReusedModal
+    } = props;
 
     const opportunityStatus = dataView?.approvalStatus;
     const objectStatus = dataView?.deleted;
@@ -302,6 +307,18 @@ const ObjectRowMenu = (props: IProps) => {
                                     </ListItemIcon>
                                     <ListItemText>View</ListItemText>
                                 </MenuItem>
+                                <MenuItem
+                                    onClick={() => {
+                                        setOpenReusedModal && setOpenReusedModal(!openReusedModal);
+                                        console.log('openReusedModal', openReusedModal);
+                                        handleMenuClose();
+                                    }}
+                                >
+                                    <ListItemIcon>
+                                        <SwipeVerticalIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText>Reused Project</ListItemText>
+                                </MenuItem>
                             </>
                         )}
                         {!objectStatus && hasPermission(`project_${entity}`) && isAccessProjectReview && (
@@ -316,15 +333,6 @@ const ObjectRowMenu = (props: IProps) => {
                                         <PageviewIcon fontSize="small" />
                                     </ListItemIcon>
                                     <ListItemText>Review</ListItemText>
-                                </MenuItem>
-                                <MenuItem
-                                    disabled={true}
-                                    onClick={() => { }}
-                                >
-                                    <ListItemIcon>
-                                        <SwipeVerticalIcon fontSize="small" />
-                                    </ListItemIcon>
-                                    <ListItemText>Reused Project</ListItemText>
                                 </MenuItem>
                             </>
                         )}

@@ -16,7 +16,6 @@ const OpportunityPage = async () => {
     return (
         <div>
             <OpportunityHeader
-                divisions={divisions?.result}
                 departments={departments?.result}
                 opportunityLeads={oppLeads?.result}
                 categories={categories?.result}

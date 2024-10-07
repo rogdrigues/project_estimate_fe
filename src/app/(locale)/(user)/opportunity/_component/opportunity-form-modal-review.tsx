@@ -479,76 +479,72 @@ export const OpportunityReviewModal = (props: IProps) => {
                                         <Divider sx={{ my: 1 }} />
                                         <Box sx={{ maxHeight: '400px', height: '300px', overflowY: 'auto' }}>
                                             {comments && comments.length > 0 ? (
-                                                comments.map((comment, index) => (
-                                                    <Box
-                                                        key={index}
-                                                        sx={{
-                                                            display: 'flex',
-                                                            mb: 2,
-                                                            alignItems: 'flex-start',
-                                                            justifyContent: 'flex-start',
-                                                            animation: 'fadeIn 0.5s ease-out',
-                                                            '@keyframes fadeIn': {
-                                                                '0%': { opacity: 0, transform: 'translateY(10px)' },
-                                                                '100%': { opacity: 1, transform: 'translateY(0)' },
-                                                            },
-                                                        }}
-                                                    >
-                                                        {/* Avatar */}
+                                                comments.map((comment) => {
+                                                    const isCurrentUser = comment.createdBy?._id === session?.user?.id;
+                                                    return (
                                                         <Box
-                                                            component="img"
-                                                            src={comment.createdBy?.profile?.avatar || undefined}
-                                                            alt={comment.createdBy?.username}
+                                                            key={comment._id}
                                                             sx={{
-                                                                width: 40,
-                                                                height: 40,
-                                                                borderRadius: '50%',
-                                                                mr: 2,
-                                                            }}
-                                                        />
-
-                                                        {/* Comment Box */}
-                                                        <Box
-                                                            sx={{
-                                                                maxWidth: '80%',
-                                                                backgroundColor: '#f1f3f4',
-                                                                borderRadius: '16px',
-                                                                p: 1.5,
-                                                                boxShadow: '0 1px 3px rgba(0, 0, 0, 0.12)',
-                                                                textAlign: 'left',
+                                                                display: 'flex',
+                                                                mb: 2,
+                                                                alignItems: 'flex-start',
+                                                                justifyContent: isCurrentUser ? 'flex-end' : 'flex-start',
+                                                                animation: 'fadeIn 0.5s ease-out',
+                                                                '@keyframes fadeIn': {
+                                                                    '0%': { opacity: 0, transform: 'translateY(10px)' },
+                                                                    '100%': { opacity: 1, transform: 'translateY(0)' },
+                                                                },
                                                             }}
                                                         >
-                                                            {/* Username and Status */}
-                                                            <Typography
-                                                                variant="body2"
+                                                            {!isCurrentUser && (
+                                                                <Box
+                                                                    component="img"
+                                                                    src={comment.user?.profile?.avatar || undefined}
+                                                                    alt={comment.user?.username}
+                                                                    sx={{
+                                                                        width: 40,
+                                                                        height: 40,
+                                                                        borderRadius: '50%',
+                                                                        mr: 2,
+                                                                    }}
+                                                                />
+                                                            )}
+
+                                                            <Box
                                                                 sx={{
-                                                                    fontWeight: 'bold',
-                                                                    display: 'flex',
-                                                                    alignItems: 'center',
+                                                                    maxWidth: '80%',
+                                                                    backgroundColor: isCurrentUser ? '#FFF8E1' : '#f1f3f4',
+                                                                    borderRadius: '16px',
+                                                                    p: 1.5,
+                                                                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.12)',
+                                                                    textAlign: isCurrentUser ? 'right' : 'left',
                                                                 }}
                                                             >
-                                                                <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
-                                                                    {comment.createdBy?.username || 'N/A'}
-                                                                </Typography>
                                                                 <Typography
-                                                                    variant="caption"
+                                                                    variant="body2"
                                                                     sx={{
-                                                                        fontStyle: 'italic',
-                                                                        ml: 1,
-                                                                        color: comment.approvalStatus === 'Approved' ? 'green' : 'red',
+                                                                        fontWeight: 'bold',
+                                                                        display: 'flex',
+                                                                        alignItems: 'center',
+                                                                        justifyContent: isCurrentUser ? 'flex-end' : 'flex-start',
                                                                     }}
                                                                 >
-                                                                    ({comment.approvalStatus})
+                                                                    <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
+                                                                        {isCurrentUser ? 'You' : comment?.user?.username || 'Commenter'}
+                                                                    </Typography>
                                                                 </Typography>
-                                                            </Typography>
 
-                                                            {/* Comment Text */}
-                                                            <Typography variant="body2" sx={{ mt: 1 }}>
-                                                                {comment.comment}
-                                                            </Typography>
+                                                                <Typography variant="body2" sx={{ mt: 1 }}>
+                                                                    {comment.comment}
+                                                                </Typography>
+
+                                                                <Typography variant="caption" sx={{ mt: 0.5, color: 'gray', textAlign: 'right', display: 'block' }}>
+                                                                    {moment(comment.createdAt).fromNow()}
+                                                                </Typography>
+                                                            </Box>
                                                         </Box>
-                                                    </Box>
-                                                ))
+                                                    );
+                                                })
                                             ) : (
                                                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                                                     <Typography variant="body2" sx={{ fontStyle: 'italic', color: '#6c757d' }}>

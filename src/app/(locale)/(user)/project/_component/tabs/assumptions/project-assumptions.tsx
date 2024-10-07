@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Assumption, Category, ProjectAssumption } from '@/types';
 import HeaderComponent from '@/components/_table_form-config/header-item-component';
-import { getProjectComponents, getAllCategories, getAllAssumptions } from '@/services'; // giả sử bạn đã có hàm getCategories
+import { getProjectComponents, getAllCategories, getAllAssumptions } from '@/services';
 import { useSession } from 'next-auth/react';
 import TableComponent from '@/components/_table_form-config/table-item-component';
 import { columns } from '@/app/(locale)/(user)/assumption/_table_config/assumption-table-columns';
@@ -66,7 +66,6 @@ const ProjectAssumptions = (props: IProps) => {
                         projectId={projectId}
                         assumptions={originalAssumptions}
                         components={assumptions}
-                        categories={categories}
                         open={open}
                         setOpen={setOpen}
                     />

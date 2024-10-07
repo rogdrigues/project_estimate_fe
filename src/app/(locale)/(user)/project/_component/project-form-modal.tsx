@@ -1,12 +1,12 @@
 'use client';
 import * as React from 'react';
-import { Modal, Box, TextField, Button, FormControl, InputLabel, MenuItem, Divider, IconButton } from '@mui/material';
+import { Modal, Box, TextField, Button, FormControl, InputLabel, MenuItem, Divider, IconButton, Typography, Grid, FormGroup, FormControlLabel, Checkbox } from '@mui/material';
 import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';
 import CloseIcon from '@mui/icons-material/Close';
 import { useForm, Controller } from 'react-hook-form';
 import { Category, Opportunity, Project, Template, UserMaster } from '@/types';
-import { createProject, updateProject } from '@/services';
+import { createProject, reuseProject, updateProject } from '@/services';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -20,11 +20,12 @@ interface IProps {
     opportunities: Opportunity[];
     templates: Template[];
     reviewers: UserMaster[];
+    onReusedProject?: boolean;
 }
 
 export const ProjectFormModal = (props: IProps) => {
     const router = useRouter();
-    const { open, setOpen, project, categories, opportunities, templates, reviewers } = props;
+    const { open, setOpen, project, categories, opportunities, templates, reviewers, onReusedProject = false } = props;
     const { triggerToast } = useToast();
     const { handleSubmit, reset, control } = useForm({
         defaultValues: {
@@ -34,6 +35,13 @@ export const ProjectFormModal = (props: IProps) => {
             opportunity: '',
             template: '',
             reviewer: '',
+            reuseComponents: {
+                resources: false,
+                technologies: false,
+                checklists: false,
+                assumptions: false,
+                productivity: false,
+            },
         },
     });
 
@@ -45,23 +53,29 @@ export const ProjectFormModal = (props: IProps) => {
             opportunity: data.opportunity,
             template: data.template,
             reviewer: data.reviewer,
+            reuseComponents: onReusedProject ? data.reuseComponents : []
         };
 
         try {
-            const response = project
-                ? await updateProject(project._id, formData)
-                : await createProject(formData);
+            let response;
 
+            if (onReusedProject) {
+                response = await reuseProject(project?._id, formData);
+            } else {
+                response = project
+                    ? await updateProject(project._id, formData)
+                    : await createProject(formData);
+            }
             if (response.EC === 0) {
                 router.refresh();
-                triggerToast(project ? "Project updated successfully" : "Project created successfully", true);
+                triggerToast(project ? onReusedProject ? 'Reused Project successfully' : 'Project updated successfully' : 'Project created successfully', true);
                 setOpen(false);
                 reset();
             } else {
-                triggerToast(project ? `Error updated project: ${response.message}` : `Error creating project: ${response.message}`, false);
+                triggerToast(project ? onReusedProject ? `Error reused project: ${response.message}` : `Error updated project: ${response.message}` : `Error creating project: ${response.message}`, false);
             }
         } catch (error: any) {
-            triggerToast(project ? `Error updated project: ${error.message}` : `Error creating project: ${error.message}`, false);
+            triggerToast(project ? onReusedProject ? `Error reused project: ${error.message}` : `Error updated project: ${error.message}` : `Error creating project: ${error.message}`, false);
         }
     };
 
@@ -81,6 +95,13 @@ export const ProjectFormModal = (props: IProps) => {
                 opportunity: '',
                 template: '',
                 reviewer: '',
+                reuseComponents: {
+                    resources: false,
+                    technologies: false,
+                    checklists: false,
+                    assumptions: false,
+                    productivity: false,
+                },
             });
         }
     }, [project, reset]);
@@ -102,7 +123,7 @@ export const ProjectFormModal = (props: IProps) => {
             <Fade in={open}>
                 <Box sx={styleFormUser}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <h2>{project ? "Update Project" : "Create new Project"}</h2>
+                        <h2>{project ? (onReusedProject ? "Reused Project" : "Update Project") : "Create new Project"}</h2>
                         <IconButton onClick={handleClose}>
                             <CloseIcon />
                         </IconButton>
@@ -283,6 +304,150 @@ export const ProjectFormModal = (props: IProps) => {
                                 )}
                             />
                         </FormControl>
+
+                        {onReusedProject && (
+                            <Box sx={{ marginBottom: '16px', padding: '16px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
+                                <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1, color: '#4a4a4a' }}>
+                                    Reuse Components
+                                </Typography>
+                                <Divider sx={{ marginBottom: '16px' }} />
+
+                                <Grid container spacing={3}>
+                                    <Grid item xs={12} md={6}>
+                                        <FormControlLabel
+                                            control={
+                                                <Controller
+                                                    name="reuseComponents.resources"
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <Checkbox
+                                                            {...field}
+                                                            checked={!!field.value}
+                                                            onChange={(e) => field.onChange(e.target.checked)}
+                                                        />
+                                                    )}
+                                                />
+                                            }
+                                            label="Resources"
+                                            sx={{
+                                                width: '100%',
+                                                '&:hover': {
+                                                    backgroundColor: '#e0e0e0',
+                                                    borderRadius: '8px',
+                                                    transition: 'background-color 0.3s ease',
+                                                },
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={6}>
+                                        <FormControlLabel
+                                            control={
+                                                <Controller
+                                                    name="reuseComponents.technologies"
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <Checkbox
+                                                            {...field}
+                                                            checked={!!field.value}
+                                                            onChange={(e) => field.onChange(e.target.checked)}
+                                                        />
+                                                    )}
+                                                />
+                                            }
+                                            label="Technologies"
+                                            sx={{
+                                                width: '100%',
+                                                '&:hover': {
+                                                    backgroundColor: '#e0e0e0',
+                                                    borderRadius: '8px',
+                                                    transition: 'background-color 0.3s ease',
+                                                },
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={6}>
+                                        <FormControlLabel
+                                            control={
+                                                <Controller
+                                                    name="reuseComponents.checklists"
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <Checkbox
+                                                            {...field}
+                                                            checked={!!field.value}
+                                                            onChange={(e) => field.onChange(e.target.checked)}
+                                                        />
+                                                    )}
+                                                />
+                                            }
+                                            label="Checklists"
+                                            sx={{
+                                                width: '100%',
+                                                '&:hover': {
+                                                    backgroundColor: '#e0e0e0',
+                                                    borderRadius: '8px',
+                                                    transition: 'background-color 0.3s ease',
+                                                },
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={6}>
+                                        <FormControlLabel
+                                            control={
+                                                <Controller
+                                                    name="reuseComponents.assumptions"
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <Checkbox
+                                                            {...field}
+                                                            checked={!!field.value}
+                                                            onChange={(e) => field.onChange(e.target.checked)}
+                                                        />
+                                                    )}
+                                                />
+                                            }
+                                            label="Assumptions"
+                                            sx={{
+                                                width: '100%',
+                                                '&:hover': {
+                                                    backgroundColor: '#e0e0e0',
+                                                    borderRadius: '8px',
+                                                    transition: 'background-color 0.3s ease',
+                                                },
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} md={6}>
+                                        <FormControlLabel
+                                            control={
+                                                <Controller
+                                                    name="reuseComponents.productivity"
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <Checkbox
+                                                            {...field}
+                                                            checked={!!field.value}
+                                                            onChange={(e) => field.onChange(e.target.checked)}
+                                                        />
+                                                    )}
+                                                />
+                                            }
+                                            label="Productivity"
+                                            sx={{
+                                                width: '100%',
+                                                '&:hover': {
+                                                    backgroundColor: '#e0e0e0',
+                                                    borderRadius: '8px',
+                                                    transition: 'background-color 0.3s ease',
+                                                },
+                                            }}
+                                        />
+                                    </Grid>
+                                </Grid>
+                            </Box>
+                        )}
+
+
                         <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
                             <Button onClick={handleClose} variant="outlined" color="secondary" sx={{ marginRight: '8px' }}>
                                 Cancel

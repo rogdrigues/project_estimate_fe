@@ -1,5 +1,5 @@
 import { customFetch } from '@/lib';
-import { Project, ProjectResource, ProjectChecklist, ProjectAssumption, ProjectTechnology, ProjectProductivity, UserMaster, ProjectComment, TemplateData } from '@/types';
+import { Project, ProjectResource, ProjectChecklist, ProjectAssumption, ProjectTechnology, ProjectProductivity, UserMaster, ProjectComment, TemplateData, ReusedProject } from '@/types';
 import { getAccessToken } from '@/utils';
 
 const baseURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/project`;
@@ -385,6 +385,28 @@ export const getTemplateData = async (projectId: string, templateId: string) => 
         return response.data;
     } catch (error) {
         throw new Error('Error fetching template data');
+    }
+};
+
+//Reused project
+
+export const reuseProject = async (projectId: string, data: ReusedProject) => {
+    try {
+        const accessToken = await getAccessToken();
+
+        const response = await customFetch({
+            url: `${baseURL}/projects/reuse/${projectId}`,
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + accessToken,
+            },
+            body: data,
+        });
+
+        return response;
+    } catch (error) {
+        console.error('Error reusing project:', error);
+        throw error;
     }
 };
 

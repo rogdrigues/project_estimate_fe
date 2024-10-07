@@ -9,6 +9,7 @@ import { columns } from '@/app/(locale)/(user)/checklist/_table_config/checklist
 import { useToast } from '@/context/ToastContext';
 import TableComponentWithCheckbox from '@/components/_table_form-config/table-checkbox-component';
 import { HeaderButton } from '@/styles';
+import { useRouter } from 'next/navigation';
 
 interface IProps {
     fetchSelectedChecklists: () => void;
@@ -23,12 +24,14 @@ const ProjectChecklistsSelectedModal = (props: IProps) => {
     const { projectId, checklists, open, setOpen, components, fetchSelectedChecklists } = props;
     const { triggerToast } = useToast();
     const [selectedChecklists, setSelectedChecklists] = useState<ProjectChecklist[]>([]);
+    const router = useRouter();
 
     const handleSave = async () => {
         try {
             const response = await updateProjectComponents(projectId, { checklists: selectedChecklists });
             if (response.EC === 0) {
                 fetchSelectedChecklists();
+                router.refresh();
                 triggerToast('The list of checklists has been updated to the project successfully.', true);
                 setOpen(false);
             } else {
