@@ -1,6 +1,6 @@
 import { Modal, Box, Divider, Grid, Typography, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { PresalePlan, PresalePlanComment, PresalePlanVersion, Opportunity, Department, Division } from '@/types';
+import { PresalePlan, PresalePlanComment, PresalePlanVersion } from '@/types';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 import { getPresalePlanComments, getPresalePlanVersions } from '@/services';
@@ -11,20 +11,16 @@ interface IProps {
     open: boolean;
     setOpen: (open: boolean) => void;
     presalePlan: PresalePlan;
-    opportunities: Opportunity[];
-    departments: Department[];
-    divisions: Division[];
 }
 
 export const PresalePlanReviewModal = (props: IProps) => {
-    const { open, setOpen, presalePlan, opportunities, departments, divisions } = props;
+    const { open, setOpen, presalePlan } = props;
 
     const [versions, setVersions] = useState<PresalePlanVersion[]>([]);
     const [comments, setComments] = useState<PresalePlanComment[]>([]);
 
     const { data: session } = useSession();
 
-    // Fetch presale plan versions and comments when the modal opens
     useEffect(() => {
         if (presalePlan?._id) {
             getPresalePlanVersions(presalePlan._id)
@@ -93,7 +89,6 @@ export const PresalePlanReviewModal = (props: IProps) => {
                         <Grid item xs={12} md={5}>
                             <Box sx={{ paddingRight: '16px' }}>
                                 <Grid container spacing={2}>
-                                    {/* Row 1: Name | Opportunity */}
                                     <Grid item xs={12} md={6}>
                                         <Typography variant="subtitle1">Name</Typography>
                                         <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
@@ -107,7 +102,6 @@ export const PresalePlanReviewModal = (props: IProps) => {
                                         </Typography>
                                     </Grid>
 
-                                    {/* Row 2: Division | Department */}
                                     <Grid item xs={12} md={6}>
                                         <Typography variant="subtitle1">Division</Typography>
                                         <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
@@ -121,7 +115,6 @@ export const PresalePlanReviewModal = (props: IProps) => {
                                         </Typography>
                                     </Grid>
 
-                                    {/* Row 3: Status | Version */}
                                     <Grid item xs={12} md={6}>
                                         <Typography variant="subtitle1">Status</Typography>
                                         <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
@@ -135,7 +128,6 @@ export const PresalePlanReviewModal = (props: IProps) => {
                                         </Typography>
                                     </Grid>
 
-                                    {/* Row 4: Created At | Updated At*/}
                                     <Grid item xs={12} md={6}>
                                         <Typography variant="subtitle1">Created At</Typography>
                                         <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
@@ -148,7 +140,6 @@ export const PresalePlanReviewModal = (props: IProps) => {
                                             {moment(presalePlan.updatedAt).format('YYYY-MM-DD') || 'N/A'}
                                         </Typography>
                                     </Grid>
-                                    {/* Row 5 */}
                                     <Grid item xs={12} md={6}>
                                         <Typography variant="subtitle1">Pending Until</Typography>
                                         <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
@@ -162,7 +153,6 @@ export const PresalePlanReviewModal = (props: IProps) => {
                                         </Typography>
                                     </Grid>
 
-                                    {/* Row 6: Description */}
                                     <Grid item xs={12}>
                                         <Typography variant="subtitle1">Description</Typography>
                                         <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
@@ -261,7 +251,6 @@ export const PresalePlanReviewModal = (props: IProps) => {
                                                                 />
                                                             )}
 
-                                                            {/* Comment Box */}
                                                             <Box
                                                                 sx={{
                                                                     maxWidth: '80%',
@@ -272,7 +261,6 @@ export const PresalePlanReviewModal = (props: IProps) => {
                                                                     textAlign: isCurrentUser ? 'right' : 'left',
                                                                 }}
                                                             >
-                                                                {/* Username and Status */}
                                                                 <Typography
                                                                     variant="body2"
                                                                     sx={{
@@ -298,9 +286,12 @@ export const PresalePlanReviewModal = (props: IProps) => {
                                                                     </Typography>
                                                                 </Typography>
 
-                                                                {/* Comment Text */}
                                                                 <Typography variant="body2" sx={{ mt: 1 }}>
                                                                     {comment.comment}
+                                                                </Typography>
+
+                                                                <Typography variant="caption" sx={{ mt: 0.5, color: 'gray', textAlign: 'right', display: 'block' }}>
+                                                                    {moment(comment.createdAt).fromNow()}
                                                                 </Typography>
                                                             </Box>
                                                         </Box>

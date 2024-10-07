@@ -9,27 +9,29 @@ import { columns } from '@/app/(locale)/(user)/productivity/_table_config/produc
 import { useToast } from '@/context/ToastContext';
 import TableComponentWithCheckbox from '@/components/_table_form-config/table-checkbox-component';
 import { HeaderButton } from '@/styles';
+import { useRouter } from 'next/navigation';
 
 interface IProps {
     fetchSelectedProductivities: () => void;
     projectId: string;
     productivities: Productivity[];
-    technologies: Technology[];
     components: ProjectProductivity[];
     open: boolean;
     setOpen: (open: boolean) => void;
 }
 
 const ProjectProductivitiesSelectedModal = (props: IProps) => {
-    const { projectId, productivities, technologies, open, setOpen, components, fetchSelectedProductivities } = props;
+    const { projectId, productivities, open, setOpen, components, fetchSelectedProductivities } = props;
     const { triggerToast } = useToast();
     const [selectedProductivities, setSelectedProductivities] = useState<ProjectProductivity[]>([]);
+    const router = useRouter();
 
     const handleSave = async () => {
         try {
             const response = await updateProjectComponents(projectId, { productivity: selectedProductivities });
             if (response.EC === 0) {
                 setSelectedProductivities([]);
+                router.refresh();
                 fetchSelectedProductivities();
                 triggerToast('The list of productivities has been updated to the project successfully.', true);
                 setOpen(false);

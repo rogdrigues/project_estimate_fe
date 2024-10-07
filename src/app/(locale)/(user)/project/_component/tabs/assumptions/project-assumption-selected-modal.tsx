@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Assumption, Category, ProjectAssumption } from '@/types';
+import { Assumption, ProjectAssumption } from '@/types';
 import SaveIcon from '@mui/icons-material/Save';
 import { Button, Box, Typography, Modal, Divider } from '@mui/material';
 import { updateProjectComponents } from '@/services';
@@ -9,28 +9,29 @@ import { columns } from '@/app/(locale)/(user)/assumption/_table_config/assumpti
 import { useToast } from '@/context/ToastContext';
 import TableComponentWithCheckbox from '@/components/_table_form-config/table-checkbox-component';
 import { HeaderButton } from '@/styles';
+import { useRouter } from 'next/navigation';
 
 interface IProps {
     fetchSelectedAssumptions: () => void;
     projectId: string;
     assumptions: Assumption[];
-    categories: Category[];
     components: ProjectAssumption[];
     open: boolean;
     setOpen: (open: boolean) => void;
 }
 
 const ProjectAssumptionsSelectedModal = (props: IProps) => {
-    const { projectId, assumptions, categories, open, setOpen, components, fetchSelectedAssumptions } = props;
+    const { projectId, assumptions, open, setOpen, components, fetchSelectedAssumptions } = props;
     const { triggerToast } = useToast();
     const [selectedAssumptions, setSelectedAssumptions] = useState<ProjectAssumption[]>([]);
-
+    const router = useRouter();
     const handleSave = async () => {
 
         try {
             const response = await updateProjectComponents(projectId, { assumptions: selectedAssumptions });
             if (response.EC === 0) {
                 fetchSelectedAssumptions();
+                router.refresh();
                 triggerToast('The list of assumptions has been updated to the project successfully.', true);
                 setOpen(false);
             } else {

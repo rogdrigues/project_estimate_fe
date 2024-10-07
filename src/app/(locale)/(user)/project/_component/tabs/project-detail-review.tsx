@@ -142,7 +142,7 @@ export const ProjectReview = (props: IProps) => {
 
 
 
-            {/* Header Section with Reviewer Info */}
+            {/* Header Section*/}
             <Box sx={{ display: 'flex', alignItems: 'center', padding: 2 }}>
                 <Avatar src={hasPermission('project_review') ? project?.lead?.profile?.avatar : project?.reviewer?.profile?.avatar} sx={{ width: 56, height: 56, mr: 2 }} />
                 <Box>

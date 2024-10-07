@@ -5,7 +5,7 @@ import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';
 import CloseIcon from '@mui/icons-material/Close';
 import { useForm, Controller } from 'react-hook-form';
-import { Division, Department, UserMaster, Opportunity, Category } from '@/types';
+import { Department, UserMaster, Opportunity, Category } from '@/types';
 import { createOpportunity, updateOpportunity } from '@/services';
 import { useSession } from 'next-auth/react';
 import { useToast } from '@/context/ToastContext';
@@ -18,7 +18,6 @@ import moment from 'moment';
 interface IProps {
     open: boolean;
     setOpen: (open: boolean) => void;
-    divisions: Division[];
     departments: Department[];
     opportunityLeads: UserMaster[];
     opportunity?: Opportunity | null;
@@ -28,7 +27,7 @@ interface IProps {
 export const OpportunityFormModal = (props: IProps) => {
     const router = useRouter();
     const { data: session } = useSession();
-    const { open, setOpen, divisions, departments, opportunityLeads, opportunity, categories } = props;
+    const { open, setOpen, departments, opportunityLeads, opportunity, categories } = props;
     const { triggerToast } = useToast();
     const { handleSubmit, reset, control, watch, setValue } = useForm({
         defaultValues: {

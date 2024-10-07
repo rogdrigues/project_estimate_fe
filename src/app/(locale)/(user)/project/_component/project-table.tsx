@@ -18,8 +18,9 @@ interface IProps {
 export default function ProjectTable(props: IProps) {
     const { projects, opportunities, reviewers, categories, templates } = props;
     const [openUpdate, setOpenUpdate] = useState(false);
-    const [dataView, setDataView] = useState<Project | null>(null);
     const [openReview, setOpenReview] = useState(false);
+    const [openReused, setOpenReused] = useState(false);
+    const [dataView, setDataView] = useState<Project | null>(null);
 
     return (
         <TableComponent
@@ -53,6 +54,21 @@ export default function ProjectTable(props: IProps) {
                     projectId={dataView?._id}
                 />
             }
+            openReused={openReused}
+            setOpenReused={setOpenReused}
+            optionReused={
+                <ProjectFormModal
+                    open={openReused}
+                    setOpen={setOpenReused}
+                    categories={categories}
+                    opportunities={opportunities}
+                    templates={templates}
+                    reviewers={reviewers}
+                    onReusedProject={true}
+                    project={dataView}
+                />
+            }
+
         >
             <ProjectFormModal
                 open={openUpdate}

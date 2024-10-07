@@ -13,22 +13,38 @@ interface IProps<T> {
     columns: any[];
     onRestore: (id: string) => Promise<any>;
     onDelete: (id: string) => Promise<any>;
-    markWord: string;
     initialVisibility: GridColumnVisibilityModel;
+    // update
     openUpdate: boolean;
     setOpenUpdate: (isOpen: boolean) => void;
+    // dialog
     hiddenColumnsOnMobile: string[];
-    currentPage: string;
-    optionReview?: ReactNode;
     children: ReactNode;
+    // currentPage and markWord
+    currentPage: string;
+    markWord: string;
+    //dataView
     dataView: T | null;
     setDataView: (data: T) => void;
+    // review
     openReview?: boolean;
     setOpenReview?: (isOpen: boolean) => void;
+    optionReview?: ReactNode;
+    // reused
+    openReused?: boolean;
+    setOpenReused?: (isOpen: boolean) => void;
+    optionReused?: ReactNode;
 }
 
 export default function TableComponent<T>(props: IProps<T>) {
-    const { rows, columns, onRestore, onDelete, markWord, initialVisibility, children, openUpdate, setOpenUpdate, dataView, setDataView, hiddenColumnsOnMobile, openReview, setOpenReview, optionReview, currentPage } = props;
+    const { rows, columns, onRestore, onDelete, markWord,
+        initialVisibility, children, openUpdate,
+        setOpenUpdate, dataView, setDataView,
+        hiddenColumnsOnMobile, openReview,
+        setOpenReview, optionReview, currentPage,
+        openReused, setOpenReused, optionReused
+    } = props;
+    console.log('TableComponent', props);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const isMobile = useMediaQuery('(max-width:1300px)');
     const [openDialog, setOpenDialog] = useState(false);
@@ -91,13 +107,15 @@ export default function TableComponent<T>(props: IProps<T>) {
                                                 anchorEl={anchorEl}
                                                 isMenuOpen={open}
                                                 handleMenuClose={handleMenuClose}
-                                                openUpdateModal={openUpdate}
-                                                SetOpenUpdateModal={() => setOpenUpdate(!openUpdate)}
-                                                SetOpenDialog={() => setOpenDialog(true)}
                                                 dataView={dataView}
                                                 entity={currentPage}
                                                 SetOpenReview={setOpenReview}
                                                 openReviewModal={openReview}
+                                                openUpdateModal={openUpdate}
+                                                SetOpenUpdateModal={() => setOpenUpdate(!openUpdate)}
+                                                SetOpenDialog={() => setOpenDialog(true)}
+                                                openReusedModal={openReused}
+                                                setOpenReusedModal={() => setOpenReused && setOpenReused(!openReused)}
                                             />
                                         </>
                                     )
@@ -106,7 +124,7 @@ export default function TableComponent<T>(props: IProps<T>) {
                         )}
                         initialState={{
                             pagination: {
-                                paginationModel: { page: 0, pageSize: 10 },
+                                paginationModel: { page: 0, pageSize: 5 },
                             },
                         }}
                         pageSizeOptions={[5, 10]}
@@ -140,6 +158,8 @@ export default function TableComponent<T>(props: IProps<T>) {
             {openReview && optionReview}
 
             {children}
+
+            {openReused && optionReused}
         </>
     );
 }

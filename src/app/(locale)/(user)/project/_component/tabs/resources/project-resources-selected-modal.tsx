@@ -9,6 +9,7 @@ import { columns } from '@/app/(locale)/(user)/resource/_table-config/resource-t
 import { useToast } from '@/context/ToastContext';
 import TableComponentWithCheckbox from '@/components/_table_form-config/table-checkbox-component';
 import { HeaderButton } from '@/styles';
+import { useRouter } from 'next/navigation';
 
 interface IProps {
     fetchSelectedResources: () => void;
@@ -23,12 +24,14 @@ const ProjectResourcesSelectedModal = (props: IProps) => {
     const { projectId, resources, open, setOpen, components, fetchSelectedResources } = props;
     const { triggerToast } = useToast();
     const [selectedResources, setSelectedResources] = useState<ProjectResource[]>([]);
+    const router = useRouter();
 
     const handleSave = async () => {
         try {
             const response = await updateProjectComponents(projectId, { resources: selectedResources });
             if (response.EC === 0) {
                 fetchSelectedResources();
+                router.refresh();
                 triggerToast('The list of resources has been updated to the project successfully.', true);
                 setOpen(false);
             } else {

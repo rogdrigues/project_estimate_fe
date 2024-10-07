@@ -9,6 +9,7 @@ import { columns } from '@/app/(locale)/(user)/technology/_table-config/technolo
 import { useToast } from '@/context/ToastContext';
 import TableComponentWithCheckbox from '@/components/_table_form-config/table-checkbox-component';
 import { HeaderButton } from '@/styles';
+import { useRouter } from 'next/navigation';
 
 interface IProps {
     fetchSelectedTechnologies: () => void;
@@ -23,13 +24,14 @@ const ProjectTechnologiesSelectedModal = (props: IProps) => {
     const { projectId, technologies, open, setOpen, components, fetchSelectedTechnologies } = props;
     const { triggerToast } = useToast();
     const [selectedTechnologies, setSelectedTechnologies] = useState<ProjectTechnology[]>([]);
+    const router = useRouter();
 
     const handleSave = async () => {
-
         try {
             const response = await updateProjectComponents(projectId, { technologies: selectedTechnologies });
             if (response.EC === 0) {
                 fetchSelectedTechnologies();
+                router.refresh();
                 triggerToast('The list of technologies has been updated to the project successfully.', true);
                 setOpen(false);
             } else {

@@ -5,7 +5,7 @@ import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';
 import CloseIcon from '@mui/icons-material/Close';
 import { useForm, Controller } from 'react-hook-form';
-import { Opportunity, Department, Division, PresalePlan } from '@/types';
+import { Opportunity, PresalePlan } from '@/types';
 import { createPresalePlan, updatePresalePlan } from '@/services';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
@@ -18,14 +18,12 @@ interface IProps {
     setOpen: (open: boolean) => void;
     presalePlan?: PresalePlan | null;
     opportunities: Opportunity[];
-    departments: Department[];
-    divisions: Division[];
     readOnly?: boolean;
 }
 
 export const PresalePlanFormModal = (props: IProps) => {
     const router = useRouter();
-    const { open, setOpen, presalePlan, opportunities, departments, divisions, readOnly } = props;
+    const { open, setOpen, presalePlan, opportunities, readOnly } = props;
     const { triggerToast } = useToast();
     const { data: session } = useSession();
     const { handleSubmit, reset, control, setValue } = useForm({
