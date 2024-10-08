@@ -67,7 +67,6 @@ const ProjectProductivities = (props: IProps) => {
                         projectId={projectId}
                         productivities={originalProductivities}
                         components={productivities}
-                        technologies={technologies}
                         open={open}
                         setOpen={setOpen}
                     />
