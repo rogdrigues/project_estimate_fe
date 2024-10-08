@@ -40,7 +40,7 @@ const UserAuthForm = () => {
         } else {
             triggerToast("Sign in successful", true);
             setTimeout(() => {
-                router.push('/dashboard');
+                router.push('/home');
             }, 2000);
         }
     };
