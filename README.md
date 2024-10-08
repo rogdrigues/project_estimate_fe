@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Project Estimate Management (Frontend)
 
-## Getting Started
+## Description
+This is the frontend for the Project Estimate Management tool, designed to help companies manage their projects, resources, and collaboration efficiently. It provides a modern, responsive interface built with React and Next.js to deliver a smooth user experience. The application leverages powerful form handling, state management, and dynamic components for handling various aspects of project management.
 
-First, run the development server:
+## Features
+- **Responsive UI**: Built using Material UI (MUI) components for a modern and intuitive interface.
+- **Project Management**: Users can create, update, and monitor projects, resources, and deadlines.
+- **Role-based Access Control**: Supports different user roles such as Admin, Project Manager, and Employee to manage access.
+- **Real-time Collaboration**: Users can comment and interact with projects in real-time.
+- **Authentication**: Integrated with NextAuth.js to provide secure authentication and session management.
+- **Data Grid Management**: View and manage large sets of data using MUI's DataGrid component.
+- **Form Handling**: Efficiently manage forms using React Hook Form and validation through Zod.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Installation
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Prerequisites
+- Node.js (v14.x or higher)
+- A backend server for API interaction (see backend project)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Installation Steps
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/yourusername/project-estimate-management-frontend.git
+    ```
+2. Navigate to the project directory:
+    ```bash
+    cd project-estimate-management-frontend
+    ```
+3. Install dependencies:
+    ```bash
+    npm install
+    ```
+4. Configure environment variables:
+    - Create a `.env` file in the root directory and add necessary environment variables like API URL and authentication keys.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+5. Start the development server:
+    ```bash
+    npm run dev
+    ```
 
-## Learn More
+## Usage
 
-To learn more about Next.js, take a look at the following resources:
+### Running the Application
+1. After starting the server, open your browser and navigate to `http://localhost:8081`.
+2. Log in using the credentials provided by the backend or create a new account if available.
+3. Access the dashboard to manage projects, users, and resources efficiently.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### User Authentication
+- Users authenticate via NextAuth, with role-based access ensuring only authorized users can view and edit specific data.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Project Management
+- Projects can be created, updated, and assigned resources directly from the dashboard.
+- Progress tracking and task assignments are available with real-time updates.
 
-## Deploy on Vercel
+## API Documentation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The frontend communicates with the backend via RESTful API calls. Please refer to the backend documentation for details about API endpoints and expected data formats.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Contributing
+We welcome contributions to the frontend project. To contribute:
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/your-feature-name`).
+3. Make your changes and ensure the code follows project guidelines.
+4. Commit your changes (`git commit -m 'Add some feature'`).
+5. Push your branch to GitHub (`git push origin feature/your-feature-name`).
+6. Create a pull request for review.
+
+## Connect to BE github
+Due to some problem, I had to separate the front-end file which you can found in this link (https://github.com/rogdrigues/project_estimate)

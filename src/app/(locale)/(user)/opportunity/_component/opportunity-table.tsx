@@ -63,7 +63,6 @@ export default function OpportunityTable(props: IProps) {
                 open={openUpdate}
                 setOpen={setOpenUpdate}
                 opportunity={dataView}
-                divisions={divisions}
                 departments={departments}
                 categories={categories}
                 opportunityLeads={opportunityLeads}
