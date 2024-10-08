@@ -9,102 +9,68 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { Chart, ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 
+import { columns as OpportunityColumn } from '@/app/(locale)/(user)/opportunity/_table_config/opportunity-table-columns';
+import { columns as ProjectColumn } from '@/app/(locale)/(user)/project/_table_config/project-table-columns';
+
+// Register required Chart.js components
 Chart.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
-const statCards = [
-    {
-        title: 'Total Users',
-        value: 10928,
-        change: 12,
-        positive: true,
-        icon: <PeopleIcon />,
-    },
-    {
-        title: 'Total Opportunities',
-        value: 734,
-        change: -4,
-        positive: false,
-        icon: <TrendingUpIcon />,
-    },
-    {
-        title: 'Total Projects',
-        value: 623,
-        change: 8,
-        positive: true,
-        icon: <WorkIcon />,
-    },
-    {
-        title: 'Total Templates',
-        value: 542,
-        change: 5,
-        positive: true,
-        icon: <FileCopyIcon />,
-    },
-];
+interface IProps {
+    dashboardTotal: any;
+    opportunityStatus: any;
+    projectStatus: any;
+    templateStatus: any;
+    opportunities: any;
+    projects: any;
+}
 
-const opportunitySummaryData = {
-    labels: ['Unassigned', 'Assigned', 'In-Progress', 'Passed', 'Failed'],
-    datasets: [
+
+
+const DashboardCombined = (props: IProps) => {
+    const { dashboardTotal, opportunityStatus, projectStatus, templateStatus, opportunities, projects } = props;
+
+    const columnsToExclude = new Set(['description', '_id', 'createdAt', 'deadline', 'actions', 'category']);
+    const filteredColumns = ProjectColumn.filter((column) => !columnsToExclude.has(column.field));
+
+    const columnsToExcludeOpp = new Set(['description', '_id', 'status', 'createdAt', 'division', 'actions', 'version', 'category', 'nation', 'budget', 'timeline', 'department']);
+    const filteredColumnsOpp = OpportunityColumn.filter((column) => !columnsToExcludeOpp.has(column.field));
+
+
+    const statCards = [
         {
-            data: [50, 25, 15, 5, 5],
-            backgroundColor: ['#808080', '#3E95CD', '#8E5EA2', '#3CBA9F', '#FF0000'],
+            title: 'Total Users',
+            value: dashboardTotal?.totalCounts?.totalUsers || 0,
+            change: dashboardTotal?.changes?.usersChange || 0,
+            positive: (dashboardTotal?.changes?.usersChange || 0) >= 0,
+            icon: <PeopleIcon />,
         },
-    ],
-};
-
-const projectSummaryData = {
-    labels: ['In-Progress', 'Passed', 'Failed'],
-    datasets: [
         {
-            label: 'Projects',
-            data: [1, 0, 0],
-            backgroundColor: ['#3E95CD', '#3CBA9F', '#FF0000'],
+            title: 'Total Opportunities',
+            value: dashboardTotal?.totalCounts?.totalOpportunities || 0,
+            change: dashboardTotal?.changes?.opportunitiesChange || 0,
+            positive: (dashboardTotal?.changes?.opportunitiesChange || 0) >= 0,
+            icon: <TrendingUpIcon />,
         },
-    ],
-};
-
-const templateSummaryData = {
-    labels: ['Draft', 'Approved', 'Rejected'],
-    datasets: [
         {
-            label: 'Templates',
-            data: [3, 5, 2],
-            backgroundColor: ['#FFC107', '#4CAF50', '#F44336'],
+            title: 'Total Projects',
+            value: dashboardTotal?.totalCounts?.totalProjects || 0,
+            change: dashboardTotal?.changes?.projectsChange || 0,
+            positive: (dashboardTotal?.changes?.projectsChange || 0) >= 0,
+            icon: <WorkIcon />,
         },
-    ],
-};
+        {
+            title: 'Total Templates',
+            value: dashboardTotal?.totalCounts?.totalTemplates || 0,
+            change: dashboardTotal?.changes?.templatesChange || 0,
+            positive: (dashboardTotal?.changes?.templatesChange || 0) >= 0,
+            icon: <FileCopyIcon />,
+        },
+    ];
 
-const opportunityColumns = [
-    { field: 'opportunityName', headerName: 'Opp Name', width: 150 },
-    { field: 'leaderName', headerName: 'Leader Name', width: 150 },
-    { field: 'customerName', headerName: 'Customer Name', width: 150 },
-    { field: 'market', headerName: 'Market', width: 100 },
-    { field: 'status', headerName: 'Status', width: 150 },
-];
-
-const projectColumns = [
-    { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'opportunityName', headerName: 'Opportunity Name', width: 150 },
-    { field: 'leader', headerName: 'Leader', width: 150 },
-    { field: 'category', headerName: 'Category', width: 150 },
-    { field: 'subcategory', headerName: 'Subcategory', width: 150 },
-    { field: 'deadline', headerName: 'Deadline', width: 150 },
-];
-
-const opportunityRows = [
-    { id: 1, opportunityName: 'Migration Java', leaderName: '#N/A', customerName: 'Migration Inc', market: 'Korea', status: 'Unassigned' },
-    { id: 2, opportunityName: 'new Op', leaderName: 'quanlm', customerName: 'haha', market: 'Viet Nam', status: 'In-Progress' },
-];
-
-const projectRows = [
-    { id: 1, name: 'project1', opportunityName: 'new Op', leader: 'quanlm', category: 'Software Development', subcategory: 'Projects related to the development...', deadline: '#N/A' },
-];
-
-const DashboardCombined = () => {
     return (
-        <Grid container spacing={3} sx={{ padding: 3 }}>
+        <Grid container spacing={3} sx={{ padding: 3, height: "100vh", overflowY: "auto" }}>
             {statCards.map((card) => (
-                <Grid item xs={12} md={6} lg={6} key={card.title}>
+                <Grid item xs={12} md={6} lg={5} key={card.title}>
                     <Card
                         sx={{
                             backgroundColor: '#F9FAFB',
@@ -154,53 +120,49 @@ const DashboardCombined = () => {
                 </Grid>
             ))}
 
-            {/* Opportunity Summary */}
-            <Grid item xs={12} md={4} lg={4}>
+            <Grid item xs={12} md={6} lg={3}>
                 <Card sx={{ height: '100%' }}>
                     <CardContent>
                         <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
                             Opportunity Summary
                         </Typography>
-                        <Doughnut data={opportunitySummaryData} />
+                        <Doughnut data={opportunityStatus} />
                     </CardContent>
                 </Card>
             </Grid>
 
-            {/* Project Summary */}
-            <Grid item xs={12} md={4} lg={4}>
+            <Grid item xs={12} md={6} lg={3.5}>
                 <Card sx={{ height: '100%' }}>
                     <CardContent>
                         <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
                             Project Summary
                         </Typography>
-                        <Bar data={projectSummaryData} />
+                        <Bar data={projectStatus} />
                     </CardContent>
                 </Card>
             </Grid>
 
-            {/* Template Summary */}
-            <Grid item xs={12} md={4} lg={4}>
+            <Grid item xs={12} md={6} lg={3.5}>
                 <Card sx={{ height: '100%' }}>
                     <CardContent>
                         <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
                             Template Summary
                         </Typography>
-                        <Bar data={templateSummaryData} />
+                        <Bar data={templateStatus} />
                     </CardContent>
                 </Card>
             </Grid>
 
-            {/* Opportunity Detail */}
-            <Grid item xs={12} md={6} lg={6}>
+            <Grid item xs={12} md={6} lg={5}>
                 <Card sx={{ height: '100%' }}>
                     <CardContent>
                         <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
                             Opportunity Detail
                         </Typography>
-                        <Box sx={{ height: 300 }}>
+                        <Box sx={{ height: 300, overflowY: 'auto' }}>
                             <DataGrid
-                                rows={opportunityRows}
-                                columns={opportunityColumns}
+                                rows={opportunities}
+                                columns={filteredColumnsOpp}
                                 pageSizeOptions={[5, 10]}
                                 disableRowSelectionOnClick
                                 pagination
@@ -210,17 +172,16 @@ const DashboardCombined = () => {
                 </Card>
             </Grid>
 
-            {/* Project Detail */}
-            <Grid item xs={12} md={6} lg={6}>
+            <Grid item xs={12} md={6} lg={5}>
                 <Card sx={{ height: '100%' }}>
                     <CardContent>
                         <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
                             Project Detail
                         </Typography>
-                        <Box sx={{ height: 300 }}>
+                        <Box sx={{ height: 300, overflowY: 'auto' }}>
                             <DataGrid
-                                rows={projectRows}
-                                columns={projectColumns}
+                                rows={projects}
+                                columns={filteredColumns}
                                 pageSizeOptions={[5, 10]}
                                 disableRowSelectionOnClick
                                 pagination
