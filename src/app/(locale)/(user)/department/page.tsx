@@ -1,4 +1,3 @@
-
 import { getAllDepartments, getAllDivisions } from '@/services';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth';
@@ -7,8 +6,10 @@ import DepartmentHeader from './_component/department-header';
 
 const DepartmentPage = async () => {
     const session = await getServerSession(authOptions);
-    const divisions = await getAllDivisions(session?.access_token);
-    const departments = await getAllDepartments(session?.access_token, true);
+    const [divisions, departments] = await Promise.all([
+        getAllDivisions(session?.access_token),
+        getAllDepartments(session?.access_token, true)
+    ]);
 
     return (
         <div>

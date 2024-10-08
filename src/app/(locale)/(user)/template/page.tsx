@@ -4,11 +4,12 @@ import { getServerSession } from 'next-auth';
 import TemplateHeader from './_component/template-header';
 import TemplateTable from './_component/template-table';
 
-
 const TemplatePage = async () => {
     const session = await getServerSession(authOptions);
-    const templates = await getAllTemplates(session?.access_token, true);
-    const categories = await getAllCategories(session?.access_token);
+    const [templates, categories] = await Promise.all([
+        getAllTemplates(session?.access_token, true),
+        getAllCategories(session?.access_token)
+    ]);
 
     return (
         <div>

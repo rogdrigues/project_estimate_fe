@@ -1,4 +1,3 @@
-
 import { getAllAssumptions, getAllCategories } from '@/services';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth';
@@ -7,8 +6,10 @@ import AssumptionHeader from './_component/assumption-header';
 
 const AssumptionPage = async () => {
     const session = await getServerSession(authOptions);
-    const assumptions = await getAllAssumptions(session?.access_token, true);
-    const categories = await getAllCategories(session?.access_token);
+    const [assumptions, categories] = await Promise.all([
+        getAllAssumptions(session?.access_token, true),
+        getAllCategories(session?.access_token)
+    ]);
 
     return (
         <div>

@@ -18,12 +18,12 @@ export default function RootLayout({ children, }: { children: ReactNode }) {
 
   return (
     <html lang="en">
-      <body>
+      <body style={{ overflow: 'hidden' }}>
         <GlobalStyles
           styles={{
             '*': { margin: 0, padding: 0, boxSizing: 'border-box' },
             html: { height: '100%' },
-            body: { height: '100%', margin: 0, padding: 0 }
+            body: { height: '100%', margin: 0, padding: 0 },
           }}
         />
         <NextAuthWrapper>
