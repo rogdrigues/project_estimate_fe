@@ -3,6 +3,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth';
 import TemplateHeader from './_component/template-header';
 import TemplateTable from './_component/template-table';
+import { Box } from '@mui/material';
 
 const TemplatePage = async () => {
     const session = await getServerSession(authOptions);
@@ -12,10 +13,10 @@ const TemplatePage = async () => {
     ]);
 
     return (
-        <div>
+        <Box sx={{ p: 3 }}>
             <TemplateHeader categories={categories?.result} />
             <TemplateTable templates={templates?.result || []} categories={categories?.result} />
-        </div>
+        </Box>
     );
 }
 

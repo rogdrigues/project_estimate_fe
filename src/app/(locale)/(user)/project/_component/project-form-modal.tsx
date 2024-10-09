@@ -10,7 +10,7 @@ import { createProject, reuseProject, updateProject } from '@/services';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { styleFormUser } from '@/styles';
+import { BoxReused, checboxReUsed, flexEnd, flexSpaceBetween, mb16, mr8, styleFormUser } from '@/styles';
 
 interface IProps {
     open: boolean;
@@ -122,13 +122,13 @@ export const ProjectFormModal = (props: IProps) => {
         >
             <Fade in={open}>
                 <Box sx={styleFormUser}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={flexSpaceBetween}>
                         <h2>{project ? (onReusedProject ? "Reused Project" : "Update Project") : "Create new Project"}</h2>
                         <IconButton onClick={handleClose}>
                             <CloseIcon />
                         </IconButton>
                     </Box>
-                    <Divider sx={{ marginBottom: '16px' }} />
+                    <Divider sx={mb16} />
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Controller
                             name="name"
@@ -146,7 +146,7 @@ export const ProjectFormModal = (props: IProps) => {
                                     error={!!error}
                                     inputProps={{ fontSize: '14px' }}
                                     helperText={error ? error.message : ''}
-                                    sx={{ marginBottom: '16px' }}
+                                    sx={mb16}
                                     size="small"
                                     disabled={project?.status === 'Completed' ? true : false}
                                 />
@@ -166,13 +166,13 @@ export const ProjectFormModal = (props: IProps) => {
                                     margin="normal"
                                     variant="outlined"
                                     inputProps={{ fontSize: '14px' }}
-                                    sx={{ marginBottom: '16px' }}
+                                    sx={mb16}
                                     size="small"
                                     disabled={project?.status === 'Completed' ? true : false}
                                 />
                             )}
                         />
-                        <FormControl fullWidth required margin="normal" sx={{ marginBottom: '16px' }}>
+                        <FormControl fullWidth required margin="normal" sx={mb16}>
                             <InputLabel id="category-select-label" style={{ fontSize: '14px', top: "-5px" }}>Category</InputLabel>
                             <Controller
                                 name="category"
@@ -200,7 +200,7 @@ export const ProjectFormModal = (props: IProps) => {
                                 )}
                             />
                         </FormControl>
-                        <FormControl fullWidth required margin="normal" sx={{ marginBottom: '16px' }}>
+                        <FormControl fullWidth required margin="normal" sx={mb16}>
                             <InputLabel id="opportunity-select-label" style={{ fontSize: '14px', top: "-5px" }}>Opportunity</InputLabel>
                             <Controller
                                 name="opportunity"
@@ -234,7 +234,7 @@ export const ProjectFormModal = (props: IProps) => {
                                 )}
                             />
                         </FormControl>
-                        <FormControl fullWidth required margin="normal" sx={{ marginBottom: '16px' }}>
+                        <FormControl fullWidth required margin="normal" sx={mb16}>
                             <InputLabel id="template-select-label" style={{ fontSize: '14px', top: "-5px" }}>Template</InputLabel>
                             <Controller
                                 name="template"
@@ -269,7 +269,7 @@ export const ProjectFormModal = (props: IProps) => {
                                 )}
                             />
                         </FormControl>
-                        <FormControl fullWidth required margin="normal" sx={{ marginBottom: '16px' }}>
+                        <FormControl fullWidth required margin="normal" sx={mb16}>
                             <InputLabel id="reviewer-select-label" style={{ fontSize: '14px', top: "-5px" }}>Reviewer</InputLabel>
                             <Controller
                                 name="reviewer"
@@ -306,11 +306,11 @@ export const ProjectFormModal = (props: IProps) => {
                         </FormControl>
 
                         {onReusedProject && (
-                            <Box sx={{ marginBottom: '16px', padding: '16px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
+                            <Box sx={BoxReused}>
                                 <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1, color: '#4a4a4a' }}>
                                     Reuse Components
                                 </Typography>
-                                <Divider sx={{ marginBottom: '16px' }} />
+                                <Divider sx={mb16} />
 
                                 <Grid container spacing={3}>
                                     <Grid item xs={12} md={6}>
@@ -329,14 +329,7 @@ export const ProjectFormModal = (props: IProps) => {
                                                 />
                                             }
                                             label="Resources"
-                                            sx={{
-                                                width: '100%',
-                                                '&:hover': {
-                                                    backgroundColor: '#e0e0e0',
-                                                    borderRadius: '8px',
-                                                    transition: 'background-color 0.3s ease',
-                                                },
-                                            }}
+                                            sx={checboxReUsed}
                                         />
                                     </Grid>
                                     <Grid item xs={12} md={6}>
@@ -355,14 +348,7 @@ export const ProjectFormModal = (props: IProps) => {
                                                 />
                                             }
                                             label="Technologies"
-                                            sx={{
-                                                width: '100%',
-                                                '&:hover': {
-                                                    backgroundColor: '#e0e0e0',
-                                                    borderRadius: '8px',
-                                                    transition: 'background-color 0.3s ease',
-                                                },
-                                            }}
+                                            sx={checboxReUsed}
                                         />
                                     </Grid>
                                     <Grid item xs={12} md={6}>
@@ -381,14 +367,7 @@ export const ProjectFormModal = (props: IProps) => {
                                                 />
                                             }
                                             label="Checklists"
-                                            sx={{
-                                                width: '100%',
-                                                '&:hover': {
-                                                    backgroundColor: '#e0e0e0',
-                                                    borderRadius: '8px',
-                                                    transition: 'background-color 0.3s ease',
-                                                },
-                                            }}
+                                            sx={checboxReUsed}
                                         />
                                     </Grid>
                                     <Grid item xs={12} md={6}>
@@ -407,14 +386,7 @@ export const ProjectFormModal = (props: IProps) => {
                                                 />
                                             }
                                             label="Assumptions"
-                                            sx={{
-                                                width: '100%',
-                                                '&:hover': {
-                                                    backgroundColor: '#e0e0e0',
-                                                    borderRadius: '8px',
-                                                    transition: 'background-color 0.3s ease',
-                                                },
-                                            }}
+                                            sx={checboxReUsed}
                                         />
                                     </Grid>
                                     <Grid item xs={12} md={6}>
@@ -433,14 +405,7 @@ export const ProjectFormModal = (props: IProps) => {
                                                 />
                                             }
                                             label="Productivity"
-                                            sx={{
-                                                width: '100%',
-                                                '&:hover': {
-                                                    backgroundColor: '#e0e0e0',
-                                                    borderRadius: '8px',
-                                                    transition: 'background-color 0.3s ease',
-                                                },
-                                            }}
+                                            sx={checboxReUsed}
                                         />
                                     </Grid>
                                 </Grid>
@@ -448,8 +413,8 @@ export const ProjectFormModal = (props: IProps) => {
                         )}
 
 
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-                            <Button onClick={handleClose} variant="outlined" color="secondary" sx={{ marginRight: '8px' }}>
+                        <Box sx={flexEnd}>
+                            <Button onClick={handleClose} variant="outlined" color="secondary" sx={mr8}>
                                 Cancel
                             </Button>
                             <Button disabled={project?.status === 'Completed' ? true : false}

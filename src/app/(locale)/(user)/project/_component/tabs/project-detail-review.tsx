@@ -6,6 +6,7 @@ import { Project, ProjectComment } from '@/types';
 import { getCommentsByProject, startReviewProcess, requestReview } from '@/services';
 import { useSession } from 'next-auth/react';
 import { useToast } from '@/context/ToastContext';
+import { avatarStyle, BoxProjectReview, commentBox, commentBoxAnimation, grayTextRightAlign, maxWidth80WithShadow, positionAbsoluteWithCenter, projectOptionReview } from '@/styles';
 
 interface IProps {
     project: Project;
@@ -101,30 +102,14 @@ export const ProjectReview = (props: IProps) => {
 
     return (
         <Box
-            sx={{
-                backgroundColor: 'white',
-                borderRadius: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-                position: 'relative',
-            }}
+            sx={BoxProjectReview}
         >
             {(comments.length === 0 || hasPermission('project_review') || hasPermission('manage_projects')) &&
                 (project?.status === 'In Progress' || project?.status === 'Pending' || project?.status === 'Rejected' || project?.status === 'Completed') && (
                     <Box
                         sx={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
+                            ...projectOptionReview,
                             cursor: hasPermission('project_review') ? 'default' : (project.status === 'Rejected' || project.status === 'In Progress' || project.status === 'Pending') ? 'pointer' : 'default',
-                            zIndex: 10,
                         }}
                         onClick={
                             !hasPermission('project_review') &&
@@ -165,15 +150,8 @@ export const ProjectReview = (props: IProps) => {
                                         <Box
                                             key={comment._id}
                                             sx={{
-                                                display: 'flex',
-                                                mb: 2,
-                                                alignItems: 'flex-start',
+                                                ...commentBoxAnimation,
                                                 justifyContent: isCurrentUser ? 'flex-end' : 'flex-start',
-                                                animation: 'fadeIn 0.5s ease-out',
-                                                '@keyframes fadeIn': {
-                                                    '0%': { opacity: 0, transform: 'translateY(10px)' },
-                                                    '100%': { opacity: 1, transform: 'translateY(0)' },
-                                                },
                                             }}
                                         >
                                             {!isCurrentUser && (
@@ -181,31 +159,21 @@ export const ProjectReview = (props: IProps) => {
                                                     component="img"
                                                     src={comment.user?.profile?.avatar || undefined}
                                                     alt={comment.user?.username}
-                                                    sx={{
-                                                        width: 40,
-                                                        height: 40,
-                                                        borderRadius: '50%',
-                                                        mr: 2,
-                                                    }}
+                                                    sx={avatarStyle}
                                                 />
                                             )}
 
                                             <Box
                                                 sx={{
-                                                    maxWidth: '80%',
+                                                    ...maxWidth80WithShadow,
                                                     backgroundColor: isCurrentUser ? '#FFF8E1' : '#f1f3f4',
-                                                    borderRadius: '16px',
-                                                    p: 1.5,
-                                                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.12)',
                                                     textAlign: isCurrentUser ? 'right' : 'left',
                                                 }}
                                             >
                                                 <Typography
                                                     variant="body2"
                                                     sx={{
-                                                        fontWeight: 'bold',
-                                                        display: 'flex',
-                                                        alignItems: 'center',
+                                                        ...commentBox,
                                                         justifyContent: isCurrentUser ? 'flex-end' : 'flex-start',
                                                     }}
                                                 >
@@ -218,7 +186,7 @@ export const ProjectReview = (props: IProps) => {
                                                     {comment.comment}
                                                 </Typography>
 
-                                                <Typography variant="caption" sx={{ mt: 0.5, color: 'gray', textAlign: 'right', display: 'block' }}>
+                                                <Typography variant="caption" sx={grayTextRightAlign}>
                                                     {moment(comment.createdAt).fromNow()}
                                                 </Typography>
                                             </Box>
@@ -227,18 +195,7 @@ export const ProjectReview = (props: IProps) => {
                                 })
                             ) : (
                                 <Box
-                                    sx={{
-                                        position: 'absolute',
-                                        top: 0,
-                                        left: 0,
-                                        right: 0,
-                                        bottom: 0,
-                                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        cursor: 'default',
-                                    }}
+                                    sx={positionAbsoluteWithCenter}
                                 >
                                     <Typography variant="body2" sx={{ fontStyle: 'italic', color: '#6c757d' }}>
                                         No comments available.

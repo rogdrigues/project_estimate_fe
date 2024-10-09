@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import moment from 'moment';
 import { useSession } from 'next-auth/react';
 import { CommentInput } from '@/components/_table_form-config/comment-input-component';
+import { avatarStyle, borderBottom, boxReview, centerFlex, commentBox, commentBoxAnimation, flexSpaceBetween, grayTextRightAlign, maxHeight400WithScroll, maxWidth80WithShadow, modalBodyStyle, modalStyle } from '@/styles';
 
 interface IProps {
     opportunity: Opportunity;
@@ -99,25 +100,10 @@ export const OpportunityReviewModal = (props: IProps) => {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100vh',
-                backgroundColor: 'rgba(0, 0, 0, 0.5)'
-            }}>
-                <Box sx={{
-                    width: '90%',
-                    maxHeight: '85vh',
-                    bgcolor: 'background.paper',
-                    boxShadow: 24,
-                    p: 4,
-                    borderRadius: 2,
-                    overflowY: 'auto',
-                    padding: '16px'
-                }}>
+            <Box sx={modalStyle}>
+                <Box sx={modalBodyStyle}>
                     {/* Header Section */}
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                    <Box sx={{ ...flexSpaceBetween, mb: 2 }}>
                         <Typography variant="h6">Opportunity Review</Typography>
                         <IconButton onClick={handleClose}>
                             <CloseIcon />
@@ -144,7 +130,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                     )}
                                                 />
                                             ) : (
-                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                <Typography variant="body2" sx={borderBottom}>
                                                     {opportunity.name || 'N/A'}
                                                 </Typography>
                                             )}
@@ -161,7 +147,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                     )}
                                                 />
                                             ) : (
-                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                <Typography variant="body2" sx={borderBottom}>
                                                     {opportunity.customerName || 'N/A'}
                                                 </Typography>
                                             )}
@@ -186,7 +172,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                     />
                                                 </FormControl>
                                             ) : (
-                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                <Typography variant="body2" sx={borderBottom}>
                                                     {opportunity.division?.name || 'N/A'}
                                                 </Typography>
                                             )}
@@ -211,7 +197,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                     />
                                                 </FormControl>
                                             ) : (
-                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                <Typography variant="body2" sx={borderBottom}>
                                                     {opportunity.department?.name || 'N/A'}
                                                 </Typography>
                                             )}
@@ -228,7 +214,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                     )}
                                                 />
                                             ) : (
-                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                <Typography variant="body2" sx={borderBottom}>
                                                     {opportunity.approvalStatus || 'N/A'}
                                                 </Typography>
                                             )}
@@ -245,7 +231,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                     )}
                                                 />
                                             ) : (
-                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                <Typography variant="body2" sx={borderBottom}>
                                                     {opportunity.version || 'N/A'}
                                                 </Typography>
                                             )}
@@ -269,7 +255,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                     )}
                                                 />
                                             ) : (
-                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                <Typography variant="body2" sx={borderBottom}>
                                                     {moment(opportunity.timeline).format('YYYY-MM-DD') || 'N/A'}
                                                 </Typography>
                                             )}
@@ -286,7 +272,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                     )}
                                                 />
                                             ) : (
-                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                <Typography variant="body2" sx={borderBottom}>
                                                     {opportunity.budget || 'N/A'}
                                                 </Typography>
                                             )}
@@ -303,7 +289,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                     )}
                                                 />
                                             ) : (
-                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                <Typography variant="body2" sx={borderBottom}>
                                                     {opportunity.scope || 'N/A'}
                                                 </Typography>
                                             )}
@@ -328,7 +314,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                     />
                                                 </FormControl>
                                             ) : (
-                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                <Typography variant="body2" sx={borderBottom}>
                                                     {opportunity.category ? opportunity.category.CategoryName : 'N/A'}
                                                 </Typography>
                                             )}
@@ -345,7 +331,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                     )}
                                                 />
                                             ) : (
-                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                <Typography variant="body2" sx={borderBottom}>
                                                     {opportunity.budget || 'N/A'}
                                                 </Typography>
                                             )}
@@ -362,7 +348,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                     )}
                                                 />
                                             ) : (
-                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                <Typography variant="body2" sx={borderBottom}>
                                                     {opportunity.nation || 'N/A'}
                                                 </Typography>
                                             )}
@@ -379,7 +365,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                     )}
                                                 />
                                             ) : (
-                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                <Typography variant="body2" sx={borderBottom}>
                                                     {opportunity.moneyType || 'N/A'}
                                                 </Typography>
                                             )}
@@ -404,7 +390,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                     )}
                                                 />
                                             ) : (
-                                                <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                                <Typography variant="body2" sx={borderBottom}>
                                                     {opportunity.opportunityLead?.username || 'N/A'}
                                                 </Typography>
                                             )}
@@ -437,23 +423,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                 versions.map((version) => (
                                                     <Box
                                                         key={version._id}
-                                                        sx={{
-                                                            mb: 2,
-                                                            p: 2,
-                                                            borderRadius: '8px',
-                                                            border: '1px solid rgba(0, 0, 0, 0.2)',
-                                                            boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-                                                            display: 'flex',
-                                                            justifyContent: 'space-between',
-                                                            alignItems: 'center',
-                                                            backgroundColor: 'white',
-                                                            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                                                            ':hover': {
-                                                                boxShadow: '0 4px 10px rgba(0,0,0,0.15)',
-                                                                cursor: 'pointer',
-                                                                transform: 'scale(1.02)',
-                                                            },
-                                                        }}
+                                                        sx={boxReview}
                                                     >
                                                         <Typography variant="body2">Version {version?.versionNumber}</Typography>
 
@@ -477,7 +447,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                     <Box>
                                         <Typography variant="h6">Comments from Opportunity Lead</Typography>
                                         <Divider sx={{ my: 1 }} />
-                                        <Box sx={{ maxHeight: '400px', height: '300px', overflowY: 'auto' }}>
+                                        <Box sx={maxHeight400WithScroll}>
                                             {comments && comments.length > 0 ? (
                                                 comments.map((comment) => {
                                                     const isCurrentUser = comment.createdBy?._id === session?.user?.id;
@@ -485,15 +455,8 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                         <Box
                                                             key={comment._id}
                                                             sx={{
-                                                                display: 'flex',
-                                                                mb: 2,
-                                                                alignItems: 'flex-start',
-                                                                justifyContent: isCurrentUser ? 'flex-end' : 'flex-start',
-                                                                animation: 'fadeIn 0.5s ease-out',
-                                                                '@keyframes fadeIn': {
-                                                                    '0%': { opacity: 0, transform: 'translateY(10px)' },
-                                                                    '100%': { opacity: 1, transform: 'translateY(0)' },
-                                                                },
+                                                                ...commentBoxAnimation,
+                                                                justifyContent: isCurrentUser ? 'flex-end' : 'flex-start'
                                                             }}
                                                         >
                                                             {!isCurrentUser && (
@@ -501,31 +464,21 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                                     component="img"
                                                                     src={comment.user?.profile?.avatar || undefined}
                                                                     alt={comment.user?.username}
-                                                                    sx={{
-                                                                        width: 40,
-                                                                        height: 40,
-                                                                        borderRadius: '50%',
-                                                                        mr: 2,
-                                                                    }}
+                                                                    sx={avatarStyle}
                                                                 />
                                                             )}
 
                                                             <Box
                                                                 sx={{
-                                                                    maxWidth: '80%',
+                                                                    ...maxWidth80WithShadow,
                                                                     backgroundColor: isCurrentUser ? '#FFF8E1' : '#f1f3f4',
-                                                                    borderRadius: '16px',
-                                                                    p: 1.5,
-                                                                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.12)',
                                                                     textAlign: isCurrentUser ? 'right' : 'left',
                                                                 }}
                                                             >
                                                                 <Typography
                                                                     variant="body2"
                                                                     sx={{
-                                                                        fontWeight: 'bold',
-                                                                        display: 'flex',
-                                                                        alignItems: 'center',
+                                                                        ...commentBox,
                                                                         justifyContent: isCurrentUser ? 'flex-end' : 'flex-start',
                                                                     }}
                                                                 >
@@ -538,7 +491,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                                     {comment.comment}
                                                                 </Typography>
 
-                                                                <Typography variant="caption" sx={{ mt: 0.5, color: 'gray', textAlign: 'right', display: 'block' }}>
+                                                                <Typography variant="caption" sx={grayTextRightAlign}>
                                                                     {moment(comment.createdAt).fromNow()}
                                                                 </Typography>
                                                             </Box>
@@ -546,7 +499,7 @@ export const OpportunityReviewModal = (props: IProps) => {
                                                     );
                                                 })
                                             ) : (
-                                                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                                                <Box sx={centerFlex}>
                                                     <Typography variant="body2" sx={{ fontStyle: 'italic', color: '#6c757d' }}>
                                                         No comments available.
                                                     </Typography>

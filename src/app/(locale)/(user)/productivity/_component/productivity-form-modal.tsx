@@ -11,7 +11,7 @@ import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { styleFormUser } from '@/styles';
+import { flexEnd, flexSpaceBetween, mb16, mr8, styleFormUser } from '@/styles';
 
 interface IProps {
     open: boolean;
@@ -104,13 +104,13 @@ export const ProductivityFormModal = (props: IProps) => {
         >
             <Fade in={open}>
                 <Box sx={styleFormUser}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={flexSpaceBetween}>
                         <h2>{productivityData ? "Update Productivity" : "Create Productivity"}</h2>
                         <IconButton onClick={handleClose}>
                             <CloseIcon />
                         </IconButton>
                     </Box>
-                    <Divider sx={{ marginBottom: '16px' }} />
+                    <Divider sx={mb16} />
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Controller
                             name="productivity"
@@ -136,7 +136,7 @@ export const ProductivityFormModal = (props: IProps) => {
                             )}
                         />
 
-                        <FormControl fullWidth required margin="normal" sx={{ marginBottom: '16px' }}>
+                        <FormControl fullWidth required margin="normal" sx={mb16}>
                             <InputLabel id="technology-select" style={{ fontSize: '14px', top: "-5px" }}>Technology</InputLabel>
                             <Controller
                                 name="technology"
@@ -168,7 +168,7 @@ export const ProductivityFormModal = (props: IProps) => {
                             />
                         </FormControl>
 
-                        <FormControl fullWidth required margin="normal" sx={{ marginBottom: '16px' }}>
+                        <FormControl fullWidth required margin="normal" sx={mb16}>
                             <InputLabel id="norm-select" style={{ fontSize: '14px', top: "-5px" }}>Norm</InputLabel>
                             <Controller
                                 name="norm"
@@ -193,7 +193,7 @@ export const ProductivityFormModal = (props: IProps) => {
                             />
                         </FormControl>
 
-                        <FormControl fullWidth required margin="normal" sx={{ marginBottom: '16px' }}>
+                        <FormControl fullWidth required margin="normal" sx={mb16}>
                             <InputLabel id="unit-select" style={{ fontSize: '14px', top: "-5px" }}>Unit</InputLabel>
                             <Controller
                                 name="unit"
@@ -218,8 +218,8 @@ export const ProductivityFormModal = (props: IProps) => {
                             />
                         </FormControl>
 
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-                            <Button onClick={handleClose} variant="outlined" color="secondary" sx={{ marginRight: '8px' }}>
+                        <Box sx={flexEnd}>
+                            <Button onClick={handleClose} variant="outlined" color="secondary" sx={mr8}>
                                 Cancel
                             </Button>
                             <Button type="submit" variant="contained" color="primary" sx={{ backgroundColor: '#7367F0' }}>

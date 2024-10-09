@@ -8,7 +8,7 @@ import { updateProjectComponents } from '@/services';
 import { columns } from '@/app/(locale)/(user)/assumption/_table_config/assumption-table-columns';
 import { useToast } from '@/context/ToastContext';
 import TableComponentWithCheckbox from '@/components/_table_form-config/table-checkbox-component';
-import { HeaderButton } from '@/styles';
+import { flexSpaceBetween, HeaderButton, modalBoxStyleWithBorder } from '@/styles';
 import { useRouter } from 'next/navigation';
 
 interface IProps {
@@ -62,15 +62,15 @@ const ProjectAssumptionsSelectedModal = (props: IProps) => {
             aria-labelledby="project-assumptions-modal"
             aria-describedby="project-assumptions-description"
         >
-            <Box sx={{ width: '90%', height: '80%', margin: 'auto', marginTop: '5%', backgroundColor: 'white', padding: 4, borderRadius: 2, overflowY: 'auto' }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 2 }}>
+            <Box sx={modalBoxStyleWithBorder}>
+                <Box sx={{ ...flexSpaceBetween, padding: 2 }}>
                     <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                         Project Assumptions
                     </Typography>
                 </Box>
 
 
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 2, mt: -2 }}>
+                <Box sx={{ ...flexSpaceBetween, padding: 2, mt: -2 }}>
                     <Typography variant="body2" sx={{ color: 'gray' }}>
                         Select the assumptions that apply to this project. After making your selection, click [Save] button to update list of assumptions into the project.
                     </Typography>

@@ -11,6 +11,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import { downloadTemplate } from '@/services';
 import PageviewIcon from '@mui/icons-material/Pageview';
 import SwipeVerticalIcon from '@mui/icons-material/SwipeVertical';
+import BlockIcon from '@mui/icons-material/Block';
 
 interface IProps {
     anchorEl: null | HTMLElement;
@@ -348,6 +349,18 @@ const ObjectRowMenu = (props: IProps) => {
                                 </ListItemIcon>
                                 <ListItemText>Restore</ListItemText>
                             </MenuItem>
+                        )}
+                        {!objectStatus && !hasPermission(`manage_${entity}`) && (
+                            <>
+                                <MenuItem
+                                    disabled
+                                >
+                                    <ListItemIcon>
+                                        <BlockIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText>You don`t have permission to manage</ListItemText>
+                                </MenuItem>
+                            </>
                         )}
                     </Box>
                 )}

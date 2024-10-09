@@ -4,6 +4,7 @@ import { getAllProjects } from '@/services';
 import { getServerSession } from 'next-auth';
 import { ProjectReviewHeader } from './_component/project-review-header';
 import ProjectReviewTable from './_component/project-review-table';
+import { Box } from '@mui/material';
 
 
 const ProjectPage = async () => {
@@ -11,10 +12,10 @@ const ProjectPage = async () => {
     const projects = await getAllProjects(session?.access_token, true, true);
 
     return (
-        <div>
+        <Box sx={{ p: 3 }}>
             <ProjectReviewHeader />
             <ProjectReviewTable projects={projects?.result || []} />
-        </div>
+        </Box>
     );
 }
 

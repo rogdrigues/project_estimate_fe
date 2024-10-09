@@ -6,6 +6,7 @@ import moment from 'moment';
 import { getPresalePlanComments, getPresalePlanVersions } from '@/services';
 import { CommentInput } from '@/components/_table_form-config/comment-input-component';
 import { useSession } from 'next-auth/react';
+import { avatarStyle, borderBottomStyleWithMargin, boxReview, centerFlex, commentBox, commentBoxAnimation, flexBoxSpaceBetween, grayTextRightAlign, maxWidth80WithShadow } from '@/styles';
 
 interface IProps {
     open: boolean;
@@ -76,7 +77,7 @@ export const PresalePlanReviewModal = (props: IProps) => {
                     padding: '16px'
                 }}>
                     {/* Header Section */}
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                    <Box sx={flexBoxSpaceBetween}>
                         <Typography variant="h6">Presale Plan Review</Typography>
                         <IconButton onClick={handleClose}>
                             <CloseIcon />
@@ -91,71 +92,71 @@ export const PresalePlanReviewModal = (props: IProps) => {
                                 <Grid container spacing={2}>
                                     <Grid item xs={12} md={6}>
                                         <Typography variant="subtitle1">Name</Typography>
-                                        <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                        <Typography variant="body2" sx={borderBottomStyleWithMargin}>
                                             {presalePlan.name || 'N/A'}
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} md={6}>
                                         <Typography variant="subtitle1">Opportunity</Typography>
-                                        <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                        <Typography variant="body2" sx={borderBottomStyleWithMargin}>
                                             {presalePlan.opportunity?.name || 'N/A'}
                                         </Typography>
                                     </Grid>
 
                                     <Grid item xs={12} md={6}>
                                         <Typography variant="subtitle1">Division</Typography>
-                                        <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                        <Typography variant="body2" sx={borderBottomStyleWithMargin}>
                                             {presalePlan.division?.name || 'N/A'}
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} md={6}>
                                         <Typography variant="subtitle1">Department</Typography>
-                                        <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                        <Typography variant="body2" sx={borderBottomStyleWithMargin}>
                                             {presalePlan.department?.name || 'N/A'}
                                         </Typography>
                                     </Grid>
 
                                     <Grid item xs={12} md={6}>
                                         <Typography variant="subtitle1">Status</Typography>
-                                        <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                        <Typography variant="body2" sx={borderBottomStyleWithMargin}>
                                             {presalePlan.status || 'N/A'}
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} md={6}>
                                         <Typography variant="subtitle1">Version</Typography>
-                                        <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                        <Typography variant="body2" sx={borderBottomStyleWithMargin}>
                                             {presalePlan.version || 'N/A'}
                                         </Typography>
                                     </Grid>
 
                                     <Grid item xs={12} md={6}>
                                         <Typography variant="subtitle1">Created At</Typography>
-                                        <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                        <Typography variant="body2" sx={borderBottomStyleWithMargin}>
                                             {moment(presalePlan.createdAt).format('YYYY-MM-DD') || 'N/A'}
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} md={6}>
                                         <Typography variant="subtitle1">Updated At</Typography>
-                                        <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                        <Typography variant="body2" sx={borderBottomStyleWithMargin}>
                                             {moment(presalePlan.updatedAt).format('YYYY-MM-DD') || 'N/A'}
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} md={6}>
                                         <Typography variant="subtitle1">Pending Until</Typography>
-                                        <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                        <Typography variant="body2" sx={borderBottomStyleWithMargin}>
                                             {presalePlan.pendingUntil ? moment(presalePlan.pendingUntil).format('YYYY-MM-DD') : 'N/A'}
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} md={6}>
                                         <Typography variant="subtitle1">Created By</Typography>
-                                        <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                        <Typography variant="body2" sx={borderBottomStyleWithMargin}>
                                             {presalePlan?.createdBy?.username || 'N/A'}
                                         </Typography>
                                     </Grid>
 
                                     <Grid item xs={12}>
                                         <Typography variant="subtitle1">Description</Typography>
-                                        <Typography variant="body2" sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.2)', paddingBottom: '4px', marginBottom: '16px' }}>
+                                        <Typography variant="body2" sx={borderBottomStyleWithMargin}>
                                             {presalePlan.description || 'N/A'}
                                         </Typography>
                                     </Grid>
@@ -177,23 +178,7 @@ export const PresalePlanReviewModal = (props: IProps) => {
                                                 versions.map((version) => (
                                                     <Box
                                                         key={version._id}
-                                                        sx={{
-                                                            mb: 2,
-                                                            p: 2,
-                                                            borderRadius: '8px',
-                                                            border: '1px solid rgba(0, 0, 0, 0.2)',
-                                                            boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-                                                            display: 'flex',
-                                                            justifyContent: 'space-between',
-                                                            alignItems: 'center',
-                                                            backgroundColor: 'white',
-                                                            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                                                            ':hover': {
-                                                                boxShadow: '0 4px 10px rgba(0,0,0,0.15)',
-                                                                cursor: 'pointer',
-                                                                transform: 'scale(1.02)',
-                                                            },
-                                                        }}
+                                                        sx={boxReview}
                                                     >
                                                         <Typography variant="body2">Version {version.versionNumber}</Typography>
 
@@ -225,48 +210,28 @@ export const PresalePlanReviewModal = (props: IProps) => {
                                                     return (
                                                         <Box
                                                             key={comment._id}
-                                                            sx={{
-                                                                display: 'flex',
-                                                                mb: 2,
-                                                                alignItems: 'flex-start',
-                                                                justifyContent: isCurrentUser ? 'flex-end' : 'flex-start',
-                                                                animation: 'fadeIn 0.5s ease-out',
-                                                                '@keyframes fadeIn': {
-                                                                    '0%': { opacity: 0, transform: 'translateY(10px)' },
-                                                                    '100%': { opacity: 1, transform: 'translateY(0)' },
-                                                                },
-                                                            }}
+                                                            sx={commentBoxAnimation}
                                                         >
                                                             {!isCurrentUser && (
                                                                 <Box
                                                                     component="img"
                                                                     src={comment.createdBy?.profile?.avatar || undefined}
                                                                     alt={comment.createdBy?.username}
-                                                                    sx={{
-                                                                        width: 40,
-                                                                        height: 40,
-                                                                        borderRadius: '50%',
-                                                                        mr: 2,
-                                                                    }}
+                                                                    sx={avatarStyle}
                                                                 />
                                                             )}
 
                                                             <Box
                                                                 sx={{
-                                                                    maxWidth: '80%',
+                                                                    ...maxWidth80WithShadow,
                                                                     backgroundColor: isCurrentUser ? '#FFF8E1' : '#f1f3f4',
-                                                                    borderRadius: '16px',
-                                                                    p: 1.5,
-                                                                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.12)',
                                                                     textAlign: isCurrentUser ? 'right' : 'left',
                                                                 }}
                                                             >
                                                                 <Typography
                                                                     variant="body2"
                                                                     sx={{
-                                                                        fontWeight: 'bold',
-                                                                        display: 'flex',
-                                                                        alignItems: 'center',
+                                                                        ...commentBox,
                                                                         justifyContent: isCurrentUser ? 'flex-end' : 'flex-start',
                                                                     }}
                                                                 >
@@ -290,7 +255,7 @@ export const PresalePlanReviewModal = (props: IProps) => {
                                                                     {comment.comment}
                                                                 </Typography>
 
-                                                                <Typography variant="caption" sx={{ mt: 0.5, color: 'gray', textAlign: 'right', display: 'block' }}>
+                                                                <Typography variant="caption" sx={grayTextRightAlign}>
                                                                     {moment(comment.createdAt).fromNow()}
                                                                 </Typography>
                                                             </Box>
@@ -298,7 +263,7 @@ export const PresalePlanReviewModal = (props: IProps) => {
                                                     );
                                                 })
                                             ) : (
-                                                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                                                <Box sx={centerFlex}>
                                                     <Typography variant="body2" sx={{ fontStyle: 'italic', color: '#6c757d' }}>
                                                         No comments available.
                                                     </Typography>

@@ -11,7 +11,7 @@ import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { styleFormUser } from '@/styles';
+import { flexEnd, flexSpaceBetween, mb16, mr8, styleFormUser } from '@/styles';
 
 interface IProps {
     open: boolean;
@@ -99,13 +99,13 @@ export const PresalePlanFormModal = (props: IProps) => {
         >
             <Fade in={open}>
                 <Box sx={styleFormUser}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={flexSpaceBetween}>
                         <h2>{presalePlan ? "Update Presale Plan" : "Create new Presale Plan"}</h2>
                         <IconButton onClick={handleClose}>
                             <CloseIcon />
                         </IconButton>
                     </Box>
-                    <Divider sx={{ marginBottom: '16px' }} />
+                    <Divider sx={mb16} />
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Controller
                             name="name"
@@ -146,7 +146,7 @@ export const PresalePlanFormModal = (props: IProps) => {
                             )}
                         />
 
-                        <FormControl fullWidth margin="normal" sx={{ marginBottom: '16px' }}>
+                        <FormControl fullWidth margin="normal" sx={mb16}>
                             <InputLabel id="opportunity-select-label" style={{ fontSize: '14px', top: "-5px" }}>Opportunity</InputLabel>
                             <Controller
                                 name="opportunity"
@@ -198,7 +198,7 @@ export const PresalePlanFormModal = (props: IProps) => {
                                     size="small"
                                     disabled
                                     value={session?.user?.division?.name || ''}
-                                    sx={{ marginBottom: '16px' }}
+                                    sx={mb16}
                                 />
                             )}
                         />
@@ -217,13 +217,13 @@ export const PresalePlanFormModal = (props: IProps) => {
                                     size="small"
                                     disabled
                                     value={session?.user?.department?.name || ''}
-                                    sx={{ marginBottom: '16px' }}
+                                    sx={mb16}
                                 />
                             )}
                         />
 
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-                            <Button onClick={handleClose} variant="outlined" color="secondary" sx={{ marginRight: '8px' }}>
+                        <Box sx={flexEnd}>
+                            <Button onClick={handleClose} variant="outlined" color="secondary" sx={mr8}>
                                 Cancel
                             </Button>
                             <Button type="submit" variant="contained" color="primary" sx={{ backgroundColor: '#7367F0' }}>

@@ -8,7 +8,7 @@ import { updateProjectComponents } from '@/services';
 import { columns } from '@/app/(locale)/(user)/resource/_table-config/resource-table-columns';
 import { useToast } from '@/context/ToastContext';
 import TableComponentWithCheckbox from '@/components/_table_form-config/table-checkbox-component';
-import { HeaderButton } from '@/styles';
+import { flexSpaceBetween, HeaderButton, modalBoxStyleWithBorder } from '@/styles';
 import { useRouter } from 'next/navigation';
 
 interface IProps {
@@ -62,14 +62,14 @@ const ProjectResourcesSelectedModal = (props: IProps) => {
             aria-labelledby="project-resources-modal"
             aria-describedby="project-resources-description"
         >
-            <Box sx={{ width: '90%', height: '80%', margin: 'auto', marginTop: '5%', backgroundColor: 'white', padding: 4, borderRadius: 2, overflowY: 'auto' }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 2 }}>
+            <Box sx={modalBoxStyleWithBorder}>
+                <Box sx={{ ...flexSpaceBetween, padding: 2 }}>
                     <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                         Project Resources
                     </Typography>
                 </Box>
 
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 2, mt: -2 }}>
+                <Box sx={{ ...flexSpaceBetween, padding: 2, mt: -2 }}>
                     <Typography variant="body2" sx={{ color: 'gray' }}>
                         Select the resources that apply to this project. After making your selection, click [Save] button to update the list of resources into the project.
                     </Typography>

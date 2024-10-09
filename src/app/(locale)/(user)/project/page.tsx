@@ -3,6 +3,7 @@ import { getAllCategories, getAllProjects, getAllTemplates, getApproveOpportunit
 import { getServerSession } from 'next-auth';
 import { ProjectHeader } from './_component/project-header';
 import ProjectTable from './_component/project-table';
+import { Box } from '@mui/material';
 
 const ProjectPage = async () => {
     const session = await getServerSession(authOptions);
@@ -15,7 +16,7 @@ const ProjectPage = async () => {
     ]);
 
     return (
-        <div>
+        <Box sx={{ p: 3 }}>
             <ProjectHeader
                 categories={categories?.result}
                 opportunities={opportunities?.result}
@@ -29,7 +30,7 @@ const ProjectPage = async () => {
                 templates={templates?.result}
                 reviewers={reviewers?.result}
             />
-        </div>
+        </Box>
     );
 }
 
