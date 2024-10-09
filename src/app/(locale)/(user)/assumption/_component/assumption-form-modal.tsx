@@ -11,7 +11,7 @@ import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { styleFormUser } from '@/styles';
+import { flexEnd, flexSpaceBetween, mb16, mr8, styleFormUser } from '@/styles';
 import { updateProjectAssumption } from '@/services';
 
 interface IProps {
@@ -102,13 +102,13 @@ export const AssumptionFormModal = (props: IProps) => {
         >
             <Fade in={open}>
                 <Box sx={styleFormUser}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={flexSpaceBetween}>
                         <h2>{assumption ? "Update Assumption" : "Create new Assumption"}</h2>
                         <IconButton onClick={handleClose}>
                             <CloseIcon />
                         </IconButton>
                     </Box>
-                    <Divider sx={{ marginBottom: '16px' }} />
+                    <Divider sx={mb16} />
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Controller
                             name="title"
@@ -125,13 +125,13 @@ export const AssumptionFormModal = (props: IProps) => {
                                     variant="outlined"
                                     error={!!error}
                                     helperText={error ? error.message : ''}
-                                    sx={{ marginBottom: '16px' }}
+                                    sx={mb16}
                                     size="small"
                                 />
                             )}
                         />
 
-                        <FormControl fullWidth required margin="normal" sx={{ marginBottom: '16px' }}>
+                        <FormControl fullWidth required margin="normal" sx={mb16}>
                             <InputLabel id="assumption-category" style={{ fontSize: '14px', top: "-5px" }}>Category</InputLabel>
                             <Controller
                                 name="category"
@@ -174,14 +174,14 @@ export const AssumptionFormModal = (props: IProps) => {
                                     rows={4}
                                     margin="normal"
                                     variant="outlined"
-                                    sx={{ marginBottom: '16px' }}
+                                    sx={mb16}
                                     size="small"
                                 />
                             )}
                         />
 
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-                            <Button onClick={handleClose} variant="outlined" color="secondary" sx={{ marginRight: '8px' }}>
+                        <Box sx={flexEnd}>
+                            <Button onClick={handleClose} variant="outlined" color="secondary" sx={mr8}>
                                 Cancel
                             </Button>
                             <Button type="submit" variant="contained" color="primary" sx={{ backgroundColor: '#7367F0' }}>

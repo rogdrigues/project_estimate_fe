@@ -13,7 +13,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { signIn } from 'next-auth/react';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
-import { BoxLogin, fieldInput, formInput, headerForm, loginButton, logoLoginCover, subtitleForm } from '@/styles';
+import { BoxLogin, fieldInput, formInput, headerForm, height100, height100vh, loginButton, logoLoginCover, subtitleForm } from '@/styles';
 
 const UserAuthForm = () => {
     const [email, setEmail] = useState('');
@@ -47,8 +47,8 @@ const UserAuthForm = () => {
 
     return (
         <>
-            <Box sx={{ height: '100vh' }}>
-                <Grid container spacing={0} sx={{ height: '100%' }}>
+            <Box sx={height100vh}>
+                <Grid container spacing={0} sx={height100}>
                     <Grid item xs={4}>
                         <Box sx={BoxLogin}>
                             <EnergySavingsLeafIcon sx={{ fontSize: 48, color: '#FFFFFF' }} />

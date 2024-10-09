@@ -97,7 +97,7 @@ export const AvatarModal = (props: IProps) => {
                     overflow: 'hidden',
                 }}
             >
-                <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', justifyContent: 'space-between', mb: 2 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', mb: 2 }}>
                     {previewMode ? (
                         <IconButton onClick={handleBack}>
                             <ArrowBackIcon />

@@ -10,7 +10,7 @@ import ChecklistIcon from '@mui/icons-material/Checklist';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import { Project } from '@/types';
-import { profileDialoge } from '@/styles';
+import { listItemStyle, profileDialoge } from '@/styles';
 import ProjectGeneralInfo from './tabs/project-general-information';
 import ProjectAssumptions from './tabs/assumptions/project-assumptions';
 import ProjectTechnologies from './tabs/technologies/project-technologies';
@@ -90,12 +90,8 @@ const ProjectDetailModal = (props: IProps) => {
                             onClick={() => setSelectedSection('General Information')}
                             selected={selectedSection === 'General Information'}
                             sx={{
-                                cursor: 'pointer',
+                                ...listItemStyle,
                                 backgroundColor: selectedSection === 'General Information' ? '#f0f0f0' : 'transparent',
-                                transition: 'background-color 0.5s',
-                                '&:hover': {
-                                    backgroundColor: '#e0e0e0',
-                                },
                             }}
                         >
                             <ListItemIcon><InfoIcon /></ListItemIcon>
@@ -105,12 +101,8 @@ const ProjectDetailModal = (props: IProps) => {
                             onClick={() => setSelectedSection('Assumptions')}
                             selected={selectedSection === 'Assumptions'}
                             sx={{
-                                cursor: 'pointer',
+                                ...listItemStyle,
                                 backgroundColor: selectedSection === 'Assumptions' ? '#f0f0f0' : 'transparent',
-                                transition: 'background-color 0.5s',
-                                '&:hover': {
-                                    backgroundColor: '#e0e0e0',
-                                },
                             }}
                         >
                             <ListItemIcon><AssignmentIcon /></ListItemIcon>
@@ -120,12 +112,8 @@ const ProjectDetailModal = (props: IProps) => {
                             onClick={() => setSelectedSection('Technologies')}
                             selected={selectedSection === 'Technologies'}
                             sx={{
-                                cursor: 'pointer',
+                                ...listItemStyle,
                                 backgroundColor: selectedSection === 'Technologies' ? '#f0f0f0' : 'transparent',
-                                transition: 'background-color 0.5s',
-                                '&:hover': {
-                                    backgroundColor: '#e0e0e0',
-                                },
                             }}
                         >
                             <ListItemIcon><BuildIcon /></ListItemIcon>
@@ -135,12 +123,8 @@ const ProjectDetailModal = (props: IProps) => {
                             onClick={() => setSelectedSection('Productivity')}
                             selected={selectedSection === 'Productivity'}
                             sx={{
-                                cursor: 'pointer',
+                                ...listItemStyle,
                                 backgroundColor: selectedSection === 'Productivity' ? '#f0f0f0' : 'transparent',
-                                transition: 'background-color 0.5s',
-                                '&:hover': {
-                                    backgroundColor: '#e0e0e0',
-                                },
                             }}
                         >
                             <ListItemIcon><AssessmentIcon /></ListItemIcon>
@@ -150,12 +134,8 @@ const ProjectDetailModal = (props: IProps) => {
                             onClick={() => setSelectedSection('Resources')}
                             selected={selectedSection === 'Resources'}
                             sx={{
-                                cursor: 'pointer',
+                                ...listItemStyle,
                                 backgroundColor: selectedSection === 'Resources' ? '#f0f0f0' : 'transparent',
-                                transition: 'background-color 0.5s',
-                                '&:hover': {
-                                    backgroundColor: '#e0e0e0',
-                                },
                             }}
                         >
                             <ListItemIcon><PeopleIcon /></ListItemIcon>
@@ -165,12 +145,8 @@ const ProjectDetailModal = (props: IProps) => {
                             onClick={() => setSelectedSection('Checklists')}
                             selected={selectedSection === 'Checklists'}
                             sx={{
-                                cursor: 'pointer',
+                                ...listItemStyle,
                                 backgroundColor: selectedSection === 'Checklists' ? '#f0f0f0' : 'transparent',
-                                transition: 'background-color 0.5s',
-                                '&:hover': {
-                                    backgroundColor: '#e0e0e0',
-                                },
                             }}
                         >
                             <ListItemIcon><ChecklistIcon /></ListItemIcon>
@@ -180,12 +156,8 @@ const ProjectDetailModal = (props: IProps) => {
                             onClick={() => setSelectedSection('Template')}
                             selected={selectedSection === 'Template'}
                             sx={{
-                                cursor: 'pointer',
+                                ...listItemStyle,
                                 backgroundColor: selectedSection === 'Template' ? '#f0f0f0' : 'transparent',
-                                transition: 'background-color 0.5s',
-                                '&:hover': {
-                                    backgroundColor: '#e0e0e0',
-                                },
                             }}
                         >
                             <ListItemIcon><InsertDriveFileIcon /></ListItemIcon>
@@ -195,12 +167,8 @@ const ProjectDetailModal = (props: IProps) => {
                             onClick={() => setSelectedSection('Reviews')}
                             selected={selectedSection === 'Reviews'}
                             sx={{
-                                cursor: 'pointer',
+                                ...listItemStyle,
                                 backgroundColor: selectedSection === 'Reviews' ? '#f0f0f0' : 'transparent',
-                                transition: 'background-color 0.5s',
-                                '&:hover': {
-                                    backgroundColor: '#e0e0e0',
-                                },
                             }}
                         >
                             <ListItemIcon><RateReviewIcon /></ListItemIcon>

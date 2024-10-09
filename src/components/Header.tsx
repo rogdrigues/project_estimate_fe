@@ -117,9 +117,6 @@ export default function Header() {
                                         <NotificationsIcon sx={{ color: '#f44336' }} />
                                     </Badge>
                                 </IconButton>
-                                <IconButton color="inherit" sx={{ backgroundColor: '#e0f7fa', borderRadius: '50%' }}>
-                                    <AccountCircle sx={{ color: '#00796b' }} />
-                                </IconButton>
                                 <IconButton color="inherit" sx={{ backgroundColor: '#f3e5f5', borderRadius: '50%' }}>
                                     <LightModeIcon sx={{ color: '#9c27b0' }} />
                                 </IconButton>

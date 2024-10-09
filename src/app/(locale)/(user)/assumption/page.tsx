@@ -3,6 +3,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth';
 import AssumptionTable from './_component/assumption-table';
 import AssumptionHeader from './_component/assumption-header';
+import { Box } from '@mui/material';
 
 const AssumptionPage = async () => {
     const session = await getServerSession(authOptions);
@@ -12,7 +13,7 @@ const AssumptionPage = async () => {
     ]);
 
     return (
-        <div>
+        <Box sx={{ p: 3 }}>
             <AssumptionHeader
                 categories={categories?.result}
             />
@@ -20,7 +21,7 @@ const AssumptionPage = async () => {
                 assumptions={assumptions?.result}
                 categories={categories?.result}
             />
-        </div>
+        </Box>
     );
 }
 

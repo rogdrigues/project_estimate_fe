@@ -15,6 +15,7 @@ const Home = () => {
                 flexGrow: 1,
                 margin: 'auto',
                 height: '750px',
+                p: 3,
             }}
         >
             <Box sx={{ margin: "auto" }}>

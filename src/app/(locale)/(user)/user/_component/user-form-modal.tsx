@@ -12,7 +12,7 @@ import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { styleFormUser } from '@/styles';
+import { flexEnd, flexSpaceBetween, mb16, styleFormUser } from '@/styles';
 
 interface IProps {
     open: boolean;
@@ -106,13 +106,13 @@ export const UserFormModal = (props: IProps) => {
         >
             <Fade in={open}>
                 <Box sx={styleFormUser}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={flexSpaceBetween}>
                         <h2>{User ? "Update user" : "Create new user"}</h2>
                         <IconButton onClick={handleClose}>
                             <CloseIcon />
                         </IconButton>
                     </Box>
-                    <Divider sx={{ marginBottom: '16px' }} />
+                    <Divider sx={mb16} />
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Controller
                             name="email"
@@ -137,7 +137,7 @@ export const UserFormModal = (props: IProps) => {
                                 />
                             )}
                         />
-                        <FormControl fullWidth required margin="normal" sx={{ marginBottom: '16px' }}>
+                        <FormControl fullWidth required margin="normal" sx={mb16}>
                             <InputLabel id="user-role" style={{ fontSize: '14px', top: "-5px" }}>Role</InputLabel>
                             <Controller
                                 name="role"
@@ -166,7 +166,7 @@ export const UserFormModal = (props: IProps) => {
                                 )}
                             />
                         </FormControl>
-                        <FormControl fullWidth margin="normal" sx={{ marginBottom: '16px' }}>
+                        <FormControl fullWidth margin="normal" sx={mb16}>
                             <InputLabel id="user-division" style={{ fontSize: '14px', top: "-5px" }}>Division</InputLabel>
                             <Controller
                                 name="division"
@@ -197,7 +197,7 @@ export const UserFormModal = (props: IProps) => {
                             />
                         </FormControl>
 
-                        <FormControl fullWidth margin="normal" sx={{ marginBottom: '16px' }}>
+                        <FormControl fullWidth margin="normal" sx={mb16}>
                             <InputLabel id="user-department" style={{ fontSize: '14px', top: "-5px" }}>Department</InputLabel>
                             <Controller
                                 name="department"
@@ -240,7 +240,7 @@ export const UserFormModal = (props: IProps) => {
                                     fullWidth
                                     margin="normal"
                                     variant="outlined"
-                                    sx={{ marginBottom: '16px' }}
+                                    sx={mb16}
                                     size="small"
                                 />
                             )}
@@ -256,12 +256,12 @@ export const UserFormModal = (props: IProps) => {
                                     fullWidth
                                     margin="normal"
                                     variant="outlined"
-                                    sx={{ marginBottom: '16px' }}
+                                    sx={mb16}
                                     size="small"
                                 />
                             )}
                         />
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
+                        <Box sx={flexEnd}>
                             <Button onClick={handleClose} variant="outlined" color="secondary" sx={{ marginRight: '8px' }}>
                                 Cancel
                             </Button>

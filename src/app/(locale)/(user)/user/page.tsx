@@ -3,6 +3,7 @@ import UserTable from '@/app/(locale)/(user)/user/_component/user-table';
 import { getAllDepartments, getAllDivisions, getAllRoles, getAllUsers } from '@/services';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth';
+import { Box } from '@mui/material';
 
 const UserPage = async () => {
     const session = await getServerSession(authOptions);
@@ -14,7 +15,7 @@ const UserPage = async () => {
     ]);
 
     return (
-        <div>
+        <Box sx={{ p: 3 }}>
             <UserHeader
                 divisions={divisions?.result}
                 departments={departments?.result}
@@ -27,7 +28,7 @@ const UserPage = async () => {
                 departments={departments?.result}
                 roles={roles?.result}
             />
-        </div>
+        </Box>
     );
 }
 

@@ -8,6 +8,7 @@ import { Box } from '@mui/system'
 import Sidebar from '@/components/Sidebar'
 import { SidebarProvider } from '@/context/SidebarContext'
 import { ReactNode } from 'react'
+import { resetFormat } from '@/styles'
 
 export const metadata: Metadata = {
   title: 'Project Estimate',
@@ -20,11 +21,7 @@ export default function RootLayout({ children, }: { children: ReactNode }) {
     <html lang="en">
       <body style={{ overflow: 'hidden' }}>
         <GlobalStyles
-          styles={{
-            '*': { margin: 0, padding: 0, boxSizing: 'border-box' },
-            html: { height: '100%' },
-            body: { height: '100%', margin: 0, padding: 0 },
-          }}
+          styles={resetFormat}
         />
         <NextAuthWrapper>
           <Providers>
@@ -33,7 +30,7 @@ export default function RootLayout({ children, }: { children: ReactNode }) {
                 <Header />
                 <Box sx={{ display: 'flex' }}>
                   <Sidebar />
-                  <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                  <Box component="main" sx={{ flexGrow: 1 }}>
                     {children}
                   </Box>
                 </Box>

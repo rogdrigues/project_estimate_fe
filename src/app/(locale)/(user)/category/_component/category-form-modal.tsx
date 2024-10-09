@@ -10,7 +10,7 @@ import { createCategory, updateCategory } from '@/services/category';
 import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { styleFormUser } from '@/styles';
+import { flexEnd, flexSpaceBetween, mb16, mr8, styleFormUser } from '@/styles';
 
 interface IProps {
     open: boolean;
@@ -85,13 +85,13 @@ export const CategoryFormModal = (props: IProps) => {
         >
             <Fade in={open}>
                 <Box sx={styleFormUser}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={flexSpaceBetween}>
                         <h2>{category ? "Update Category" : "Create new Category"}</h2>
                         <IconButton onClick={handleClose}>
                             <CloseIcon />
                         </IconButton>
                     </Box>
-                    <Divider sx={{ marginBottom: '16px' }} />
+                    <Divider sx={mb16} />
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Controller
                             name="CategoryName"
@@ -108,7 +108,7 @@ export const CategoryFormModal = (props: IProps) => {
                                     variant="outlined"
                                     error={!!error}
                                     helperText={error ? error.message : ''}
-                                    sx={{ marginBottom: '16px' }}
+                                    sx={mb16}
                                     size="small"
                                 />
                             )}
@@ -125,14 +125,14 @@ export const CategoryFormModal = (props: IProps) => {
                                     fullWidth
                                     margin="normal"
                                     variant="outlined"
-                                    sx={{ marginBottom: '16px' }}
+                                    sx={mb16}
                                     size="small"
                                 />
                             )}
                         />
 
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-                            <Button onClick={handleClose} variant="outlined" color="secondary" sx={{ marginRight: '8px' }}>
+                        <Box sx={flexEnd}>
+                            <Button onClick={handleClose} variant="outlined" color="secondary" sx={mr8}>
                                 Cancel
                             </Button>
                             <Button type="submit" variant="contained" color="primary" sx={{ backgroundColor: '#7367F0' }}>

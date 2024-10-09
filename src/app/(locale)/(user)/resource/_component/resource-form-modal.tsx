@@ -11,7 +11,7 @@ import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Select from '@mui/material/Select';
-import { styleFormUser } from '@/styles';
+import { flexEnd, flexSpaceBetween, mb16, styleFormUser } from '@/styles';
 import locations from '@/data/locations.json';
 import currencies from '@/data/currencies.json';
 
@@ -112,13 +112,13 @@ export const ResourceFormModal = (props: IProps) => {
         >
             <Fade in={open}>
                 <Box sx={styleFormUser}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={flexSpaceBetween}>
                         <h2>{resource ? 'Update Resource' : 'Create new Resource'}</h2>
                         <IconButton onClick={handleClose}>
                             <CloseIcon />
                         </IconButton>
                     </Box>
-                    <Divider sx={{ marginBottom: '16px' }} />
+                    <Divider sx={mb16} />
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Controller
                             name="name"
@@ -135,7 +135,7 @@ export const ResourceFormModal = (props: IProps) => {
                                     variant="outlined"
                                     error={!!error}
                                     helperText={error ? error.message : ''}
-                                    sx={{ marginBottom: '16px' }}
+                                    sx={mb16}
                                     size="small"
                                 />
                             )}
@@ -156,7 +156,7 @@ export const ResourceFormModal = (props: IProps) => {
                                     variant="outlined"
                                     error={!!error}
                                     helperText={error ? error.message : ''}
-                                    sx={{ marginBottom: '16px' }}
+                                    sx={mb16}
                                     size="small"
                                     type="number"
                                 />
@@ -178,7 +178,7 @@ export const ResourceFormModal = (props: IProps) => {
                                         variant="outlined"
                                         error={!!error}
                                         helperText={error ? error.message : ''}
-                                        sx={{ marginBottom: '16px' }}
+                                        sx={mb16}
                                         size="small"
                                         type="number"
                                     />
@@ -187,7 +187,7 @@ export const ResourceFormModal = (props: IProps) => {
                         )
                         }
 
-                        <FormControl fullWidth margin="normal" sx={{ marginBottom: '16px' }}>
+                        <FormControl fullWidth margin="normal" sx={mb16}>
                             <InputLabel id="resource-location" style={{ fontSize: '14px', top: '-5px' }}>Location</InputLabel>
                             <Controller
                                 name="location"
@@ -213,7 +213,7 @@ export const ResourceFormModal = (props: IProps) => {
                             />
                         </FormControl>
 
-                        <FormControl fullWidth margin="normal" sx={{ marginBottom: '16px' }}>
+                        <FormControl fullWidth margin="normal" sx={mb16}>
                             <InputLabel id="resource-currency" style={{ fontSize: '14px', top: '-5px' }}>Currency</InputLabel>
                             <Controller
                                 name="currency"
@@ -250,13 +250,13 @@ export const ResourceFormModal = (props: IProps) => {
                                     fullWidth
                                     margin="normal"
                                     variant="outlined"
-                                    sx={{ marginBottom: '16px' }}
+                                    sx={mb16}
                                     size="small"
                                 />
                             )}
                         />
 
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
+                        <Box sx={flexEnd}>
                             <Button onClick={handleClose} variant="outlined" color="secondary" sx={{ marginRight: '8px' }}>
                                 Cancel
                             </Button>

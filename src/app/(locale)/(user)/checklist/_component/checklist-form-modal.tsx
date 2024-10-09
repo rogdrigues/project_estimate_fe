@@ -11,7 +11,7 @@ import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { styleFormUser } from '@/styles';
+import { flexEnd, flexSpaceBetween, mb16, mr8, styleFormUser } from '@/styles';
 
 interface IProps {
     open: boolean;
@@ -114,15 +114,15 @@ export const ChecklistFormModal = (props: IProps) => {
         >
             <Fade in={open}>
                 <Box sx={styleFormUser}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={flexSpaceBetween}>
                         <h2>{checklist ? 'Update Checklist' : 'Create New Checklist'}</h2>
                         <IconButton onClick={handleClose}>
                             <CloseIcon />
                         </IconButton>
                     </Box>
-                    <Divider sx={{ marginBottom: '16px' }} />
+                    <Divider sx={mb16} />
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <FormControl fullWidth required margin="normal" sx={{ marginBottom: '16px' }}>
+                        <FormControl fullWidth required margin="normal" sx={mb16}>
                             <InputLabel id="category-select-label" style={{ fontSize: '14px', top: '-5px' }}>Category</InputLabel>
                             <Controller
                                 name="category"
@@ -205,12 +205,12 @@ export const ChecklistFormModal = (props: IProps) => {
                                     inputProps={{ style: { fontSize: '14px' } }}
                                     size="small"
                                     variant="outlined"
-                                    sx={{ marginBottom: '16px' }}
+                                    sx={mb16}
                                 />
                             )}
                         />
 
-                        <FormControl fullWidth required margin="normal" sx={{ marginBottom: '16px' }}>
+                        <FormControl fullWidth required margin="normal" sx={mb16}>
                             <InputLabel id="priority-select-label" style={{ fontSize: '14px', top: '-5px' }}>Priority</InputLabel>
                             <Controller
                                 name="priority"
@@ -234,7 +234,7 @@ export const ChecklistFormModal = (props: IProps) => {
                             />
                         </FormControl>
 
-                        <FormControl fullWidth required margin="normal" sx={{ marginBottom: '16px' }}>
+                        <FormControl fullWidth required margin="normal" sx={mb16}>
                             <InputLabel id="assessment-select-label" style={{ fontSize: '14px', top: '-5px' }}>Assessment</InputLabel>
                             <Controller
                                 name="assessment"
@@ -275,8 +275,8 @@ export const ChecklistFormModal = (props: IProps) => {
                             )}
                         />
 
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-                            <Button onClick={handleClose} variant="outlined" color="secondary" sx={{ marginRight: '8px' }}>
+                        <Box sx={flexEnd}>
+                            <Button onClick={handleClose} variant="outlined" color="secondary" sx={mr8}>
                                 Cancel
                             </Button>
                             <Button type="submit" variant="contained" color="primary" sx={{ backgroundColor: '#7367F0' }}>

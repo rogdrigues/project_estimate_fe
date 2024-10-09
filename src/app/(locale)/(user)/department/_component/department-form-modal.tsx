@@ -12,7 +12,7 @@ import { useToast } from '@/context/ToastContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { styleFormUser } from '@/styles';
+import { flexEnd, flexSpaceBetween, mb16, mr8, styleFormUser } from '@/styles';
 
 interface IProps {
     open: boolean;
@@ -115,13 +115,13 @@ export const DepartmentFormModal = (props: IProps) => {
         >
             <Fade in={open}>
                 <Box sx={styleFormUser}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={flexSpaceBetween}>
                         <h2>{department ? "Update Department" : "Create new Department"}</h2>
                         <IconButton onClick={handleClose}>
                             <CloseIcon />
                         </IconButton>
                     </Box>
-                    <Divider sx={{ marginBottom: '16px' }} />
+                    <Divider sx={mb16} />
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Controller
                             name="code"
@@ -137,7 +137,7 @@ export const DepartmentFormModal = (props: IProps) => {
                                     inputProps={{ maxLength: 5 }}
                                     error={!!error}
                                     helperText={error ? error.message : ''}
-                                    sx={{ marginBottom: '16px' }}
+                                    sx={mb16}
                                     size="small"
                                 />
                             )}
@@ -158,13 +158,13 @@ export const DepartmentFormModal = (props: IProps) => {
                                     variant="outlined"
                                     error={!!error}
                                     helperText={error ? error.message : ''}
-                                    sx={{ marginBottom: '16px' }}
+                                    sx={mb16}
                                     size="small"
                                 />
                             )}
                         />
 
-                        <FormControl fullWidth required margin="normal" sx={{ marginBottom: '16px' }}>
+                        <FormControl fullWidth required margin="normal" sx={mb16}>
                             <InputLabel id="department-lead" style={{ fontSize: '14px', top: "-5px" }}>Department Lead</InputLabel>
                             <Controller
                                 name="lead"
@@ -194,7 +194,7 @@ export const DepartmentFormModal = (props: IProps) => {
                             />
                         </FormControl>
 
-                        <FormControl fullWidth required margin="normal" sx={{ marginBottom: '16px' }}>
+                        <FormControl fullWidth required margin="normal" sx={mb16}>
                             <InputLabel id="department-division" style={{ fontSize: '14px', top: "-5px" }}>Division</InputLabel>
                             <Controller
                                 name="division"
@@ -237,15 +237,15 @@ export const DepartmentFormModal = (props: IProps) => {
                                     rows={4}
                                     margin="normal"
                                     variant="outlined"
-                                    sx={{ marginBottom: '16px' }}
+                                    sx={mb16}
                                     size="small"
                                 />
                             )}
                         />
 
 
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-                            <Button onClick={handleClose} variant="outlined" color="secondary" sx={{ marginRight: '8px' }}>
+                        <Box sx={flexEnd}>
+                            <Button onClick={handleClose} variant="outlined" color="secondary" sx={mr8}>
                                 Cancel
                             </Button>
                             <Button type="submit" variant="contained" color="primary" sx={{ backgroundColor: '#7367F0' }}>

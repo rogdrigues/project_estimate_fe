@@ -3,6 +3,7 @@ import { getAllCategories, getAllDepartments, getAllDivisions, getAllOpportuniti
 import { getServerSession } from 'next-auth';
 import { OpportunityHeader } from './_component/opportunity-header';
 import OpportunityTable from './_component/opportunity-table';
+import { Box } from '@mui/material';
 
 const OpportunityPage = async () => {
     const session = await getServerSession(authOptions);
@@ -15,7 +16,7 @@ const OpportunityPage = async () => {
     ]);
 
     return (
-        <div>
+        <Box sx={{ p: 3 }}>
             <OpportunityHeader
                 departments={departments?.result}
                 opportunityLeads={oppLeads?.result}
@@ -28,7 +29,7 @@ const OpportunityPage = async () => {
                 opportunityLeads={oppLeads?.result}
                 categories={categories?.result}
             />
-        </div>
+        </Box>
     );
 }
 

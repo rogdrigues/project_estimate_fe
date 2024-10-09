@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import { Box, Typography, Grid, Card, CardContent } from '@mui/material';
+import { Box, Typography, Grid, Card, CardContent, Divider } from '@mui/material';
 import PeopleIcon from '@mui/icons-material/People';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import WorkIcon from '@mui/icons-material/Work';
@@ -11,8 +11,8 @@ import { Chart, ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Leg
 
 import { columns as OpportunityColumn } from '@/app/(locale)/(user)/opportunity/_table_config/opportunity-table-columns';
 import { columns as ProjectColumn } from '@/app/(locale)/(user)/project/_table_config/project-table-columns';
+import { cardDashboard, cardIcon, dashboard, height100, height400WithScroll, weightWithMargin } from '@/styles';
 
-// Register required Chart.js components
 Chart.register(ArcElement, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 interface IProps {
@@ -24,15 +24,13 @@ interface IProps {
     projects: any;
 }
 
-
-
 const DashboardCombined = (props: IProps) => {
     const { dashboardTotal, opportunityStatus, projectStatus, templateStatus, opportunities, projects } = props;
 
-    const columnsToExclude = new Set(['description', '_id', 'createdAt', 'deadline', 'actions', 'category']);
+    const columnsToExclude = new Set(['description', '_id', 'id', 'createdAt', 'deadline', 'actions', 'category']);
     const filteredColumns = ProjectColumn.filter((column) => !columnsToExclude.has(column.field));
 
-    const columnsToExcludeOpp = new Set(['description', '_id', 'status', 'createdAt', 'division', 'actions', 'version', 'category', 'nation', 'budget', 'timeline', 'department']);
+    const columnsToExcludeOpp = new Set(['description', '_id', 'id', 'status', 'createdAt', 'division', 'actions', 'category', 'nation', 'budget', 'timeline', 'department']);
     const filteredColumnsOpp = OpportunityColumn.filter((column) => !columnsToExcludeOpp.has(column.field));
 
 
@@ -68,32 +66,14 @@ const DashboardCombined = (props: IProps) => {
     ];
 
     return (
-        <Grid container spacing={3} sx={{ padding: 3, height: "100vh", overflowY: "auto" }}>
+        <Grid container spacing={3} sx={dashboard}>
             {statCards.map((card) => (
-                <Grid item xs={12} md={6} lg={5} key={card.title}>
-                    <Card
-                        sx={{
-                            backgroundColor: '#F9FAFB',
-                            color: '#333',
-                            height: '100%',
-                            boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-                            borderRadius: '12px',
-                            transition: 'transform 0.3s ease',
-                            border: '1px solid #E0E0E0',
-                            '&:hover': {
-                                transform: 'translateY(-8px)',
-                            },
-                        }}
-                    >
+                <Grid item xs={12} md={6} lg={6} key={card.title}>
+                    <Card sx={cardDashboard}>
                         <CardContent>
                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                                 <Box
-                                    sx={{
-                                        backgroundColor: 'rgba(115, 103, 240, 0.1)',
-                                        borderRadius: '50%',
-                                        p: 1,
-                                        mr: 2,
-                                    }}
+                                    sx={cardIcon}
                                 >
                                     {card.icon}
                                 </Box>
@@ -118,12 +98,13 @@ const DashboardCombined = (props: IProps) => {
                         </CardContent>
                     </Card>
                 </Grid>
-            ))}
+            ))
+            }
 
-            <Grid item xs={12} md={6} lg={3}>
-                <Card sx={{ height: '100%' }}>
+            <Grid item xs={12} md={6} lg={2.5}>
+                <Card sx={height100}>
                     <CardContent>
-                        <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
+                        <Typography variant="h6" sx={weightWithMargin}>
                             Opportunity Summary
                         </Typography>
                         <Doughnut data={opportunityStatus} />
@@ -131,10 +112,10 @@ const DashboardCombined = (props: IProps) => {
                 </Card>
             </Grid>
 
-            <Grid item xs={12} md={6} lg={3.5}>
-                <Card sx={{ height: '100%' }}>
+            <Grid item xs={12} md={6} lg={4.75}>
+                <Card sx={height100}>
                     <CardContent>
-                        <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
+                        <Typography variant="h6" sx={weightWithMargin}>
                             Project Summary
                         </Typography>
                         <Bar data={projectStatus} />
@@ -142,10 +123,10 @@ const DashboardCombined = (props: IProps) => {
                 </Card>
             </Grid>
 
-            <Grid item xs={12} md={6} lg={3.5}>
-                <Card sx={{ height: '100%' }}>
+            <Grid item xs={12} md={6} lg={4.75}>
+                <Card sx={height100}>
                     <CardContent>
-                        <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
+                        <Typography variant="h6" sx={weightWithMargin}>
                             Template Summary
                         </Typography>
                         <Bar data={templateStatus} />
@@ -153,17 +134,18 @@ const DashboardCombined = (props: IProps) => {
                 </Card>
             </Grid>
 
-            <Grid item xs={12} md={6} lg={5}>
-                <Card sx={{ height: '100%' }}>
+            <Grid item xs={12} md={6} lg={6}>
+                <Card sx={height100}>
                     <CardContent>
-                        <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
+                        <Typography variant="h6" sx={weightWithMargin}>
                             Opportunity Detail
                         </Typography>
-                        <Box sx={{ height: 300, overflowY: 'auto' }}>
+                        <Box sx={height400WithScroll}>
                             <DataGrid
-                                rows={opportunities}
+                                rows={opportunities?.result || []}
+                                getRowId={(row) => row._id}
                                 columns={filteredColumnsOpp}
-                                pageSizeOptions={[5, 10]}
+                                pageSizeOptions={[5]}
                                 disableRowSelectionOnClick
                                 pagination
                             />
@@ -172,17 +154,18 @@ const DashboardCombined = (props: IProps) => {
                 </Card>
             </Grid>
 
-            <Grid item xs={12} md={6} lg={5}>
-                <Card sx={{ height: '100%' }}>
+            <Grid item xs={12} md={6} lg={6}>
+                <Card sx={height100}>
                     <CardContent>
-                        <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
+                        <Typography variant="h6" sx={weightWithMargin}>
                             Project Detail
                         </Typography>
-                        <Box sx={{ height: 300, overflowY: 'auto' }}>
+                        <Box sx={height400WithScroll}>
                             <DataGrid
-                                rows={projects}
+                                rows={projects?.result || []}
+                                getRowId={(row) => row._id}
                                 columns={filteredColumns}
-                                pageSizeOptions={[5, 10]}
+                                pageSizeOptions={[5]}
                                 disableRowSelectionOnClick
                                 pagination
                             />
@@ -190,7 +173,8 @@ const DashboardCombined = (props: IProps) => {
                     </CardContent>
                 </Card>
             </Grid>
-        </Grid>
+            <Box sx={{ paddingBottom: '4rem', width: '100%' }} />
+        </Grid >
     );
 };
 

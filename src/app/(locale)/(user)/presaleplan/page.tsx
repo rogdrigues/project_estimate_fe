@@ -3,6 +3,7 @@ import { getAllPresalePlans, getApproveOpportunities } from '@/services';
 import { getServerSession } from 'next-auth';
 import { PresalePlanHeader } from './_component/presaleplan-header';
 import PresalePlanTable from './_component/presaleplan-table';
+import { Box } from '@mui/material';
 
 const PresalePlanPage = async () => {
     const session = await getServerSession(authOptions);
@@ -12,7 +13,7 @@ const PresalePlanPage = async () => {
     ]);
 
     return (
-        <div>
+        <Box sx={{ p: 3 }}>
             <PresalePlanHeader
                 opportunities={approveOpportunities?.result}
             />
@@ -20,7 +21,7 @@ const PresalePlanPage = async () => {
                 presalePlans={presalePlans?.result || []}
                 opportunities={approveOpportunities?.result}
             />
-        </div>
+        </Box>
     );
 }
 

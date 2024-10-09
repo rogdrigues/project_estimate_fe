@@ -3,6 +3,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth';
 import DepartmentTable from './_component/department-table';
 import DepartmentHeader from './_component/department-header';
+import { Box } from '@mui/material';
 
 const DepartmentPage = async () => {
     const session = await getServerSession(authOptions);
@@ -12,7 +13,7 @@ const DepartmentPage = async () => {
     ]);
 
     return (
-        <div>
+        <Box sx={{ p: 3 }}>
             <DepartmentHeader
                 divisions={divisions?.result}
             />
@@ -20,7 +21,7 @@ const DepartmentPage = async () => {
                 divisions={divisions?.result}
                 departments={departments?.result || []}
             />
-        </div>
+        </Box>
     );
 }
 
