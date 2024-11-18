@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { HeaderButton } from '@/styles';
 import { useSession } from 'next-auth/react';
 import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
-import { Project } from '@/types';
+
 interface IHeaderProps {
     title: string;
     onExport?: () => Promise<any>;

@@ -5,7 +5,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { columns } from './_table_config/project-template-table-columns';
 import { Project, TemplateData } from '@/types';
 import { exportProjectTemplateData, getTemplateData } from '@/services';
-import { HeaderButton } from '@/styles';
+import { flexBoxSpaceBetween, HeaderButton } from '@/styles';
 import { useToast } from '@/context/ToastContext';
 
 interface IProps {
@@ -45,7 +45,7 @@ const ProjectTemplate = (props: IProps) => {
 
     return (
         <Box sx={{ overflowY: 'auto', maxHeight: 'calc(100vh - 100px)', p: 2 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+            <Box sx={flexBoxSpaceBetween}>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                     Version Information
                 </Typography>
