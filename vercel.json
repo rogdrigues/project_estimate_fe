@@ -1,8 +1,15 @@
 {
     "rewrites": [
         {
-            "source": "/(.*)",
-            "destination": "/"
+            "source": "/",
+            "destination": "/auth/signin",
+            "has": [
+                {
+                    "type": "host",
+                    "value": "project-estimate-management.vercel.app"
+                }
+            ],
+            "permanent": true
         }
     ]
 }
