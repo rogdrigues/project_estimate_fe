@@ -1,39 +1,74 @@
-# Project Estimate Management (Frontend)
+# [Live Demo: project-estimate-fe.vercel.app](https://project-estimate-fe.vercel.app)
+
+# Project Management Tool
 
 ## Description
-This is the frontend for the Project Estimate Management tool, designed to help companies manage their projects, resources, and collaboration efficiently. It provides a modern, responsive interface built with React and Next.js to deliver a smooth user experience. The application leverages powerful form handling, state management, and dynamic components for handling various aspects of project management.
+A comprehensive project management tool designed to help companies efficiently manage their projects, resources, technologies, and collaboration. It features role-based access control, task tracking, and real-time updates, making it ideal for both small and large teams.
+
+## Table of Contents
+- [Features](#features)
+- [Predefined User Accounts](#predefined-user-accounts)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Documentation](#api-documentation)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Features
-- **Responsive UI**: Built using Material UI (MUI) components for a modern and intuitive interface.
-- **Project Management**: Users can create, update, and monitor projects, resources, and deadlines.
-- **Role-based Access Control**: Supports different user roles such as Admin, Project Manager, and Employee to manage access.
-- **Real-time Collaboration**: Users can comment and interact with projects in real-time.
-- **Authentication**: Integrated with NextAuth.js to provide secure authentication and session management.
-- **Data Grid Management**: View and manage large sets of data using MUI's DataGrid component.
-- **Form Handling**: Efficiently manage forms using React Hook Form and validation through Zod.
+- **User Management**: Role-based access control (Admin, Project Manager, Employee, Customer).
+- **Project Management**: Create, update, and manage projects, including assigning resources and deadlines.
+- **Resource Management**: Assign team members, track productivity, and manage resources across projects.
+- **Real-time Collaboration**: Comment on projects and tasks to provide updates and feedback.
+- **Import/Export Functionality**: Export project templates to Excel and import them back for bulk project creation.
+- **File Uploads**: Manage document uploads through Cloudinary for project-related files.
+- **Customizable Permissions**: Manage permissions through a dynamic permission set structure.
+
+## Predefined User Accounts
+The application comes with predefined user accounts for testing various roles. All accounts share the same password: **password123**.
+
+| Email                     | Role               |
+|---------------------------|--------------------|
+| admin@gmail.com           | Admin             |
+| divlead1@gmail.com        | Division Lead     |
+| deptlead1@gmail.com       | Department Lead   |
+| presaleDiv1@gmail.com     | Presale Division  |
+| presaleDept1@gmail.com    | Presale Department|
+| opportunity1@gmail.com    | Opportunity       |
+| employee1@gmail.com       | Employee          |
+
+---
 
 ## Installation
 
 ### Prerequisites
 - Node.js (v14.x or higher)
-- A backend server for API interaction (see backend project)
+- MongoDB
+- Cloudinary account for file storage (optional)
 
 ### Installation Steps
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/project-estimate-management-frontend.git
+    git clone https://github.com/rogdrigues/project-management-tool.git
     ```
 2. Navigate to the project directory:
     ```bash
-    cd project-estimate-management-frontend
+    cd project-management-tool
     ```
 3. Install dependencies:
     ```bash
     npm install
     ```
 4. Configure environment variables:
-    - Create a `.env` file in the root directory and add necessary environment variables like API URL and authentication keys.
-
+    - Create a `.env` file in the root directory and configure the following:
+      ```bash
+      MONGO_URI=mongodb://<your-mongo-uri>
+      JWT_SECRET=your_jwt_secret_key
+      ACCESS_TOKEN_EXPIRES_IN=15m
+      REFRESH_TOKEN_EXPIRES_IN=7d
+      CLOUDINARY_CLOUD_NAME=your_cloudinary_name
+      CLOUDINARY_API_KEY=your_cloudinary_api_key
+      CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+      ```
 5. Start the development server:
     ```bash
     npm run dev
@@ -42,29 +77,53 @@ This is the frontend for the Project Estimate Management tool, designed to help 
 ## Usage
 
 ### Running the Application
-1. After starting the server, open your browser and navigate to `http://localhost:8081`.
-2. Log in using the credentials provided by the backend or create a new account if available.
-3. Access the dashboard to manage projects, users, and resources efficiently.
+1. After starting the server, open your browser and navigate to `http://localhost:3000`.
+2. Sign in using the predefined user accounts or create new users via the admin panel.
+3. Once logged in, you can:
+   - Manage users (create, edit, delete).
+   - Create, update, and assign resources to projects.
+   - Export projects to Excel or import project templates.
 
 ### User Authentication
-- Users authenticate via NextAuth, with role-based access ensuring only authorized users can view and edit specific data.
+- **Admin Control**: Admin users can add, delete, or update other users and manage permissions.
+- **Authentication**: Users log in with JWT-based authentication. Refresh tokens are managed to ensure smooth sessions.
 
-### Project Management
-- Projects can be created, updated, and assigned resources directly from the dashboard.
-- Progress tracking and task assignments are available with real-time updates.
+### Managing Projects
+- **Create Projects**: Add new projects, assign team members, and set deadlines.
+- **Track Progress**: View project status and completion percentage in real-time.
+- **Commenting System**: Collaborate with team members using project comments.
 
 ## API Documentation
 
-The frontend communicates with the backend via RESTful API calls. Please refer to the backend documentation for details about API endpoints and expected data formats.
+### API Endpoints
+#### Users
+- **POST /api/users/login**: User login
+- **POST /api/users/add-user**: Add a new user (admin only)
+- **POST /api/users/refresh-token**: Refresh access token
+- **GET /api/users/get-all-users**: Retrieve a list of all users
+- **PATCH /api/users/profile**: Update user profile
+- **DELETE /api/users/:userId**: Delete a user by ID
+
+#### Projects
+- **GET /api/projects**: Retrieve a list of all projects
+- **POST /api/projects**: Create a new project
+- **PUT /api/projects/:id**: Update an existing project
+- **DELETE /api/projects/:id**: Delete a project by ID
+
+#### Resources
+- **GET /api/resources**: Get list of available resources
+- **POST /api/resources**: Create a new resource
+
+Detailed API documentation can be found in the project [API Docs](link to apis will be updated soon).
 
 ## Contributing
-We welcome contributions to the frontend project. To contribute:
+We welcome contributions to this project. If you'd like to contribute:
 1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/your-feature-name`).
-3. Make your changes and ensure the code follows project guidelines.
+2. Create a new feature branch (`git checkout -b feature/your-feature-name`).
+3. Make your changes, ensuring that the code follows project standards.
 4. Commit your changes (`git commit -m 'Add some feature'`).
 5. Push your branch to GitHub (`git push origin feature/your-feature-name`).
-6. Create a pull request for review.
+6. Create a pull request, and we will review your changes.
 
-## Connect to BE github
-Due to some problem, I had to separate the front-end file which you can found in this link (https://github.com/rogdrigues/project_estimate)
+## Connect to FE GitHub
+Due to some problem, I had to separate the front-end file which you can found in this link: [Frontend Repository](https://github.com/rogdrigues/project_estimate_fe).
