@@ -59,4 +59,9 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
     matcher: ['/dashboard', '/protected-page/:path*', '/home'],
+    runtime: 'nodejs',
+    unstable_allowDynamic: [
+        '/node_modules/@babel/runtime/**',
+        '/node_modules/next-auth/**'
+    ],
 };
