@@ -9,7 +9,7 @@
                     "value": "project-estimate-management.vercel.app"
                 }
             ],
-            "permanent": true
+            "status": 200
         }
     ]
 }
