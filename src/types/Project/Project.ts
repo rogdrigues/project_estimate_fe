@@ -5,7 +5,7 @@ export const ProjectSchema: any = z.object({
     _id: z.string().optional(),
     name: z.string(),
     description: z.string().optional(),
-    status: z.enum(['Pending', 'In Progress', 'Completed', 'Archive', 'Rejected']),
+    status: z.enum(['Pending', 'In Progress', 'Completed', 'Archived', 'Rejected']),
     category: CategorySchema.optional(),
     department: DepartmentSchema.optional(),
     division: DivisionSchema.optional(),
