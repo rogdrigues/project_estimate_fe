@@ -21,7 +21,7 @@ import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 
 const drawerWidth = 260;
-const miniDrawerWidth = 60;
+const miniDrawerWidth = 75;
 
 const menuItems = [
     {
@@ -79,7 +79,7 @@ const Sidebar = () => {
                 transition: 'width 0.3s ease',
                 '& .MuiDrawer-paper': {
                     transition: 'width 0.3s ease',
-                    overflowY: 'scroll',
+                    overflowY: 'auto',
                     width: isSidebarOpen ? drawerWidth : miniDrawerWidth,
                     boxSizing: 'border-box',
                     marginTop: '65px',
@@ -97,7 +97,7 @@ const Sidebar = () => {
                             variant="subtitle2"
                             sx={{ paddingLeft: 2, paddingTop: 1, paddingBottom: 1, color: '#6c757d', fontWeight: 'bold' }}
                         >
-                            {section.section}
+                            {isSidebarOpen ? section.section : ""}
                         </Typography>
                         {section.items.map((item) => (
                             <Link href={hasPermission(item.tag) ? item.path : '#'} key={item.name} passHref legacyBehavior>
@@ -126,7 +126,7 @@ const Sidebar = () => {
                                     }}
                                 >
                                     <ListItemIcon sx={{ minWidth: 40 }}>{item.icon}</ListItemIcon>
-                                    <ListItemText primary={item.name} sx={{ color: 'black' }} />
+                                    {isSidebarOpen && <ListItemText primary={item.name} sx={{ color: 'black' }} />}
                                 </ListItem>
                             </Link>
                         ))}

@@ -130,7 +130,7 @@ export const columns: GridColDef[] = [
                     color = '#28a745';
                     label = 'Completed';
                     break;
-                case 'Archive':
+                case 'Archived':
                     icon = <BlockIcon fontSize="small" style={{ marginRight: '4px', color: '#6c757d' }} />;
                     color = '#6c757d';
                     label = 'Archived';
